@@ -150,15 +150,13 @@ button[type="submit"]:hover {
   color: var(--sq-on-brand) !important;
 }
 
-.button:not(.primary):not(.button--primary):not(.disabled),
-button:not(.primary):not(.button--primary):not([type="submit"]) {
+.button:not(.primary):not(.button--primary):not(.disabled) {
   background: var(--sq-surface-2) !important;
   border: 1px solid var(--sq-line) !important;
   color: var(--sq-bone) !important;
 }
 
-.button:not(.primary):hover,
-button:not(.primary):hover {
+.button:not(.primary):hover {
   border-color: rgba(139, 124, 255, 0.45) !important;
 }
 
@@ -532,4 +530,26 @@ html .button--primary:hover {
 .page--problem_main .problem__tag-link:hover {
   border-color: rgba(139, 124, 255, 0.5) !important;
   color: var(--sq-bone) !important;
+}
+/* ---------- Stage B: submission detail as a paper slip ---------- */
+.page--record_detail .section__header {
+  background: linear-gradient(90deg, rgba(139, 124, 255, 0.12), transparent 65%) !important;
+  border-left: 3px solid var(--sq-brand);
+  border-radius: var(--sq-radius-card) var(--sq-radius-card) 0 0;
+}
+
+.page--record_detail .section__title {
+  color: var(--sq-bone) !important;
+}
+
+.page--record_detail .section__body {
+  color: var(--sq-muted);
+}
+
+.page--record_detail .data-table tbody tr {
+  background: var(--sq-surface-2) !important;
+}
+
+.page--record_detail .data-table tbody td {
+  border-color: var(--sq-line) !important;
 }

@@ -41,9 +41,9 @@
   </style>
   {% if process.env.DEV %}
     <script src="/default.theme.js?version={{ global.Hydro.version['ui-default'] }}"></script>
-    <link rel="stylesheet" media="all" href="/theme-{{ global.Hydro.version['ui-default'] }}.css?v=squady-7">
+    <link rel="stylesheet" media="all" href="/theme-{{ global.Hydro.version['ui-default'] }}.css?v=squady-11">
   {% else %}
-    <link rel="stylesheet" media="all" href="{{ UiContext.cdn_prefix }}theme-{{ global.Hydro.version['ui-default'] }}.css?v=squady-7">
+    <link rel="stylesheet" media="all" href="{{ UiContext.cdn_prefix }}theme-{{ global.Hydro.version['ui-default'] }}.css?v=squady-11">
   {% endif %}
   {% if not isIE(handler.request.headers['user-agent']) and not handler.session.legacy %}
     <script>
