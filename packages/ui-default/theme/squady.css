@@ -447,3 +447,89 @@ html input.button.primary:hover,
 html .button--primary:hover {
   background: var(--sq-brand-hover) !important;
 }
+/* ---------- Stage B: problem list as cards ---------- */
+.page--problem_main table.section__table-header {
+  display: none !important;
+}
+
+.page--problem_main table.data-table:not(.section__table-header) {
+  border-collapse: separate !important;
+  border-spacing: 0 10px !important;
+  margin-top: -10px;
+}
+
+.page--problem_main table.data-table:not(.section__table-header) tbody tr {
+  background: var(--sq-surface) !important;
+  transition: background 120ms ease, transform 120ms ease;
+}
+
+.page--problem_main table.data-table:not(.section__table-header) tbody tr:hover {
+  background: var(--sq-surface-2) !important;
+}
+
+.page--problem_main table.data-table:not(.section__table-header) tbody td {
+  border-top: 1px solid var(--sq-line) !important;
+  border-bottom: 1px solid var(--sq-line) !important;
+  padding: 16px 12px !important;
+  vertical-align: middle;
+}
+
+.page--problem_main table.data-table:not(.section__table-header) tbody td:first-child {
+  border-left: 1px solid var(--sq-line) !important;
+  border-radius: 18px 0 0 18px !important;
+  padding-left: 18px !important;
+}
+
+.page--problem_main table.data-table:not(.section__table-header) tbody td:last-child {
+  border-right: 1px solid var(--sq-line) !important;
+  border-radius: 0 18px 18px 0 !important;
+  padding-right: 18px !important;
+}
+
+.page--problem_main table.data-table:not(.section__table-header) tbody td.col--status {
+  border-left: 0 !important;
+}
+
+.page--problem_main .col--name a {
+  font-weight: 600;
+  color: var(--sq-bone) !important;
+}
+
+.page--problem_main .col--name a:hover {
+  color: var(--sq-brand-hover) !important;
+}
+
+/* ---------- Stage B: problem detail breathing room ---------- */
+.page--problem_detail .section__body {
+  padding: 28px 32px !important;
+  line-height: 1.85;
+  font-size: 15px;
+}
+
+.page--problem_detail .section__body.typo p {
+  margin: 0 0 1.15em;
+}
+
+.page--problem_detail .section__title {
+  padding: 6px 2px;
+}
+
+.page--problem_detail .problem__tags {
+  gap: 8px !important;
+  margin-bottom: 4px;
+}
+/* Problem list tags (different class from detail tags). */
+.page--problem_main .problem__tag,
+.page--problem_main .problem__tag-link {
+  background: var(--sq-surface-2) !important;
+  border: 1px solid var(--sq-line) !important;
+  border-radius: 999px !important;
+  color: var(--sq-muted) !important;
+  padding: 1px 8px !important;
+  text-decoration: none !important;
+}
+
+.page--problem_main .problem__tag-link:hover {
+  border-color: rgba(139, 124, 255, 0.5) !important;
+  color: var(--sq-bone) !important;
+}
