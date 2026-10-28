@@ -1,0 +1,449 @@
+/*
+ * Squady theme tokens.
+ * Loaded after theme/dark.styl so it can override both light and dark defaults.
+ * Palette: ink #0b0b0e / bone #eeebe4 / brand #8b7cff / mint #6ef0b4.
+ */
+
+:root:root {
+  --sq-ink: #0b0b0e;
+  --sq-bone: #eeebe4;
+  --sq-muted: #bebbc4;
+  --sq-dim: #8f8b97;
+  --sq-surface: #141418;
+  --sq-surface-2: #1c1c22;
+  --sq-line: rgba(238, 235, 228, 0.08);
+  --sq-brand: #8b7cff;
+  --sq-brand-hover: #a79bff;
+  --sq-on-brand: #0b0b0e;
+  --sq-mint: #6ef0b4;
+  --sq-radius-btn: 10px;
+  --sq-radius-card: 22px;
+
+  /* Mantine */
+  --mantine-color-body: #0b0b0e;
+  --mantine-color-text: #eeebe4;
+  --mantine-color-dimmed: #8f8b97;
+  --mantine-color-default-border: rgba(238, 235, 228, 0.08);
+  --mantine-primary-color-filled: #8b7cff;
+  --mantine-primary-color-filled-hover: #a79bff;
+  --mantine-color-dark-0: #eeebe4;
+  --mantine-color-dark-1: #bebbc4;
+  --mantine-color-dark-2: #8f8b97;
+  --mantine-color-dark-3: #6f6b78;
+  --mantine-color-dark-4: #2a2a33;
+  --mantine-color-dark-5: #1c1c22;
+  --mantine-color-dark-6: #141418;
+  --mantine-color-dark-7: #0b0b0e;
+}
+
+html,
+body {
+  background: var(--sq-ink) !important;
+  color: var(--sq-bone) !important;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.slideout-panel {
+  background: var(--sq-ink) !important;
+  color: var(--sq-bone);
+}
+
+/* ---------- top navigation ---------- */
+.nav,
+.nav--shadow {
+  background: rgba(20, 20, 24, 0.94) !important;
+  border-bottom: 1px solid var(--sq-line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.nav__item {
+  color: var(--sq-muted) !important;
+  border-radius: 8px;
+  transition: color 120ms ease, background 120ms ease;
+}
+
+.nav__item:hover {
+  color: var(--sq-bone) !important;
+  background: rgba(139, 124, 255, 0.09) !important;
+}
+
+.nav__item.nav--active,
+.nav__item--active {
+  color: var(--sq-brand) !important;
+}
+
+.nav__logo {
+  filter: none;
+}
+
+/* ---------- cards / sections ---------- */
+.section {
+  background: var(--sq-surface) !important;
+  border: 1px solid var(--sq-line);
+  border-radius: var(--sq-radius-card);
+  box-shadow: none !important;
+  color: var(--sq-bone);
+}
+
+.section__header {
+  border-bottom: 1px solid var(--sq-line);
+}
+
+.section__title {
+  color: var(--sq-bone) !important;
+  letter-spacing: 0.01em;
+}
+
+.section__body,
+.section__body.typo,
+.typo,
+.typo p,
+.typo li {
+  color: var(--sq-muted);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--sq-bone);
+}
+
+a,
+.link,
+.typo a:not(.user-profile-name):not(.media-link),
+.typo-a:not(.user-profile-name):not(.media-link) {
+  color: var(--sq-brand) !important;
+}
+
+a:hover,
+.link:hover,
+.typo a:hover:not(.user-profile-name):not(.media-link) {
+  color: var(--sq-brand-hover) !important;
+}
+
+/* ---------- buttons / forms ---------- */
+.button,
+button,
+input[type="submit"],
+input[type="button"] {
+  border-radius: var(--sq-radius-btn) !important;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+
+.button.primary,
+.button--primary,
+input[type="submit"],
+button[type="submit"] {
+  background: var(--sq-brand) !important;
+  border: 1px solid transparent !important;
+  color: var(--sq-on-brand) !important;
+}
+
+.button.primary:hover,
+.button--primary:hover,
+input[type="submit"]:hover,
+button[type="submit"]:hover {
+  background: var(--sq-brand-hover) !important;
+  color: var(--sq-on-brand) !important;
+}
+
+.button:not(.primary):not(.button--primary):not(.disabled),
+button:not(.primary):not(.button--primary):not([type="submit"]) {
+  background: var(--sq-surface-2) !important;
+  border: 1px solid var(--sq-line) !important;
+  color: var(--sq-bone) !important;
+}
+
+.button:not(.primary):hover,
+button:not(.primary):hover {
+  border-color: rgba(139, 124, 255, 0.45) !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+textarea,
+select,
+.textbox,
+.select {
+  background: var(--sq-surface-2) !important;
+  border: 1px solid var(--sq-line) !important;
+  border-radius: var(--sq-radius-btn) !important;
+  color: var(--sq-bone) !important;
+  box-shadow: none !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.textbox:focus,
+.select:focus {
+  border-color: var(--sq-brand) !important;
+  outline: 2px solid rgba(139, 124, 255, 0.22) !important;
+  outline-offset: 0;
+}
+
+::placeholder {
+  color: var(--sq-dim) !important;
+}
+
+label:not(.quick-input-list-label) {
+  color: var(--sq-muted) !important;
+}
+
+/* ---------- tables / menus / footer ---------- */
+.data-table tr,
+.section__list__item {
+  border-color: var(--sq-line) !important;
+}
+
+.data-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.data-table thead > tr,
+.section__table-header,
+.typo table thead th {
+  background: var(--sq-surface-2) !important;
+  color: var(--sq-bone) !important;
+}
+
+.typo table th,
+.typo table td,
+.typo table caption {
+  border-color: var(--sq-line) !important;
+  color: var(--sq-muted);
+}
+
+.dropdown .menu,
+.menu,
+.marker,
+.dialog.withBg .dialog__content {
+  background: var(--sq-surface-2) !important;
+  border: 1px solid var(--sq-line) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55) !important;
+  color: var(--sq-bone);
+}
+
+.menu__link {
+  color: var(--sq-muted) !important;
+}
+
+.menu__link:hover {
+  background: rgba(139, 124, 255, 0.1) !important;
+  color: var(--sq-bone) !important;
+}
+
+.menu__link.active {
+  background: var(--sq-brand) !important;
+  color: var(--sq-on-brand) !important;
+}
+
+.footer {
+  background: var(--sq-ink) !important;
+  border-top: 1px solid var(--sq-line);
+  color: var(--sq-dim) !important;
+}
+
+/* ---------- code / monaco ---------- */
+pre,
+code,
+pre[class*="language-"],
+:not(pre) > code[class*="language-"] {
+  background: #111114 !important;
+  border-color: var(--sq-line) !important;
+  color: #d8d4cc !important;
+}
+
+.monaco-editor,
+.monaco-editor-background,
+.monaco-editor .margin,
+.monaco-editor .monaco-editor-background,
+.monaco-editor .inputarea {
+  background-color: var(--sq-ink) !important;
+}
+
+.monaco-editor .current-line,
+.monaco-editor .view-overlays .current-line {
+  border-color: rgba(139, 124, 255, 0.22) !important;
+}
+
+/* ---------- scrollbar ---------- */
+* {
+  scrollbar-color: #2a2a33 var(--sq-ink);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--sq-ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a33;
+  border-radius: 999px;
+  border: 2px solid var(--sq-ink);
+}
+
+/* ---------- Element Plus (settings pages) ---------- */
+html {
+  --el-bg-color-page: #0b0b0e;
+  --el-bg-color: #141418;
+  --el-bg-color-overlay: #1c1c22;
+  --el-text-color-primary: #eeebe4;
+  --el-text-color-regular: #bebbc4;
+  --el-text-color-secondary: #8f8b97;
+  --el-border-color: rgba(238, 235, 228, 0.12);
+  --el-border-color-light: rgba(238, 235, 228, 0.08);
+  --el-color-primary: #8b7cff;
+}
+
+/* Force Mantine variables even if a second copy of the base theme loads later. */
+html:root:root {
+  --mantine-color-body: #0b0b0e !important;
+  --mantine-color-text: #eeebe4 !important;
+  --mantine-color-dimmed: #8f8b97 !important;
+  --mantine-primary-color-filled: #8b7cff !important;
+  --mantine-primary-color-filled-hover: #a79bff !important;
+}
+/* Typography contrast fixes for Squady. */
+.section__body.typo h1,
+.section__body.typo h2,
+.section__body.typo h3,
+.section__body.typo h4,
+.section__body.typo h5,
+.section__body.typo h6,
+.typo h1,
+.typo h2,
+.typo h3,
+.typo h4,
+.typo h5,
+.typo h6 {
+  color: var(--sq-bone) !important;
+}
+
+.section__body.typo,
+.section__body.typo p,
+.section__body.typo li,
+.typo p,
+.typo li {
+  color: var(--sq-muted) !important;
+}
+
+.nav__logo {
+  filter: brightness(0) invert(1) !important;
+  opacity: 0.92;
+}
+
+.footer__category,
+.footer__category-title,
+.footer h1,
+.footer h2,
+.footer h3 {
+  color: var(--sq-bone) !important;
+}
+/* Problem page details. */
+.problem__tag-item {
+  background: var(--sq-surface-2) !important;
+  border: 1px solid var(--sq-line) !important;
+  border-radius: 999px !important;
+  color: var(--sq-muted) !important;
+}
+
+.problem__tag-item.interactive:hover {
+  border-color: rgba(139, 124, 255, 0.5) !important;
+  color: var(--sq-bone) !important;
+}
+
+.section__tab-header {
+  border-bottom: 1px solid var(--sq-line) !important;
+}
+
+.section__tab-header-item {
+  color: var(--sq-muted) !important;
+  border-radius: 8px 8px 0 0;
+}
+
+.section__tab-header-item:hover {
+  background: rgba(139, 124, 255, 0.08) !important;
+  color: var(--sq-bone) !important;
+}
+
+.section__tab-header-item.tab--active {
+  color: var(--sq-bone) !important;
+  box-shadow: inset 0 -2px 0 var(--sq-brand);
+}
+
+.menu__link.highlight {
+  background: var(--sq-brand) !important;
+  color: var(--sq-on-brand) !important;
+  border-radius: var(--sq-radius-btn);
+}
+
+.menu__link.highlight:hover {
+  background: var(--sq-brand-hover) !important;
+  color: var(--sq-on-brand) !important;
+}
+
+.record-status--text.pass,
+.record-status--icon.pass {
+  color: var(--sq-mint) !important;
+}
+/* Problem detail tabs have page-scoped rules; match their specificity. */
+.page--problem_detail .section__tab-header-item,
+.page--contest_detail_problem .section__tab-header-item,
+.page--homework_detail_problem .section__tab-header-item {
+  color: var(--sq-muted) !important;
+}
+
+.page--problem_detail .section__tab-header-item.tab--active,
+.page--contest_detail_problem .section__tab-header-item.tab--active,
+.page--homework_detail_problem .section__tab-header-item.tab--active {
+  color: var(--sq-bone) !important;
+  border-color: var(--sq-brand) !important;
+}
+
+.page--problem_detail .section__title .record-status--text.pass,
+.page--problem_detail .section__title .record-status--icon.pass {
+  color: var(--sq-mint) !important;
+}
+/* Notes and native file picker. */
+blockquote.note,
+blockquote.note.blue,
+blockquote.note.warn,
+blockquote {
+  background: var(--sq-surface-2) !important;
+  border-left: 3px solid var(--sq-brand) !important;
+  border-radius: 12px !important;
+  color: var(--sq-muted) !important;
+}
+
+input[type="file"]::file-selector-button {
+  background: var(--sq-surface-2) !important;
+  border: 1px solid var(--sq-line) !important;
+  border-radius: 8px !important;
+  color: var(--sq-bone) !important;
+  padding: 6px 12px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+/* Base theme loads a second copy later; out-rank it for primary buttons. */
+html .button.primary,
+html input.button.primary,
+html .button--primary {
+  background: var(--sq-brand) !important;
+  border-color: transparent !important;
+  color: var(--sq-on-brand) !important;
+}
+
+html .button.primary:hover,
+html input.button.primary:hover,
+html .button--primary:hover {
+  background: var(--sq-brand-hover) !important;
+}

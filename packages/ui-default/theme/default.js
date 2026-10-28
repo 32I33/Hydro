@@ -24,6 +24,7 @@ import 'vj/misc/section.styl';
 import 'vj/misc/nothing.styl';
 import 'vj/components/editor/cmeditor.styl';
 import './dark.styl';
+import './squady.css';
 import './bp6-compat.css';
 
 // load all page stylesheets
