@@ -8,7 +8,7 @@ const bulletin = `\
 当你看到这行字时，说明 Hydro 的基础功能已经正常运行。  
 下一步您应该：
 
-- 在右上角注册一个账号。  
+- 请联系管理员创建账号（本站不开放注册）。  
 - 回到刚刚的终端，使用 \`hydrooj cli user setSuperAdmin 2\` 将 UID 为 2 的用户设置为超级管理员。  
 - 使用 \`pm2 restart hydrooj\` 重启以使管理员更改立刻生效。  
 - 前往 “题库” 面板，查看创建的示例题目是否正常工作。  
@@ -25,7 +25,7 @@ const bulletin = `\
 If you see this line, it means Hydro is running normally.  
 Next step you should:
 
-- Register a new account.  
+- Contact an administrator to create an account (self-registration is disabled).  
 - Go back to the terminal, use \`hydrooj cli user setSuperAdmin 2\` to set user with UID 2 as super admin.  
 - Use \`pm2 restart hydrooj\` to make the change take effect.  
 - Go to “Problems” panel, check whether the example problem is working properly.  
