@@ -306,6 +306,7 @@ class SystemUserImportHandler extends SystemHandler {
         }
         this.response.body.users = udocs;
         this.response.body.messages = messages;
+        this.response.template = 'manage_user_import.html';
     }
 }
 /* eslint-enable no-await-in-loop */

@@ -7,7 +7,8 @@
   </div>
   <div class="section__body">
     {{ noscript_note.render() }}
-    <pre name="messages"></pre>
+    <form method="post">
+    <pre name="messages">{% if messages %}{{ messages.join('\n') }}{% endif %}</pre>
     {{ form.form_textarea({
         columns:null,
         label:'Users',
@@ -15,9 +16,10 @@
         nospellcheck: true
         }) }}
     <div class="row"><div class="column">
-      <button name="preview" class="rounded primary button">{{ _('Preview') }}</button>
-      <button name="submit" class="rounded button">{{ _('Submit') }}</button>
+      <button name="draft" value="true" type="submit" class="rounded primary button">{{ _('Preview') }}</button>
+      <button name="draft" value="false" type="submit" class="rounded button">{{ _('Submit') }}</button>
     </div></div>
+    </form>
   </div>
 </div>
 {% endblock %}
