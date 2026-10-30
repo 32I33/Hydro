@@ -668,3 +668,114 @@ html body .data-table:not(.ax-table) .record-status--icon {
   background: var(--ax-primary);
   color: #fff;
 }
+
+/* =================================================================
+ * 主按钮色彩扫残：stylus 编译期写死的蓝 #5f9fd6 / 粉 #df6589 一律压成橙
+ * ================================================================= */
+
+/* 侧栏主 CTA：Open Scratchpad（Alt+E）
+   原来是 mix($highlight-color, #FFF, 10%) 的粉底文字，升为与「在线提交评测」同级的橙主按钮 */
+html body a.menu__link.highlight,
+html body button.menu__link.highlight {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 8px 10px;
+  padding: 8px 12px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-primary-bright);
+  color: #fff;
+  font-family: var(--ax-font-head);
+  font-weight: 800;
+  line-height: 1.4;
+  box-shadow: var(--ax-shadow-2);
+  border-left: 2px solid var(--ax-line);
+}
+html body a.menu__link.highlight:hover,
+html body button.menu__link.highlight:hover,
+html body a.menu__link.highlight:active {
+  background: var(--ax-primary);
+  color: #fff;
+  transform: translate(-1px, -1px);
+  box-shadow: var(--ax-shadow-3);
+  text-decoration: none;
+}
+html body a.menu__link.highlight .icon,
+html body button.menu__link.highlight .icon {
+  color: #fff;
+}
+
+/* 正文链接 hover：stylus 的 .typo a:hover:not(...) 权重更高，这里对齐形状再压回 */
+html body .typo a:not(.button):not(.ax-btn):hover,
+html body .typo .link:not(.button):not(.ax-btn):hover,
+html body .typo a:active:not(.button):not(.ax-btn) {
+  color: var(--ax-primary-wash);
+}
+
+/* 日历视图（功课页） */
+html body .calendar__header button:hover {
+  color: var(--ax-primary);
+}
+html body .calendar__row__content th.is-current-day {
+  color: var(--ax-primary);
+}
+
+/* 讨论区组件（折叠 / 评论操作 / 节点标签 / 表态） */
+html body .collapsible-content .collapsible-toggle__link {
+  color: var(--ax-primary);
+}
+html body .dczcomments__operations a:hover {
+  color: var(--ax-primary);
+}
+html body .discussion-node-tag:hover {
+  background: var(--ax-primary-bright);
+  border-color: var(--ax-line);
+  color: #fff;
+}
+html body .reactions .reaction.active,
+html body .reactions .reaction:hover {
+  border-color: var(--ax-line);
+  background: var(--ax-primary-soft);
+  color: var(--ax-ink) !important;
+}
+
+/* 比赛类型标签（contest 详情侧栏） */
+html body .contest-tag:hover {
+  background: var(--ax-primary-soft);
+  border-color: var(--ax-line);
+  color: var(--ax-primary);
+}
+
+/* 复选框 / 单选框（原粉色 #ed5f82 / #df6589） */
+html body .checkbox input:enabled:hover {
+  border-color: var(--ax-primary-bright);
+}
+html body .checkbox input:checked {
+  background: var(--ax-primary-bright);
+  border-color: var(--ax-line);
+}
+html body .radiobox.with-image .radiobox__image-container:hover {
+  border-color: var(--ax-primary-bright);
+}
+html body .radiobox.with-image .radiobox__image-container:after {
+  background: var(--ax-primary-bright);
+}
+
+/* 移动端顶栏激活项（原 #9ae3f3 浅蓝） */
+html body .nav__item.nav--active {
+  border-color: var(--ax-primary-bright);
+}
+
+/* 比赛置顶条：stylus 的粉/蓝径向渐变整块背景必须盖掉 */
+html body .ax-contest-hero.live,
+html body .ax-contest-hero.ready {
+  background: var(--ax-surface);
+  background-image: none;
+}
+
+/* markdown 预览（wiki / 讨论编辑）链接色 */
+html body .md-editor .md-editor-preview {
+  --md-theme-link-color: var(--ax-primary);
+  --md-theme-link-hover-color: var(--ax-primary-wash);
+}
