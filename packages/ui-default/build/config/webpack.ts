@@ -45,6 +45,10 @@ export default async function (env: { watch?: boolean, production?: boolean, mea
     return {
       loader: 'esbuild-loader',
       options: {
+        // Use the workspace esbuild instead of the copy bundled inside
+        // esbuild-loader. Two services sharing the Windows temp dir can
+        // collide and fail with "Access is denied" while removing temp files.
+        implementation: require('esbuild'),
         loader: 'tsx',
         target: ['es2020', 'chrome70', 'firefox90', 'safari16'],
         sourcemap: true,
@@ -80,10 +84,15 @@ export default async function (env: { watch?: boolean, production?: boolean, mea
     return {
       loader: 'stylus-loader',
       options: {
+        webpackImporter: true,
         stylusOptions: {
           preferPathResolver: 'webpack',
-          use: [require('rupture')()],
-          import: ['~vj/common/common.inc.styl'],
+          paths: [join(__dirname, '../../../../node_modules'), join(root(), 'node_modules')],
+          use: [require('rupture')({ implicit: false })],
+          import: [
+            join(__dirname, '../../../../node_modules/rupture/rupture/index.styl'),
+            '~vj/common/common.inc.styl',
+          ],
         },
       },
     };
@@ -135,7 +144,7 @@ export default async function (env: { watch?: boolean, production?: boolean, mea
       chunkFilename: '[name].[chunkhash:6].chunk.js',
     },
     resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.cjs'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.cjs', '.styl'],
       alias: {
         vj: root(),
         'monaco-editor/esm/vs/editor/browser/editorExtensions': join(monacoPath, 'esm/vs/editor/browser/editorExtensions.js'),
@@ -192,8 +201,16 @@ export default async function (env: { watch?: boolean, production?: boolean, mea
           },
         },
         {
+          test: /\.d\.ts$/,
+          include: /@types[\\/]/,
+          type: 'asset/inline',
+          generator: {
+            dataUrl: (buf) => buf.toString(),
+          },
+        },
+        {
           test: /\.ts$/,
-          include: /@types\//,
+          include: /@types[\\/]/,
           type: 'asset/inline',
           generator: {
             dataUrl: (buf) => buf.toString(),
@@ -201,13 +218,13 @@ export default async function (env: { watch?: boolean, production?: boolean, mea
         },
         {
           test: /\.[mc]?[jt]sx?$/,
-          exclude: [/@types\//, /components\/message\//, /entry\.js/],
+          exclude: [/@types[\\/]/, /components[\\/]message[\\/]/, /entry\.js/],
           type: 'javascript/auto',
           use: [esbuildLoader()],
         },
         {
           test: /\.[mc]?[jt]sx?$/,
-          include: [/components\/message\//, /entry\.js/],
+          include: [/components[\\/]message[\\/]/, /entry\.js/],
           type: 'javascript/auto',
           use: [{
             loader: 'ts-loader',
@@ -267,7 +284,10 @@ export default async function (env: { watch?: boolean, production?: boolean, mea
         },
       },
       usedExports: true,
-      minimizer: [new EsbuildPlugin({
+      // esbuild's removable temp files can hit Windows file-lock errors
+      // ("Access is denied") during production builds. Allow opting out to
+      // webpack's default terser minimizer in that environment.
+      minimizer: process.env.DISABLE_ESBUILD_MINIFY ? undefined : [new EsbuildPlugin({
         css: true,
         minify: true,
         minifySyntax: true,
