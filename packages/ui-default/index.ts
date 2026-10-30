@@ -191,6 +191,7 @@ export function apply(ctx: Context, config: ReturnType<typeof Config>) {
         domainNavigation: Schema.boolean().default(true).description('Show Domain Navigation'),
         about: Schema.string().role('markdown').default(defaultAbout),
         enableScratchpad: Schema.boolean().default(true).description('Enable Scratchpad Mode'),
+        academyMode: Schema.boolean().default(true).description('Academy Mode: show Training / Contest / Homework in the nav bar'),
       }),
     }));
     ctx.Route('config_schema', '/manage/config/schema.json', SystemConfigSchemaHandler, PRIV.PRIV_EDIT_SYSTEM);

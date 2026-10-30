@@ -1,81 +1,129 @@
-{%- macro nav_item(item) -%}
+{%- macro nav_item(item, label) -%}
 <li class="nav__list-item">
   <a href="{{ url(item.name, item.args, query=item.args.query(handler) if typeof(item.args.query) == 'function' else item.args.query or {}) }}" class="nav__item{% if page_name.startsWith(item.args.prefix) %} nav--active{% endif %}">
-    {{ _(item.displayName or item.name) }}
+    {{ label or _(item.displayName or item.name) }}
   </a>
 </li>
 {%- endmacro -%}
 
+{#- 顶栏只展示这几项，其余（记录/排名/管理域/控制面板）收进用户下拉，避免顶栏过长 -#}
+{% set axBarItems = ['homepage', 'problem_main', 'training_main', 'contest_main', 'homework_main'] %}
+{#- 学园开关：关闭时隐藏 训练 / 比赛 / 功课 -#}
+{% set axAcademyItems = ['training_main', 'contest_main', 'homework_main'] %}
+{% set axLabels = {
+  'homepage': '首页',
+  'problem_main': '题库',
+  'training_main': '训练',
+  'contest_main': '比赛',
+  'homework_main': '功课',
+  'record_main': '记录',
+  'ranking': '排名',
+  'domain_dashboard': '管理域',
+  'manage_dashboard': '控制面板'
+} %}
+{% set axAcademyOn = model.system.get('ui-default.academyMode') != false %}
+{#- 插件注入到用户下拉的节点没有中文名，这里补一层映射 -#}
+{% set axUdLabels = {
+  'ai_coach_chat': 'AI 智能助教',
+  'ai_coach_growth': '成长档案',
+  'ai_coach_admin_page': 'AI 助教后台'
+} %}
+
 <nav class="nav slideout-menu" id="menu">
-  <div class="row"><div class="columns clearfix">
-    <ol class="nav__list nav__list--main clearfix">
+  <div class="ax-nav">
+    <a class="ax-brand" href="{{ url('homepage') }}">
+      <img class="ax-brand__mark" src="/components/navigation/aicoj-mascot.png" alt="">
+      <span class="ax-brand__text">
+        <b class="ax-brand__name">AICOJ</b>
+        <i class="ax-brand__sub">Hydro · Pixel Arcade</i>
+      </span>
+    </a>
+
+    <ol class="nav__list nav__list--main ax-nav__items">
+      {%- for item in overrideNav|default(ui.getNodes('Nav')) -%}
+        {% if item.checker(handler) and item.name in axBarItems %}
+          {% if axAcademyOn or not (item.name in axAcademyItems) %}
+            {{ nav_item(item, axLabels[item.name]) }}
+          {% endif %}
+        {% endif %}
+      {%- endfor -%}
       <li class="nav__list-item">
-        <a href="/"><img class="nav__logo" src="{{ ctx.setting.get('ui-default.nav_logo_dark') }}"></a>
+        <a href="/ai-coach/chat" class="nav__item{% if page_name == 'ai_coach_chat_page' %} nav--active{% endif %}">AI 智能助教</a>
       </li>
-      {%- for item in overrideNav|default(ui.getNodes('Nav')) -%}{% if item.checker(handler) %}
-        {{ nav_item(item) }}
-      {% endif %}{%- endfor -%}
+      <li class="nav__list-item">
+        <a href="/ai-coach/growth" class="nav__item{% if page_name == 'ai_coach_growth' %} nav--active{% endif %}">成长档案</a>
+      </li>
     </ol>
-    <ol class="nav__list nav__list--secondary clearfix">
-    {% if not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
-      <li class="nav__list-item"><a href="{{ url('user_login') }}" class="nav__item" name="nav_login">{{ _('Login') }}</a></li>
-      {% if handler.user.hasPriv(PRIV.PRIV_REGISTER_USER) and model.system.get('server.login') %}
-      <li class="nav__list-item"><a href="{{ url('user_register') }}" class="nav__item--round">{{ _('Sign Up') }}</a></li>
-      {% endif %}
-      <li class="nav__list-item nojs--hide" data-dropdown-pos="bottom right" data-dropdown-custom-class="nav__dropdown" data-dropdown-target="#menu-nav-user" data-dropdown-disabledconstrainToWindow data-dropdown-trigger-desktop-only>
-        <a href="javascript:;" class="nav__item">
-          <span class="icon icon-global"></span>Language <span class="icon icon-expand_more"></span>
+
+    <ol class="nav__list nav__list--secondary ax-nav__right">
+    {% if handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
+      <li class="nav__list-item">
+        <span class="ax-stat__pill" title="{{ _('Accepted') }}">
+          <span class="ax-stat__coin">A</span>
+          <span>{{ handler.user.nAccept or 0 }}</span>
+        </span>
+      </li>
+      <li class="nav__list-item ax-user-drop" data-dropdown-pos="bottom right" data-dropdown-custom-class="ax-user-menu" data-dropdown-target="#menu-nav-user" data-dropdown-disabledconstrainToWindow data-dropdown-trigger-desktop-only>
+        <a href="{{ url('user_detail', uid=handler.user._id) }}" class="ax-avatar" aria-label="{{ _('My Profile') }}">
+          <img class="ax-avatar__img" loading="lazy" src="{{ avatarUrl(handler.user.avatar) }}" alt="">
+          <span class="ax-avatar__caret"></span>
         </a>
-        <ol class="dropdown-target menu" id="menu-nav-user">
-          {%- for k, v in model.setting.SETTINGS_BY_KEY['viewLang'].range -%}
-            <li class="menu__item"><a class="menu__link" href="{{ url('switch_language', lang=k) }}">{{ v }}</a></li>
-          {%- endfor -%}
-        </ol>
-      </li>
-    {% else %}
-    {% if model.system.get('ui-default.domainNavigation') %}
-      <li class="nav__list-item" data-dropdown-pos="bottom right" data-dropdown-custom-class="nav__dropdown" data-dropdown-target="#menu-nav-domain" data-dropdown-disabledconstrainToWindow data-dropdown-trigger-desktop-only>
-        <span class="nav__item"><span class="icon"><img class="small user-profile-avatar v-center" loading="lazy" src="{{ avatarUrl(handler.domain.avatar|default('')) }}" width="20" height="20"></span> {{ handler.domain.name }} <span class="icon icon-expand_more nojs--hide"></span></span>
-        <ol class="dropdown-target menu" id="menu-nav-domain">
-          {%- if handler.user.domains|length -%}
-          {%- for ddoc in handler.user.domains -%}
-            <li class="menu__item">
-              <a href="{{ url('homepage', domainId=ddoc['_id']) }}" class="menu__link">
-                <span class="icon"><img class="small user-profile-avatar v-center" loading="lazy" src="{{ avatarUrl(ddoc.avatar|default('')) }}" width="20" height="20"></span>
-                {{ ddoc['name'] }}{% if ddoc['name'] != ddoc['_id']%} ({{ ddoc['_id'] }}){% endif %}
-              </a>
-            </li>
-          {%- endfor -%}
-          <li class="menu__seperator"></li>
-          {%- endif -%}
-          <li class="menu__item">
-            <a href="{{ url('home_domain') }}" class="menu__link">
-              <span class="icon icon-wrench"></span> {{ _('Manage') }}
-            </a>
+        <ol class="dropdown-target menu ax-user-menu" id="menu-nav-user">
+          <li class="ax-user-head">
+            <img class="ax-user-head__avatar" loading="lazy" src="{{ avatarUrl(handler.user.avatar) }}" alt="">
+            <span class="ax-user-head__info">
+              <b class="ax-user-head__name">{% if handler.user.displayName and handler.user.displayName != handler.user.uname %}{{ handler.user.displayName }}{% else %}{{ handler.user.uname }}{% endif %}</b>
+              <span class="ax-user-head__meta">UID: {{ handler.user._id }}</span>
+            </span>
           </li>
-        </ol>
-      </li>
-    {% endif %}
-      <li class="nav__list-item" data-dropdown-pos="bottom right" data-dropdown-custom-class="nav__dropdown" data-dropdown-target="#menu-nav-user" data-dropdown-disabledconstrainToWindow data-dropdown-trigger-desktop-only>
-        <a href="{{ url('user_detail', uid=handler.user._id) }}" class="nav__item">{% if handler.user.displayName and handler.user.displayName != handler.user.uname %}{{ handler.user.displayName }} ({{ handler.user.uname }}){% else %}{{ handler.user.uname }}{% endif %} <span class="icon icon-expand_more nojs--hide"></span></a>
-        <ol class="dropdown-target menu" id="menu-nav-user">
+
           <li class="menu__item">
             <a href="{{ url('user_detail', uid=handler.user._id) }}" class="menu__link">
               <span class="icon icon-account--circle"></span> {{ _('My Profile') }}
+              <span class="menu__meta">/user/{{ handler.user._id }}</span>
             </a>
           </li>
           <li class="menu__item">
-            <a href="{{ url('home_messages') }}" class="menu__link">
-              <span class="icon icon-comment--multiple"></span> {{ _('home_messages') }}
+            <a href="/record?uid={{ handler.user._id }}" class="menu__link">
+              <span class="icon icon-history"></span> {{ _('My Submissions') }}
+              <span class="menu__meta menu__meta--pill">{{ handler.user.nAccept or 0 }} AC</span>
             </a>
           </li>
-          <li class="menu__seperator"></li>
           <li class="menu__item">
-            <a href="{{ url('home_settings', category='domain') }}" class="menu__link">
-              <span class="icon icon-web"></span> @ {{ handler.domain['name'] }}
+            <a href="{{ url('home_domain') }}" class="menu__link">
+              <span class="icon icon-web"></span> {{ _('My Domains') }}
             </a>
           </li>
+
           <li class="menu__seperator"></li>
+
+          <li class="menu__item">
+            <a href="/record" class="menu__link">
+              <span class="icon icon-list"></span> {{ axLabels['record_main'] }}
+            </a>
+          </li>
+          <li class="menu__item">
+            <a href="/ranking" class="menu__link">
+              <span class="icon icon-ranking"></span> {{ axLabels['ranking'] }}
+            </a>
+          </li>
+          {% if handler.user.hasPriv(PRIV.PRIV_EDIT_DOMAIN) %}
+          <li class="menu__item">
+            <a href="{{ url('domain_dashboard') }}" class="menu__link">
+              <span class="icon icon-wrench"></span> {{ axLabels['domain_dashboard'] }}
+            </a>
+          </li>
+          {% endif %}
+          {% if handler.user.hasPriv(PRIV.PRIV_EDIT_SYSTEM) %}
+          <li class="menu__item">
+            <a href="{{ url('manage_dashboard') }}" class="menu__link">
+              <span class="icon icon-settings"></span> {{ axLabels['manage_dashboard'] }}
+            </a>
+          </li>
+          {% endif %}
+
+          <li class="menu__seperator"></li>
+
           <li class="menu__item">
             <a href="{{ url('home_settings', category='account') }}" class="menu__link">
               <span class="icon icon-wrench"></span> {{ _('home_account') }}
@@ -91,48 +139,32 @@
               <span class="icon icon-security"></span> {{ _('home_security') }}
             </a>
           </li>
+
+          {% if ui.getNodes('UserDropdown').length %}
           <li class="menu__seperator"></li>
-          <li class="menu__item">
-            <a href="{{ url('home_domain') }}" class="menu__link">
-              <span class="icon icon-web"></span> {{ _('My Domains') }}
+          {%- for item in ui.getNodes('UserDropdown') -%}{% if item.checker(handler) %}
+          <li class="menu__item nojs--hide">
+            {% set args = (item.args(handler) if typeof(item.args)=='function' else item.args) or {} %}
+            <a href="{{ url(item.name, args) }}" class="menu__link">
+              <span class="icon icon-{{ args.icon }}"></span> {{ axUdLabels[item.name] or _(args.displayName or item.name) }}
             </a>
           </li>
-          {% if handler.user.hasPriv(PRIV.PRIV_CREATE_FILE) %}
-            <li class="menu__item">
-              <a href="{{ url('home_files') }}" class="menu__link">
-                <span class="icon icon-file"></span> {{ _('My Files') }}
-              </a>
-            </li>
+          {% endif %}{%- endfor -%}
           {% endif %}
-          {% if ui.getNodes('UserDropdown').length %}
-            <li class="menu__seperator"></li>
-            {%- for item in ui.getNodes('UserDropdown') -%} {% if item.checker(handler) %}
-            <li class="menu__item nojs--hide">
-              {% set args = (item.args(handler) if typeof(item.args)=='function' else item.args) or {} %}
-              <a href="{{ url(item.name, args) }}" class="menu__link">
-                <span class="icon icon-{{ args.icon }}"></span> {{ _(args.displayName or item.name) }}
-              </a>
-            </li>
-            {% endif %}
-            {%- endfor -%}
-          {% endif %}
+
           <li class="menu__seperator"></li>
-          {% if handler.user.hasPriv(PRIV.PRIV_EDIT_SYSTEM) %}
-            <li class="menu__item nojs--hide">
-              <a class="menu__link" name="nav_switch_account">
-                <span class="icon icon-user"></span> {{ _('Switch account') }}
-              </a>
-            </li>
-          {% endif %}
           <li class="menu__item">
-            <a href="{{ url('user_logout') }}" class="menu__link" name="nav_logout">
+            <a href="{{ url('user_logout') }}" class="menu__link menu__link--danger" name="nav_logout">
               <span class="icon icon-logout"></span> {{ _('Logout') }}
             </a>
           </li>
         </ol>
       </li>
+    {% else %}
+      <li class="nav__list-item">
+        <a href="{{ url('user_login') }}" class="nav__item--round" name="nav_login">{{ _('Login') }}</a>
+      </li>
     {% endif %}
     </ol>
-  </div></div>
+  </div>
 </nav>
-<nav class="nav--shadow"></nav>

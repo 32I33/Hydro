@@ -1,0 +1,390 @@
+/*
+ * AICOJ · Pixel Arcade — 顶栏外壳（P0）
+ * 参照 Stitch screen 01「用户下拉菜单展开状态」/ screen 02「独立组件」
+ * 结构改动：logo 徽章 + 主链 + 右区（AC 药丸 + 头像下拉）
+ * 注意：不覆盖 .dropdown-target 的 display，显隐仍由 Hydro 的 .drop 类控制。
+ */
+
+/* ================= 顶栏容器 ================= */
+/* Hydro 用 .hasjs .nav{position:fixed} 把顶栏钉死并让它脱离文档流，
+ * 这里改用 sticky 让它参与布局，避免盖住页面首行内容。 */
+html.hasjs body .nav,
+html body .nav {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--ax-nav-h);
+  background: var(--ax-surface);
+  border-bottom: 2px solid var(--ax-line);
+  z-index: 500;
+  box-shadow: none;
+  font-size: 15px;
+}
+
+html body .nav--shadow {
+  display: none;
+}
+
+html body .ax-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 1600px;
+  height: var(--ax-nav-h);
+  margin: 0 auto;
+  padding: 0 var(--ax-gutter);
+  box-sizing: border-box;
+}
+
+/* ================= 品牌徽章 ================= */
+html body .ax-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+  padding: 5px 14px 5px 8px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  background: var(--ax-surface-2);
+  box-shadow: var(--ax-shadow-1);
+  text-decoration: none;
+}
+html body .ax-brand:hover {
+  text-decoration: none;
+  box-shadow: var(--ax-shadow-2);
+  transform: translate(-1px, -1px);
+}
+
+html body .ax-brand__mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  background: var(--ax-surface);
+  border: 1px solid var(--ax-line);
+}
+
+html body .ax-brand__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+}
+
+html body .ax-brand__name {
+  font-family: var(--ax-font-head);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--ax-primary);
+}
+
+html body .ax-brand__sub {
+  font-family: var(--ax-font-mono);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ax-ink);
+  white-space: nowrap;
+}
+
+/* ================= 主导航项 ================= */
+html body .ax-nav__items {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 0 0 0 18px;
+  padding: 0;
+  float: none;
+}
+
+html body .ax-nav .nav__list-item {
+  float: none;
+}
+
+html body .ax-nav .nav__item {
+  display: block;
+  padding: 8px 14px;
+  border: 2px solid transparent;
+  border-radius: var(--ax-radius);
+  line-height: 1.25;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ax-ink);
+  white-space: nowrap;
+  transition: background 0.14s ease, color 0.14s ease, box-shadow 0.14s ease;
+}
+
+html body .ax-nav .nav__item:before {
+  display: none;
+}
+
+html body .ax-nav .nav__item:hover {
+  background: var(--ax-surface-2);
+  border-color: var(--ax-line);
+  color: var(--ax-ink);
+  text-decoration: none;
+}
+
+html body .ax-nav .nav__item.nav--active {
+  background: var(--ax-primary-bright);
+  border-color: var(--ax-line);
+  color: #fff;
+  box-shadow: var(--ax-shadow-2);
+}
+
+html body .ax-nav .nav__item.nav--active:hover {
+  background: var(--ax-primary);
+  color: #fff;
+}
+
+/* ================= 右侧区 ================= */
+html body .ax-nav__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 0 auto;
+  padding: 0;
+  float: none;
+}
+
+/* AC 药丸（设计稿里的金币位，这里放真实 AC 数，避免假数据） */
+html body .ax-stat__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 14px 5px 10px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  background: var(--ax-surface-2);
+  box-shadow: var(--ax-shadow-1);
+  font-family: var(--ax-font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ax-ink);
+  line-height: 1.2;
+  user-select: none;
+}
+
+html body .ax-stat__coin {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--ax-primary);
+  color: var(--ax-primary);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* 头像按钮 */
+html body .ax-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 44px;
+  min-width: 64px;
+  padding: 0 10px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  background: var(--ax-primary-bright);
+  box-shadow: var(--ax-shadow-2);
+  text-decoration: none;
+}
+html body .ax-avatar:hover {
+  background: var(--ax-primary);
+  text-decoration: none;
+  box-shadow: var(--ax-shadow-3);
+  transform: translate(-1px, -1px);
+}
+
+html body .ax-avatar__img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid var(--ax-ink);
+  background: var(--ax-surface);
+  object-fit: cover;
+}
+
+html body .ax-avatar__caret {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid #fff;
+}
+
+/* 未登录时的登录入口 */
+html body .ax-nav .nav__item--round {
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  background: var(--ax-primary-bright);
+  color: #fff;
+  box-shadow: var(--ax-shadow-2);
+  margin: 0;
+  line-height: 1.25;
+  padding: 8px 16px;
+}
+html body .ax-nav .nav__item--round:hover {
+  background: var(--ax-primary);
+  color: #fff;
+}
+
+/* ================= 用户下拉面板 =================
+ * 注意：面板由 tether-drop 接管，会被移动到 .dropdown 容器内并自动定位。
+ * 这里只负责外观，绝对不能加 position / top / right，否则会和 tether 打架。
+ */
+html body .dropdown .menu.ax-user-menu,
+html body .menu.ax-user-menu {
+  width: 340px;
+  min-width: 340px;
+  max-width: 340px;
+  padding: 0;
+  background: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-4);
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* 面板头部：头像 + 昵称 + UID */
+html body .ax-user-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--ax-surface-2);
+  border-bottom: 2px solid var(--ax-line);
+}
+
+html body .ax-user-head__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--ax-line);
+  background: var(--ax-surface);
+  object-fit: cover;
+  flex: 0 0 auto;
+}
+
+html body .ax-user-head__info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+html body .ax-user-head__name {
+  font-family: var(--ax-font-head);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ax-ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html body .ax-user-head__meta {
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  color: var(--ax-muted);
+  letter-spacing: 0.02em;
+}
+
+/* 菜单行 */
+html body .ax-user-menu .menu__item {
+  margin: 0;
+}
+
+html body .ax-user-menu .menu__link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ax-ink);
+  border-radius: 0;
+  transition: background 0.12s ease;
+}
+
+html body .ax-user-menu .menu__link:hover {
+  background: var(--ax-surface-2);
+  text-decoration: none;
+  color: var(--ax-ink);
+}
+
+html body .ax-user-menu .menu__link .icon {
+  color: var(--ax-muted);
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
+  flex: 0 0 auto;
+}
+
+html body .ax-user-menu .menu__meta {
+  margin-left: auto;
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  color: var(--ax-muted);
+  white-space: nowrap;
+}
+
+html body .ax-user-menu .menu__meta--pill {
+  padding: 1px 8px;
+  border-radius: var(--ax-radius-pill);
+  background: var(--ax-surface-3);
+  color: var(--ax-ink-soft);
+  font-weight: 700;
+}
+
+html body .ax-user-menu .menu__seperator {
+  height: 0;
+  margin: 6px 0;
+  border-top: 2px solid var(--ax-surface-3);
+}
+
+/* 退出登录 */
+html body .ax-user-menu .menu__link--danger,
+html body .ax-user-menu .menu__link--danger .icon {
+  color: var(--ax-red);
+  font-weight: 700;
+}
+html body .ax-user-menu .menu__link--danger:hover {
+  background: var(--ax-red-soft);
+}
+
+/* 下拉小箭头 */
+html body .ax-user-menu:before {
+  display: none;
+}
+
+/* ================= 移动端 ================= */
+@media (max-width: 900px) {
+  html body .ax-brand__sub {
+    display: none;
+  }
+  html body .ax-brand {
+    padding: 6px 10px;
+  }
+  html body .ax-nav__items {
+    margin-left: 8px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  html body .ax-nav__items::-webkit-scrollbar {
+    display: none;
+  }
+  html body .ax-stat__pill {
+    display: none;
+  }
+}

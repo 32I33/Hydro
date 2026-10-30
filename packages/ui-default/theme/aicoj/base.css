@@ -1,0 +1,113 @@
+/*
+ * AICOJ · Pixel Arcade — 全局底色与排版
+ * 只做「底色 + 字体 + 基础表面」，组件级精修放在 components.css（P1）。
+ * 选择器统一加 html body 前缀，以便压过后加载的 *.page.styl。
+ */
+
+html body {
+  background: var(--ax-bg);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html body ::selection {
+  background: var(--ax-primary-soft);
+  color: var(--ax-ink);
+}
+
+/* ---------- 标题用 Space Grotesk ---------- */
+html body h1,
+html body h2,
+html body h3,
+html body h4,
+html body h5,
+html body .section__title,
+html body .section__header {
+  font-family: var(--ax-font-head);
+  letter-spacing: -0.01em;
+  color: var(--ax-ink);
+}
+
+html body code,
+html body pre,
+html body kbd,
+html body samp,
+html body .monospace {
+  font-family: var(--ax-font-mono);
+}
+
+/* ---------- 链接 ---------- */
+html body a {
+  color: var(--ax-primary);
+  text-decoration: none;
+}
+html body a:hover {
+  color: var(--ax-primary-bright);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- 表面：把 Hydro 的灰色 section 换成像素卡片 ---------- */
+html body .section {
+  background: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-3);
+  margin-bottom: 20px;
+}
+
+html body .section__header {
+  background: var(--ax-surface-2);
+  border-bottom: 2px solid var(--ax-line);
+  border-radius: calc(var(--ax-radius-lg) - 2px) calc(var(--ax-radius-lg) - 2px) 0 0;
+  padding: 12px 18px;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+html body .section__body {
+  padding: 18px;
+}
+
+html body .section__title {
+  font-weight: 700;
+}
+
+/* ---------- 滚动条 ---------- */
+html body ::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+html body ::-webkit-scrollbar-track {
+  background: var(--ax-surface-2);
+}
+html body ::-webkit-scrollbar-thumb {
+  background: var(--ax-surface-4);
+  border: 2px solid var(--ax-surface-2);
+  border-radius: var(--ax-radius-pill);
+}
+html body ::-webkit-scrollbar-thumb:hover {
+  background: var(--ax-muted);
+}
+
+/* ---------- 页脚 ---------- */
+html body .footer {
+  border-top: 2px solid var(--ax-line);
+  background: var(--ax-surface-2);
+  color: var(--ax-text-2);
+  font-size: 13px;
+}
+
+/* ---------- 主内容容器 ---------- */
+html body .main {
+  padding-top: 18px;
+}
+
+/* 顶部导航占位，避免内容被吸顶栏压住 */
+html body .nav--placeholder {
+  height: var(--ax-nav-h);
+}

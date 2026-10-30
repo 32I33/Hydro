@@ -218,7 +218,17 @@ export default async function (env: { watch?: boolean, production?: boolean, mea
         },
         {
           test: /\.[mc]?[jt]sx?$/,
-          exclude: [/@types[\\/]/, /components[\\/]message[\\/]/, /entry\.js/],
+          exclude: [
+            /@types[\\/]/,
+            /components[\\/]message[\\/]/,
+            /entry\.js/,
+            // 这几个超大体积的预编译模块走 esbuild-loader 时，Windows 下写临时文件
+            // 会报 "open ...: winapi error #5"，导致 chunk 构建失败、全站 JS 初始化中断
+            // （下拉菜单不响应、加载遮罩不消失）。本身就是可用 JS，直接交给 webpack 解析。
+            /node_modules[\\/]monaco-editor[\\/]/,
+            /node_modules[\\/]react-dom[\\/]/,
+            /node_modules[\\/]schemastery-react[\\/]/,
+          ],
           type: 'javascript/auto',
           use: [esbuildLoader()],
         },
@@ -322,6 +332,7 @@ export default async function (env: { watch?: boolean, production?: boolean, mea
         patterns: [
           { from: root('static') },
           { from: root('components/navigation/nav-logo-small_dark.png'), to: 'components/navigation/nav-logo-small_dark.png' },
+          { from: root('components/navigation/aicoj-mascot.png'), to: 'components/navigation/aicoj-mascot.png' },
           { from: root(`${dirname(require.resolve('streamsaver/package.json'))}/mitm.html`), to: 'streamsaver/mitm.html' },
           { from: root(`${dirname(require.resolve('streamsaver/package.json'))}/sw.js`), to: 'streamsaver/sw.js' },
           { from: `${dirname(require.resolve('monaco-themes/package.json'))}/themes`, to: 'monaco/themes/' },

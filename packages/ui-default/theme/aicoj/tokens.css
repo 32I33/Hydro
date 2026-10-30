@@ -1,0 +1,83 @@
+/*
+ * AICOJ · Pixel Arcade — 设计变量
+ * 唯一来源：Stitch「Pixel Code Arcade POC」(projects/4494752139354334877)
+ * 色值取自设计稿 tailwind.config，勿凭感觉修改。
+ */
+:root:root {
+  /* 底色与表面 */
+  --ax-bg: #faf8ff;
+  --ax-surface: #ffffff;
+  --ax-surface-2: #f2f3ff;
+  --ax-surface-3: #eaedff;
+  --ax-surface-4: #dbe2fb;
+
+  /* 墨色与文字 */
+  --ax-ink: #141b2d;
+  --ax-ink-soft: #293043;
+  --ax-text-2: #5b4138;
+  --ax-muted: #8f7066;
+
+  /* 描边 */
+  --ax-line: #141b2d;
+  --ax-line-soft: #e3beb3;
+
+  /* 主色 */
+  --ax-primary: #aa3600;
+  --ax-primary-bright: #ff5e1a;
+  --ax-primary-soft: #ffdbcf;
+  --ax-primary-wash: #551700;
+
+  /* 语义色 */
+  --ax-green: #006c47;
+  --ax-mint: #5ffdb7;
+  --ax-green-soft: #5cfab5;
+  --ax-yellow: #f4bf00;
+  --ax-yellow-soft: #ffdf92;
+  --ax-red: #ba1a1a;
+  --ax-red-soft: #ffdad6;
+
+  /* 形状 */
+  --ax-radius-sm: 6px;
+  --ax-radius: 10px;
+  --ax-radius-lg: 14px;
+  --ax-radius-xl: 18px;
+  --ax-radius-pill: 999px;
+
+  /* 硬投影（像素街机风：无模糊、纯色偏移） */
+  --ax-shadow-1: 2px 2px 0 var(--ax-line);
+  --ax-shadow-2: 3px 3px 0 var(--ax-line);
+  --ax-shadow-3: 4px 4px 0 var(--ax-line);
+  --ax-shadow-4: 5px 5px 0 var(--ax-line);
+
+  /* 字体 */
+  --ax-font-head: "Space Grotesk", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ax-font-body: "Plus Jakarta Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ax-font-mono: "Space Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* 尺寸 */
+  --ax-nav-h: 64px;
+  --ax-gutter: 24px;
+
+  /* 覆盖 Hydro 的默认语义变量，让原生组件也跟着换色 */
+  --primary-color: #aa3600;
+  --secondary-color: #006c47;
+  --text-1-color: #141b2d;
+  --text-2-color: #5b4138;
+  --text-3-color: #8f7066;
+  --background-color: #faf8ff;
+  --section-bg-color: #ffffff;
+  --border-color: #141b2d;
+  --menu-drop-bg-color: #ffffff;
+  --default-font-family: var(--ax-font-body);
+
+  /* Mantine（ui-next / React 页面） */
+  --mantine-color-body: #faf8ff;
+  --mantine-color-text: #141b2d;
+  --mantine-color-dimmed: #8f7066;
+  --mantine-color-default-border: #141b2d;
+  --mantine-primary-color-filled: #ff5e1a;
+  --mantine-primary-color-filled-hover: #aa3600;
+  --mantine-color-dark-0: #141b2d;
+  --mantine-color-dark-6: #ffffff;
+  --mantine-color-dark-7: #faf8ff;
+}

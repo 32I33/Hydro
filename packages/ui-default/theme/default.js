@@ -25,6 +25,10 @@ import 'vj/misc/nothing.styl';
 import 'vj/components/editor/cmeditor.styl';
 import './dark.styl';
 import './bp6-compat.css';
+// AICOJ · Pixel Arcade 主题层（必须在 dark.styl 之后，选择器自带 html body 前缀以压过页面样式）
+import './aicoj/tokens.css';
+import './aicoj/base.css';
+import './aicoj/nav.css';
 
 // load all page stylesheets
 const pageStyleReq = require.context('../', true, /\.page\.styl$/i);
