@@ -4,28 +4,56 @@
 {% block content %}
   <div class="row">
     <div class="medium-9 columns">
-      <div class="section display-mode">
-        <div class="section__body no-padding">
-          <form method="get" id="searchForm" action="{{ url('problem_main') }}">
-            <div class="search">
-              <input name="q" type="text" value="{{ qs }}" placeholder="{{ _('Search') }}">
-              {% include "partials/problem_stat.html" %}
-              <select name="sort" class="search-sort">
-                {%- for sortType in ["default", "recent"] -%}
-                  <option value="{{ sortType }}" {{ "selected" if sort == sortType else "" }}>{{ _('sort::' + sortType) }}</option>
-                {%- endfor -%}
-              </select>
-              <button type="submit">
-                <span class="icon icon-search"></span>
-              </button>
-            </div>
-          </form>
+      <form method="get" id="searchForm" action="{{ url('problem_main') }}" class="ax-search">
+        <div class="ax-search__field">
+          <span class="icon icon-search"></span>
+          <input name="q" type="text" value="{{ qs }}" placeholder="搜索题目名称或算法标签…">
         </div>
-        <div class="section__body no-padding">
-          {% include "partials/problem_list.html" %}
+        <select name="sort" class="ax-search__sort">
+          {%- for sortType in ["default", "recent"] -%}
+            <option value="{{ sortType }}" {{ "selected" if sort == sortType else "" }}>{{ _('sort::' + sortType) }}</option>
+          {%- endfor -%}
+        </select>
+        <button type="submit" class="ax-btn ax-btn--primary">搜索</button>
+      </form>
+
+      <div class="ax-filters">
+        <div class="ax-filter-row">
+          <span class="ax-filter-row__label">答题状态</span>
+          <div class="ax-filter-row__items" id="ax-status-filter">
+            <button type="button" class="ax-pill is-active" data-status="">全部</button>
+            <button type="button" class="ax-pill" data-status="none">未尝试</button>
+            <button type="button" class="ax-pill" data-status="try">尝试未过</button>
+            <button type="button" class="ax-pill" data-status="pass">已通过</button>
+          </div>
+        </div>
+
+        <div class="ax-filter-row">
+          <span class="ax-filter-row__label">难度等级</span>
+          <div class="ax-filter-row__items" id="ax-diff-filter">
+            <a class="ax-pill is-active" data-kw="" href="{{ url('problem_main', query={q: qs}) }}">全部</a>
+            {% for item in [[1,'入门'], [2,'普及−'], [3,'普及/提高−'], [4,'提高+/省选−'], [5,'NOI/NOI+']] %}
+              <a class="ax-pill" data-kw="difficulty:{{ item[0] }}" href="#">{{ item[1] }}</a>
+            {% endfor %}
+            <a class="ax-pill ax-pill--reset" href="{{ url('problem_main') }}">重置筛选</a>
+          </div>
+        </div>
+
+        <div class="ax-filter-row">
+          <span class="ax-filter-row__label">算法标签</span>
+          <div class="ax-filter-row__items" id="ax-tag-filter">
+            <a class="ax-pill is-active" data-kw="" href="{{ url('problem_main', query={q: qs}) }}">全部</a>
+            {% set _categories = handler.ctx.setting.get('problem.categories')|parseYaml %}
+            {%- for category, sub_categories in _categories -%}
+              <a class="ax-pill" data-kw="category:{{ category }}" href="{{ url('problem_main', query={q: 'category:' + category}) }}">{{ category }}</a>
+            {%- endfor -%}
+          </div>
         </div>
       </div>
+
+      {% include "partials/problem_list.html" %}
     </div>
+
     <div class="medium-3 columns">
       {% if handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
         <div class="section side nojs--hide">
@@ -97,4 +125,86 @@
       </div>
     </div>
   </div>
+
+<script>
+(function () {
+  // 难度 / 标签胶囊：把关键字写进 q，保留原有文字检索
+  var params = new URLSearchParams(location.search);
+  var rawQ = params.get('q') || '';
+
+  function stripKw(q) {
+    return q.split(/\s+/).filter(function (w) {
+      return w && w.indexOf('difficulty:') !== 0 && w.indexOf('category:') !== 0;
+    }).join(' ');
+  }
+
+  function buildHref(kw) {
+    var text = stripKw(rawQ);
+    var next = (text + (kw ? ' ' + kw : '')).trim();
+    var p = new URLSearchParams(location.search);
+    if (next) p.set('q', next); else p.delete('q');
+    p.delete('page');
+    // 难度与标签互斥：设置其中一个时清掉另一个
+    if (kw.indexOf('difficulty:') === 0) {
+      var cur = text;
+      return location.pathname + '?' + p.toString();
+    }
+    return location.pathname + '?' + p.toString();
+  }
+
+  function markActive(container, kw) {
+    if (!container) return;
+    Array.prototype.forEach.call(container.querySelectorAll('.ax-pill'), function (el) {
+      // 没有 data-kw 的胶囊（例如「重置筛选」）不参与激活态
+      if (el.getAttribute('data-kw') === null) return;
+      var mine = el.getAttribute('data-kw') || '';
+      el.classList.toggle('is-active', mine === kw);
+    });
+  }
+
+  var curDiff = (rawQ.match(/difficulty:\d+/) || [''])[0];
+  var curCat = (rawQ.match(/category:\S+/) || [''])[0];
+
+  ['#ax-diff-filter', '#ax-tag-filter'].forEach(function (sel) {
+    var box = document.querySelector(sel);
+    if (!box) return;
+    var isDiff = sel === '#ax-diff-filter';
+    var current = isDiff ? curDiff : curCat;
+    markActive(box, current);
+    Array.prototype.forEach.call(box.querySelectorAll('.ax-pill'), function (el) {
+      var kw = el.getAttribute('data-kw') || '';
+      el.setAttribute('href', buildHref(kw));
+      if (kw && kw === current) {
+        // 再点一次取消该筛选
+        el.setAttribute('href', buildHref(''));
+      }
+    });
+  });
+
+  // 答题状态：Hydro 后端不支持按用户作答状态过滤，这里只对当前页做视图级筛选
+  var statusBox = document.getElementById('ax-status-filter');
+  var rows = document.querySelectorAll('.ax-table tbody tr');
+  if (statusBox) {
+    statusBox.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('.ax-pill') : null;
+      if (!btn) return;
+      var want = btn.getAttribute('data-status');
+      Array.prototype.forEach.call(statusBox.querySelectorAll('.ax-pill'), function (el) {
+        el.classList.toggle('is-active', el === btn);
+      });
+      Array.prototype.forEach.call(rows, function (tr) {
+        var cell = tr.querySelector('.col--status');
+        var cls = cell ? cell.className : '';
+        var isPass = /\bpass\b/.test(cls);
+        var isTry = /\b(progress|pending|fail|wrong|partially|hacked)\b/.test(cls);
+        var show = true;
+        if (want === 'pass') show = isPass;
+        else if (want === 'try') show = !isPass && isTry;
+        else if (want === 'none') show = !cls || !/\b(pass|progress|pending|fail|wrong|partially|hacked)\b/.test(cls);
+        tr.style.display = show ? '' : 'none';
+      });
+    });
+  }
+})();
+</script>
 {% endblock %}

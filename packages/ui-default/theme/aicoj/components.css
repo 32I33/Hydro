@@ -1,0 +1,471 @@
+/*
+ * AICOJ · Pixel Arcade — 通用组件层
+ * 按钮 / 输入 / 胶囊 / 表格卡片行 / 进度条 / 分页
+ * 供题库、题目详情、训练、作业、比赛等页面复用。
+ * 选择器统一 html body 前缀，压过后加载的 *.page.styl。
+ */
+
+/* ================= 按钮 ================= */
+html body .ax-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  box-shadow: var(--ax-shadow-1);
+  font-family: var(--ax-font-head);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+html body .ax-btn:hover {
+  background: var(--ax-surface-2);
+  text-decoration: none;
+  transform: translate(-1px, -1px);
+  box-shadow: var(--ax-shadow-2);
+}
+html body .ax-btn--primary {
+  background: var(--ax-primary-bright);
+  color: #fff;
+  box-shadow: var(--ax-shadow-2);
+}
+html body .ax-btn--primary:hover {
+  background: var(--ax-primary);
+  color: #fff;
+  box-shadow: var(--ax-shadow-3);
+}
+html body .ax-btn--ghost {
+  background: transparent;
+  box-shadow: none;
+  border-color: transparent;
+}
+html body .ax-btn--sm {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+/* ================= 搜索条 ================= */
+html body .ax-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-3);
+  margin-bottom: 14px;
+}
+
+html body .ax-search__field {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px 14px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-pill);
+  background: var(--ax-bg);
+}
+html body .ax-search__field .icon {
+  color: var(--ax-muted);
+  font-size: 16px;
+  flex: 0 0 auto;
+}
+html body .ax-search__field input[type="text"] {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font-family: var(--ax-font-body);
+  font-size: 14px;
+  color: var(--ax-ink);
+  outline: none;
+  box-shadow: none;
+}
+html body .ax-search__field input[type="text"]::placeholder {
+  color: var(--ax-muted);
+}
+
+html body .ax-search__sort {
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  background: var(--ax-surface-2);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 8px;
+  outline: none;
+  height: auto;
+  margin: 0;
+}
+
+/* ================= 筛选胶囊 ================= */
+html body .ax-filters {
+  background: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-3);
+  padding: 10px 14px;
+  margin-bottom: 14px;
+}
+
+html body .ax-filter-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 6px 0;
+}
+html body .ax-filter-row + .ax-filter-row {
+  border-top: 1px dashed var(--ax-surface-4);
+}
+
+html body .ax-filter-row__label {
+  flex: 0 0 72px;
+  padding-top: 5px;
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--ax-muted);
+  text-transform: uppercase;
+}
+
+html body .ax-filter-row__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+
+html body .ax-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 11px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-pill);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background .12s ease, color .12s ease, transform .12s ease;
+}
+html body .ax-pill:hover {
+  background: var(--ax-surface-2);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+html body .ax-pill.is-active {
+  background: var(--ax-ink);
+  color: #fff;
+}
+html body .ax-pill.is-active:hover {
+  background: var(--ax-ink-soft);
+  color: #fff;
+}
+html body .ax-pill__count {
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  opacity: .7;
+}
+html body .ax-pill--reset {
+  border-style: dashed;
+  color: var(--ax-muted);
+  font-weight: 500;
+}
+
+/* ================= 题目列表：卡片行 ================= */
+html body .ax-plist {
+  background: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-3);
+  overflow: hidden;
+}
+
+html body .ax-plist__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--ax-surface-2);
+  border-bottom: 2px solid var(--ax-line);
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--ax-ink-soft);
+  text-transform: uppercase;
+}
+html body .ax-plist__legend {
+  display: flex;
+  gap: 12px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+html body .ax-plist__legend i {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+  border: 1px solid var(--ax-line);
+}
+
+/* 表格本体：去掉默认表格观感，变成行卡片 */
+html body .ax-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  background: transparent;
+  border: 0;
+}
+html body .ax-table thead {
+  display: none;
+}
+html body .ax-table tbody tr {
+  display: table-row;
+  transition: background .12s ease;
+}
+html body .ax-table tbody tr:nth-child(even) {
+  background: rgba(242, 243, 255, .5);
+}
+html body .ax-table tbody tr:hover {
+  background: var(--ax-surface-2);
+}
+html body .ax-table tbody td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--ax-surface-4);
+  vertical-align: middle;
+  font-size: 13px;
+  color: var(--ax-ink);
+}
+html body .ax-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* 状态列：圆形指示 */
+html body .ax-table .col--status {
+  width: 34px;
+  text-align: center;
+}
+html body .ax-table .col--status .record-status--icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--ax-line);
+  background: var(--ax-surface);
+  font-size: 11px;
+  line-height: 1;
+}
+html body .ax-table .col--status .record-status--icon.pass {
+  background: var(--ax-mint);
+  color: var(--ax-green);
+}
+html body .ax-table .col--status .record-status--icon.fail {
+  background: var(--ax-red-soft);
+  color: var(--ax-red);
+}
+html body .ax-table .col--status .record-status--icon.progress,
+html body .ax-table .col--status .record-status--icon.pending {
+  background: var(--ax-primary-soft);
+  color: var(--ax-primary);
+}
+
+/* 编号列 */
+html body .ax-table .col--pid-ax {
+  width: 68px;
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ax-primary);
+  white-space: nowrap;
+}
+
+/* 题名列 */
+html body .ax-table .col--name {
+  min-width: 220px;
+}
+html body .ax-table .col--name a {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ax-ink);
+  text-decoration: none;
+}
+html body .ax-table .col--name a:hover {
+  color: var(--ax-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+html body .ax-table .col--name .problem__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 5px 0 0;
+  padding: 0;
+  list-style: none;
+}
+html body .ax-table .col--name .problem__tags .problem__tag {
+  list-style: none;
+  margin: 0;
+}
+html body .ax-table .col--name .problem__tag-link {
+  display: inline-block;
+  padding: 0 8px;
+  border: 1px solid var(--ax-surface-4);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface-3);
+  color: var(--ax-ink-soft);
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  line-height: 1.8;
+  text-decoration: none;
+}
+html body .ax-table .col--name .problem__tag-link:hover {
+  background: var(--ax-primary-soft);
+  color: var(--ax-primary);
+  text-decoration: none;
+}
+
+/* 难度列 */
+html body .ax-table .col--difficulty {
+  width: 86px;
+}
+html body .ax-diff {
+  display: inline-block;
+  padding: 1px 9px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.6;
+  background: var(--ax-surface-2);
+  color: var(--ax-ink);
+  white-space: nowrap;
+}
+html body .ax-diff--1 { background: var(--ax-mint); color: var(--ax-green); border-color: var(--ax-green); }
+html body .ax-diff--2 { background: var(--ax-green-soft); color: var(--ax-green); border-color: var(--ax-green); }
+html body .ax-diff--3 { background: var(--ax-yellow-soft); color: var(--ax-primary-wash); border-color: var(--ax-primary-wash); }
+html body .ax-diff--4 { background: var(--ax-primary-soft); color: var(--ax-primary); border-color: var(--ax-primary); }
+html body .ax-diff--5 { background: var(--ax-red-soft); color: var(--ax-red); border-color: var(--ax-red); }
+
+/* 通过率进度条 */
+html body .ax-table .col--rate {
+  width: 118px;
+}
+html body .ax-rate {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+html body .ax-rate__bar {
+  flex: 1 1 auto;
+  height: 8px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-pill);
+  background: var(--ax-surface-2);
+  overflow: hidden;
+}
+html body .ax-rate__fill {
+  height: 100%;
+  background: var(--ax-primary-bright);
+}
+html body .ax-rate__fill--high { background: var(--ax-green); }
+html body .ax-rate__fill--mid { background: var(--ax-yellow); }
+html body .ax-rate__pct {
+  flex: 0 0 auto;
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  color: var(--ax-muted);
+  min-width: 30px;
+  text-align: right;
+}
+
+/* 通过/提交 */
+html body .ax-table .col--ac-tried {
+  width: 86px;
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+  color: var(--ax-ink-soft);
+  white-space: nowrap;
+}
+html body .ax-table .col--ac-tried b {
+  color: var(--ax-green);
+}
+
+/* 操作列 */
+html body .ax-table .col--ops {
+  width: 84px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ================= 分页（pager） ================= */
+html body .pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 12px 14px;
+  border-top: 2px solid var(--ax-line);
+  background: var(--ax-surface-2);
+}
+html body .pager > li {
+  list-style: none;
+  margin: 0;
+}
+html body .pager .pager__item {
+  display: inline-block;
+  min-width: 32px;
+  padding: 5px 9px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.5;
+}
+html body .pager a.pager__item:hover {
+  background: var(--ax-primary-soft);
+  text-decoration: none;
+}
+html body .pager .pager__item.current {
+  background: var(--ax-primary-bright);
+  color: #fff;
+}
+html body .pager .pager__item.ellipsis {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ax-muted);
+}
+html body .pager-top {
+  border-top: 0;
+  border-bottom: 2px solid var(--ax-line);
+}

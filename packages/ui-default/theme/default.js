@@ -29,6 +29,7 @@ import './bp6-compat.css';
 import './aicoj/tokens.css';
 import './aicoj/base.css';
 import './aicoj/nav.css';
+import './aicoj/components.css';
 
 // load all page stylesheets
 const pageStyleReq = require.context('../', true, /\.page\.styl$/i);
