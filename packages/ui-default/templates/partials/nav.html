@@ -48,10 +48,10 @@
         {% endif %}
       {%- endfor -%}
       <li class="nav__list-item">
-        <a href="/ai-coach/chat" class="nav__item{% if page_name == 'ai_coach_chat_page' %} nav--active{% endif %}">AI 智能助教</a>
+        <a href="/ai-coach/chat" class="nav__item{% if page_name.startsWith('ai_coach_chat') %} nav--active{% endif %}">AI 智能助教</a>
       </li>
       <li class="nav__list-item">
-        <a href="/ai-coach/growth" class="nav__item{% if page_name == 'ai_coach_growth' %} nav--active{% endif %}">成长档案</a>
+        <a href="/ai-coach/growth" class="nav__item{% if page_name.startsWith('ai_coach_growth') %} nav--active{% endif %}">成长档案</a>
       </li>
     </ol>
 
