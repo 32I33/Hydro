@@ -561,3 +561,10 @@ html body .nothing-icon {
   margin-bottom: 10px;
   background-size: 132px auto;
 }
+
+/* 已经处在 Foundation .columns 容器里的页面，不要再加一层留白 */
+html body .ax-camp--flush {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}

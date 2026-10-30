@@ -1,15 +1,63 @@
 {% extends "layout/basic.html" %}
 {% block content %}
 {{ set(UiContext, 'pdoc', pdoc) }}
-<div class="row">
-  <div class="medium-9 columns">
-    <div class="section">
-      <div class="section__header">
-        <h1 class="section__title">{{ _('Submit to Judge') }}</h1>
+{% set _pid = pdoc.pid|default(pdoc.docId) %}
+{% set _pidLabel = _pid if _pid.startsWith('P') else 'P' + _pid %}
+{% set _diff = pdoc['difficulty'] or lib.difficulty(pdoc.nSubmit, pdoc.nAccept) %}
+<div class="ax-submit">
+  <div class="ax-submit__col ax-submit__col--prob">
+    <nav class="ax-crumb">
+      <a href="/">首页</a><i>/</i>
+      <a href="{{ url('problem_main') }}">题库</a><i>/</i>
+      <a href="{{ url('problem_detail', pid=pdoc.docId) }}">{{ _pidLabel }}</a><i>/</i>
+      <span>提交评测</span>
+    </nav>
+
+    <div class="ax-panel ax-submit__prob">
+      <header class="ax-submit__prob-head">
+        <span class="ax-pd__badge">{{ _pidLabel }}</span>
+        <h1 class="ax-submit__prob-title">{{ pdoc.title }}</h1>
+        {% if _diff and _diff >= 1 and _diff <= 5 %}
+          <span class="ax-diff ax-diff--{{ _diff }}">{% if _diff == 1 %}入门{% elif _diff == 2 %}普及−{% elif _diff == 3 %}普及/提高−{% elif _diff == 4 %}提高+/省选−{% else %}NOI/NOI+{% endif %}</span>
+        {% endif %}
+        {% if pdoc.tag.length %}
+          <div class="ax-pd__tags">
+            {%- for tag in pdoc.tag -%}
+              <a class="ax-tag ax-tag--link" href="{{ url('problem_main', query={q: 'category:' + tag}) }}">{{ tag }}</a>
+            {%- endfor -%}
+          </div>
+        {% endif %}
+      </header>
+      <div class="problem-content">
+        {% include "partials/problem_description.html" %}
       </div>
-      <div class="section__body typo" name="submit_section">
-        <form method="post" enctype="multipart/form-data">
-          <div class="hasjs--hide">
+    </div>
+
+    <div class="ax-panel ax-ai-card">
+      <div class="ax-ai-card__head">
+        <img class="ax-ai-card__avatar" src="{{ UiContext.cdn_prefix }}components/navigation/aicoj-mascot.png" alt="">
+        <div>
+          <b>AI 助教 · 像素小八</b>
+          <em>卡住时可以先把题面丢给助教做拆解</em>
+        </div>
+        <span class="ax-ai-card__tag">AI</span>
+      </div>
+      <p class="ax-ai-card__body">让助教把题意拆成「输入 → 处理 → 输出」三步，或直接生成一组同类练习；写完再回来提交，不用离开这一页。</p>
+      <div class="ax-ai-card__foot">
+        <a class="ax-btn ax-btn--primary ax-btn--sm" href="/ai-coach/chat?pid={{ pdoc.docId }}">
+          <span class="icon icon-send"></span> 打开助教工作台
+        </a>
+        <a class="ax-btn ax-btn--sm" href="{{ url('problem_detail', pid=pdoc.docId) }}">返回题目</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ax-submit__col ax-submit__col--editor">
+    <div class="ax-panel ax-editor">
+      <form method="post" enctype="multipart/form-data" class="ax-editor__form">
+        <div class="ax-editor__bar">
+          <span class="ax-editor__bar-label">代码语言</span>
+          <div class="hasjs--hide ax-editor__lang-fallback">
             {{ form.form_select({
                 label:'Code language',
                 options:langRange,
@@ -17,24 +65,26 @@
                 value:handler.user.codeLang
               }) }}
           </div>
-          <div class="row nojs--hide" id="codelang-selector"></div>
-          {{ form.form_textarea({label:'Code', columns:12, name:'code', extra_class:'monospace', autofocus:true, nospellcheck:true}) }}
-          <div class="row">
-            <div class="medium-12 columns">
-              <p>{{ _('Or upload a file:') }} <input type="file" name="file"></p>
-              <br />
-            </div>
-          </div>
-          <div class="row"><div class="columns">
-            <input type="submit" class="rounded primary button" value="{{ _('Submit') }}">
-          </div></div>
-        </form>
-      </div>
+          <div class="nojs--hide ax-editor__lang" id="codelang-selector"></div>
+          <span class="ax-editor__spacer"></span>
+          <input type="submit" class="ax-btn ax-btn--primary ax-editor__submit" value="{{ _('Submit') }}">
+        </div>
+
+        <div class="ax-editor__code">
+          <div name="submit_section"></div>
+          {{ form.form_textarea({label:'Code', columns:12, name:'code', extra_class:'monospace ax-code', autofocus:true, nospellcheck:true}) }}
+        </div>
+
+        <div class="ax-editor__foot">
+          <span class="ax-editor__file">
+            {{ _('Or upload a file:') }} <input type="file" name="file">
+          </span>
+          <span class="ax-editor__hint">提交后可在「评测记录」查看结果与 AI 诊断</span>
+        </div>
+      </form>
     </div>
-  </div>
-  <div class="medium-3 columns">
+
     {% include "partials/problem_sidebar.html" %}
   </div>
 </div>
-
 {% endblock %}

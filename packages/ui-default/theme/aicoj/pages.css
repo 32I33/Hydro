@@ -1,0 +1,670 @@
+/*
+ * AICOJ · Pixel Arcade — 通用页面层
+ * 排名 / 评测记录 / 管理 / 题目提交等「没有单独设计稿」的页面，
+ * 统一用同一套 tokens 与卡片语言延伸，不再单独造风格。
+ */
+
+/* ================= 提示块（NOTE / WARN） ================= */
+html body blockquote.note,
+html body blockquote.warn {
+  margin: 0 0 14px;
+  padding: 10px 14px 10px 16px;
+  border: 2px solid var(--ax-line);
+  border-left: 6px solid var(--ax-primary-bright);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface);
+  color: var(--ax-text-2);
+  font-size: 13px;
+  line-height: 1.7;
+  box-shadow: var(--ax-shadow-1);
+}
+
+html body blockquote.warn {
+  border-left-color: var(--ax-red);
+  background: var(--ax-red-soft);
+}
+
+html body blockquote.note::before,
+html body blockquote.warn::before {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--ax-primary);
+}
+
+html body blockquote.warn::before {
+  color: var(--ax-red);
+}
+
+/* ================= 数据表（题库卡片表除外） ================= */
+html body .data-table:not(.ax-table) {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--ax-font-body);
+  font-size: 13px;
+}
+
+html body .data-table:not(.ax-table) thead th {
+  padding: 10px 12px;
+  background: var(--ax-surface-2);
+  border-bottom: 2px solid var(--ax-line);
+  color: var(--ax-text-2);
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+
+html body .data-table:not(.ax-table) tbody tr {
+  border: 0;
+  background: var(--ax-surface);
+}
+
+html body .data-table:not(.ax-table) tbody tr:nth-child(even) {
+  background: var(--ax-surface);
+}
+
+html body .data-table:not(.ax-table) tbody tr + tr td {
+  border-top: 1px dashed var(--ax-surface-4);
+}
+
+html body .data-table:not(.ax-table) tbody tr:hover td {
+  background: var(--ax-primary-soft);
+}
+
+html body .data-table:not(.ax-table) tbody td {
+  padding: 9px 12px;
+  border-top: 0;
+  vertical-align: middle;
+}
+
+html body .data-table:not(.ax-table) tbody td:first-child {
+  border-left: 3px solid transparent;
+}
+
+html body .data-table:not(.ax-table) tbody tr:hover td:first-child {
+  border-left-color: var(--ax-primary-bright);
+}
+
+/* 数字类列统一等宽 */
+html body .data-table:not(.ax-table) .col--time,
+html body .data-table:not(.ax-table) .col--memory,
+html body .data-table:not(.ax-table) .col--submit-at,
+html body .data-table:not(.ax-table) .col--rp,
+html body .data-table:not(.ax-table) .col--ac,
+html body .data-table:not(.ax-table) .col--rank {
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+}
+
+/* 表格里的链接 */
+html body .data-table:not(.ax-table) a {
+  color: var(--ax-ink);
+  text-decoration: none;
+}
+
+html body .data-table:not(.ax-table) a:hover {
+  color: var(--ax-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 状态列：左侧色条与胶囊 */
+html body .data-table:not(.ax-table) .col--status {
+  font-family: var(--ax-font-mono);
+  font-size: 11.5px;
+  white-space: nowrap;
+}
+
+html body .data-table:not(.ax-table) td.col--status {
+  padding-left: 10px;
+}
+
+html body .data-table:not(.ax-table) .record-status--text {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 9px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-pill);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  line-height: 1.7;
+}
+
+html body .data-table:not(.ax-table) .record-status--text.pass {
+  background: var(--ax-mint);
+  border-color: var(--ax-green);
+  color: var(--ax-green);
+}
+
+html body .data-table:not(.ax-table) .record-status--text.fail {
+  background: var(--ax-red-soft);
+  border-color: var(--ax-red);
+  color: var(--ax-red);
+}
+
+html body .data-table:not(.ax-table) .record-status--text.progress,
+html body .data-table:not(.ax-table) .record-status--text.pending {
+  background: var(--ax-yellow-soft);
+  border-color: var(--ax-line);
+  color: var(--ax-primary-wash);
+}
+
+/* 排名列：前三名给像素奖牌色 */
+html body .data-table:not(.ax-table) td.col--rank,
+html body .data-table:not(.ax-table) th.col--rank {
+  text-align: center;
+  font-weight: 700;
+}
+
+html body .data-table:not(.ax-table) tbody tr:nth-child(1) td.col--rank {
+  color: var(--ax-primary);
+}
+
+html body .data-table:not(.ax-table) tbody tr:nth-child(2) td.col--rank,
+html body .data-table:not(.ax-table) tbody tr:nth-child(3) td.col--rank {
+  color: var(--ax-yellow);
+}
+
+/* ================= 表单标签 ================= */
+html body label {
+  color: var(--ax-muted);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .01em;
+}
+
+html body label > input.textbox,
+html body label > select {
+  margin-top: 5px;
+}
+
+/* ================= 正文链接 ================= */
+html body .typo a:not(.button):not(.ax-btn) {
+  color: var(--ax-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+html body .typo a:not(.button):not(.ax-btn):hover {
+  color: var(--ax-primary-wash);
+}
+
+/* ================= 侧栏 / 菜单激活态（原先用 $highlight-color 粉色） ================= */
+html body a.menu__link.active,
+html body button.menu__link.active,
+html body a.menu__link.active:hover,
+html body button.menu__link.active:hover {
+  background: var(--ax-primary-bright);
+  color: #fff;
+  border-left-color: var(--ax-primary-wash);
+}
+html body a.menu__link.active .icon,
+html body button.menu__link.active .icon {
+  color: #fff;
+}
+
+/* 右上角用户菜单里的激活项 */
+html body .menu__link.active {
+  color: var(--ax-primary);
+}
+
+/* ================= 赛制 / 标签类小徽章 ================= */
+html body .contest-type-tag,
+html body .contest-tag-rated {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-pill);
+  background: var(--ax-surface-2);
+  color: var(--ax-ink-soft);
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-decoration: none;
+  line-height: 1.8;
+}
+
+html body .contest-tag-rated {
+  background: var(--ax-yellow-soft);
+  color: var(--ax-primary-wash);
+}
+
+/* 用户徽章 */
+html body .user-profile-name,
+html body .user-profile-link {
+  font-weight: 700;
+  color: var(--ax-ink);
+  text-decoration: none;
+}
+html body .user-profile-link:hover {
+  color: var(--ax-primary);
+}
+
+/* ================= 定义列表（统计面板） ================= */
+html body dl.horizontal dt {
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ax-muted);
+}
+html body dl.horizontal dd {
+  font-family: var(--ax-font-head);
+  font-weight: 800;
+  color: var(--ax-ink);
+}
+
+/* =================================================================
+ * 提交评测页（对照 Stitch「Hydro 原生答题评测」）
+ * 左侧题面 + AI 助手卡，右侧编辑器 + 题目侧栏
+ * ================================================================= */
+html body .ax-submit {
+  display: grid;
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 10px 22px 24px;
+}
+
+html body .ax-submit__col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+html body .ax-submit__col--editor {
+  position: sticky;
+  top: calc(var(--ax-nav-h) + 12px);
+}
+
+html body .ax-submit__prob {
+  padding: 16px 18px 18px;
+}
+
+html body .ax-submit__prob-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 10px;
+  margin-bottom: 6px;
+  border-bottom: 2px dashed var(--ax-surface-4);
+}
+
+html body .ax-submit__prob-title {
+  margin: 0;
+  font-family: var(--ax-font-head);
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ax-ink);
+}
+
+html body .ax-submit__prob-head .ax-pd__tags {
+  flex: 1 0 100%;
+}
+
+/* AI 助手卡 */
+html body .ax-ai-card {
+  padding: 14px 16px;
+  background: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-3);
+}
+
+html body .ax-ai-card__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 9px;
+  border-bottom: 2px dashed var(--ax-surface-4);
+}
+
+html body .ax-ai-card__avatar {
+  width: 34px;
+  height: 34px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-mint);
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+html body .ax-ai-card__head b {
+  display: block;
+  font-family: var(--ax-font-head);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ax-ink);
+}
+
+html body .ax-ai-card__head em {
+  display: block;
+  font-style: normal;
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  color: var(--ax-muted);
+}
+
+html body .ax-ai-card__tag {
+  margin-left: auto;
+  padding: 0 8px;
+  border: 2px solid var(--ax-green);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-mint);
+  color: var(--ax-green);
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+html body .ax-ai-card__body {
+  margin: 10px 0 12px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--ax-text-2);
+}
+
+html body .ax-ai-card__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 编辑器卡 */
+html body .ax-editor {
+  padding: 0;
+  overflow: hidden;
+}
+
+html body .ax-editor__bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 9px 12px;
+  background: var(--ax-surface-2);
+  border-bottom: 2px solid var(--ax-line);
+}
+
+html body .ax-editor__bar-label {
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--ax-muted);
+}
+
+html body .ax-editor__lang {
+  min-width: 160px;
+}
+
+html body .ax-editor__lang select,
+html body .ax-editor__lang-fallback select {
+  height: 32px;
+  margin: 0;
+  padding: 0 26px 0 9px;
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+}
+
+html body .ax-editor__lang-fallback label {
+  margin: 0;
+}
+
+html body .ax-editor__spacer {
+  flex: 1 1 auto;
+}
+
+html body .ax-editor__submit {
+  padding: 6px 18px;
+  cursor: pointer;
+}
+
+html body .ax-editor__code {
+  padding: 12px;
+  background: var(--ax-surface);
+}
+
+html body .ax-editor__code label {
+  display: block;
+  margin: 0;
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--ax-muted);
+}
+
+html body .ax-editor__code textarea,
+html body .ax-editor__code textarea.ax-code {
+  width: 100%;
+  min-height: 430px;
+  margin: 6px 0 0;
+  padding: 12px 14px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  resize: vertical;
+}
+
+html body .ax-editor__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 9px 12px;
+  border-top: 2px dashed var(--ax-surface-4);
+  background: var(--ax-surface-2);
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  color: var(--ax-muted);
+}
+
+html body .ax-editor__file input[type="file"] {
+  font-family: var(--ax-font-body);
+  font-size: 12px;
+}
+
+@media (max-width: 1180px) {
+  html body .ax-submit {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  html body .ax-submit__col--editor {
+    position: static;
+  }
+}
+
+/* 语言选择器：React 组件自带 .columns / label，塞进工具条要拉平 */
+html body .ax-editor__lang .columns,
+html body .ax-editor__lang .form__item {
+  width: auto;
+  flex: 0 0 auto;
+  float: none;
+  padding: 0;
+  margin: 0;
+}
+html body .ax-editor__lang label {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  font-size: 0;
+}
+html body .ax-editor__lang .select-container {
+  font-size: 12px;
+  display: inline-block;
+}
+html body .ax-editor__lang select.select {
+  min-width: 150px;
+  height: 32px;
+  margin: 0;
+  padding: 0 26px 0 9px;
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+}
+
+/* 编辑器里的提示条 */
+html body .ax-editor__code blockquote.note {
+  margin: 0 0 10px;
+  font-family: var(--ax-font-body);
+}
+
+/* 评测记录：状态列里已经有彩色胶囊，前面的 ✗/✓ 图标冗余 */
+html body .data-table:not(.ax-table) .record-status--icon {
+  display: none;
+}
+
+/* =================================================================
+ * 沉浸式页（登录 / 注册 / 找回密码）
+ * 原背景是蓝紫雪山照片（immersive-background.jpg），正是要清除的紫调 bleed；
+ * 改成暖白纸面 + 像素网格，表单装进带硬投影的白卡，品牌用像素吉祥物。
+ * ================================================================= */
+.layout--immersive body #panel {
+  background: var(--ax-bg);
+  background-image:
+    repeating-linear-gradient(0deg, rgba(20, 27, 45, .04) 0 2px, transparent 2px 26px),
+    repeating-linear-gradient(90deg, rgba(20, 27, 45, .04) 0 2px, transparent 2px 26px);
+  background-size: auto;
+}
+
+.layout--immersive body .footer,
+.layout--immersive body .footer a,
+.layout--immersive body .footer a:visited,
+.layout--immersive body .footer a:active {
+  color: var(--ax-text-2);
+}
+.layout--immersive body .footer a:hover {
+  color: var(--ax-primary);
+}
+
+.layout--immersive body .immersive--content {
+  color: var(--ax-text-2);
+}
+.layout--immersive body .immersive--content h1,
+.layout--immersive body .immersive--content h2,
+.layout--immersive body .immersive--content h3 {
+  color: var(--ax-ink);
+}
+
+/* 表单卡片 */
+.layout--immersive body .immersive--center {
+  width: 372px;
+  margin: 26px auto 40px;
+  padding: 28px 28px 30px;
+  background: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-4);
+}
+
+.layout--immersive body .immersive--center::before {
+  content: '';
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  background-color: var(--ax-mint);
+  background-image: url('/components/navigation/aicoj-mascot.png');
+  background-size: 74% auto;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+.layout--immersive body .immersive--center h1 {
+  margin: 0 0 18px;
+  text-align: center;
+  font-family: var(--ax-font-head);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* 输入框：从「透明+白下划线」改成实心白卡输入 */
+.layout--immersive body label.inverse.material.textbox {
+  color: var(--ax-muted);
+  border: 0;
+}
+.layout--immersive body label.inverse.material.textbox input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 9px 11px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  border-bottom-color: var(--ax-line);
+  box-shadow: none;
+}
+.layout--immersive body label.inverse.material.textbox input:focus {
+  border-color: var(--ax-primary-bright);
+  box-shadow: 0 0 0 3px var(--ax-primary-soft);
+  outline: none;
+}
+
+/* 复选框 / 补充链接（stylus 侧带 !important 的白字，这里必须同样加权重） */
+.layout--immersive body label.inverse.material.checkbox {
+  color: var(--ax-text-2) !important;
+  border-color: rgba(20, 27, 45, .4) !important;
+}
+.layout--immersive body .supplementary.inverse,
+.layout--immersive body .supplementary.inverse a,
+.layout--immersive body .supplementary a {
+  color: var(--ax-primary) !important;
+}
+.layout--immersive body .immersive--content h1,
+.layout--immersive body .immersive--content h2,
+.layout--immersive body .immersive--content h3 {
+  color: var(--ax-ink) !important;
+}
+
+/* 按钮：主按钮橙、次按钮白卡描边（inverse 的白描边在这套底上不可读） */
+.layout--immersive body .button.inverse {
+  border: 2px solid var(--ax-line);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  box-shadow: var(--ax-shadow-1);
+}
+.layout--immersive body .button.inverse:hover,
+.layout--immersive body .button.inverse:focus {
+  border-color: var(--ax-line);
+  background: var(--ax-surface-2);
+  color: var(--ax-ink);
+  box-shadow: var(--ax-shadow-2);
+}
+.layout--immersive body .button.inverse.primary,
+.layout--immersive body .button.primary.inverse {
+  background: var(--ax-primary-bright);
+  color: #fff;
+}
+.layout--immersive body .button.inverse.primary:hover,
+.layout--immersive body .button.primary.inverse:hover {
+  background: var(--ax-primary);
+  color: #fff;
+}
