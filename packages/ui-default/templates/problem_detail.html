@@ -42,80 +42,72 @@
     <meta property="og:description" content="{{ renderredContent|problemPreview|truncate(100, true) }}" />
   {% endblock %}
 {% endif %}
-<div class="row" data-sticky-parent>
-  <div class="medium-9 columns">
-    <div class="section">
-      <div class="section__header">
-        <h1 class="section__title">
-          {% if rdoc %}
-            <a href="{{ url('record_detail', {rid:rdoc._id}) }}">
-              <span class="icon record-status--icon {{ model.builtin.STATUS_CODES[rdoc['status']] }}"></span>
-              <span class="record-status--text {{ model.builtin.STATUS_CODES[rdoc['status']] }}">{{ rdoc.score }}</span>
-            </a>
-          {% endif %}
-          {% if handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) and not tdoc %}
-            <form class="form--inline" action="" method="post">
-              <input type="hidden" name="star" value="{{ 'true' if not psdoc.star else 'false' }}">
-              <input type="hidden" name="operation" value="star">
-              <button class="star{% if psdoc.star %} activated{% endif %}" type="submit">
-                <span class="starred--hide"><span class="icon icon-star--outline" data-tooltip="{{ _('Star') }}"></span></span>
-                <span class="starred--show"><span class="icon icon-star" data-tooltip="{{ _('Unstar') }}"></span></span>
-              </button>
-            </form>
-          {% endif %}
-          {%- if not tdoc or tdoc.pids|length > 1 -%}
-          {%- if tdoc -%}
-            {{ utils.getAlphabeticId(tdoc.pids.indexOf(pdoc.docId)) }}
-          {%- elif pdoc.pid and pdoc.pid.includes('-') -%}
-            {{ pdoc.pid.split('-').join('#') }}
-          {%- else -%}
-            #{{ pdoc.pid|default(pdoc.docId) }}
-          {%- endif -%}. {% endif %}{{ pdoc.title }}
-        </h1>
-        {% if tdoc and tdoc.pids|length <= 26 and tdoc.pids|length > 1 %}
-          <div class="section__tools contest-problems">
-            {% for pid in tdoc.pids -%}
-              {% set status = tsdoc.detail[pid].status %}
-              {% set pass = status == STATUS.STATUS_ACCEPTED %}
-              {% set fail = status and not pass %}
-              <a href="{{ url('problem_detail', pid=pid, query={tid:tdoc.docId}) }}"
-                 class="{% if pass %}pass{% elif fail %}fail{% endif %}
-                        {% if pid==pdoc.docId %} active{% endif %}">
-                <span class="id">{{ utils.getAlphabeticId(loop.index0) }}</span>
-                {% if status %}<span class="icon icon-{% if pass %}check{% else %}close{% endif %}"></span>{% endif %}
-              </a>
-            {%- endfor %}
-          </div>
-        {% endif %}
-      </div>
-      <div class="section__body">
-        <ul class="problem__tags">
-          {% if not tdoc %}
-            <span class="problem__tag-item">{{ _('ID') }}: {{ pdoc.docId }}</span>
-          {% endif %}
-          <span class="problem__tag-item icon icon-book">{{ _('problem_type.' + pdoc.config.type).format(pdoc.config.subType) }}</span>
-          {% if pdoc.config.type == 'default' and pdoc.config.subType %}
-            <span class="problem__tag-item icon icon-book">{{ _('File IO: {0}').format(pdoc.config.subType) }}</span>
-          {% endif %}
-          {% if pdoc.config.type != 'objective' and pdoc.config.type != 'submit_answer' %}
-            <span class="problem__tag-item icon icon-stopwatch">{{ pdoc.config.timeMax if pdoc.config.timeMax == pdoc.config.timeMin else pdoc.config.timeMin+'~'+pdoc.config.timeMax }}ms</span>
-            <span class="problem__tag-item icon icon-comparison">{{ pdoc.config.memoryMax if pdoc.config.memoryMax == pdoc.config.memoryMin else pdoc.config.memoryMin+'~'+pdoc.config.memoryMax }}MiB</span>
-          {% endif %}
-          {% if not tdoc %}
-            <a class="problem__tag-item interactive" href="{{ url('record_main', query={pid:pdoc.docId}) }}">{{ _('Tried') }}: {{ pdoc.nSubmit }}</a>
-            <a class="problem__tag-item interactive" href="{{ url('record_main', query={pid:pdoc.docId, status:1}) }}">{{ _('Accepted') }}: {{ pdoc.nAccept if ((not tdoc) or showAccept) else '?' }}</a>
-            <span class="problem__tag-item">{{ _('Difficulty') }}: {{ pdoc['difficulty'] or lib.difficulty(pdoc.nSubmit, pdoc.nAccept) or _('(None)') }}</span>
-            <span class="problem__tag-item interactive">{{ _('Uploaded By') }}: {{ user.render_inline(udoc, badge=false) }}</span>
-          {% endif %}
-          {% if pdoc.tag.length %}
-            <span name="show_tags" class="problem__tag-item interactive nojs--hide icon icon-tag">{{ _('Tags') + '>' }}</span>
-            {%- for tag in pdoc.tag -%}
-              <span class="problem__tag-item tags hasjs--hide">{{ tag }}</span>
-            {%- endfor -%}
-          {% endif %}
-        </ul>
-      </div>
+<div class="ax-pd">
+  <nav class="ax-crumb">
+    <a href="/">首页</a><i>/</i>
+    <a href="/p">题库</a><i>/</i>
+    {% set _pid = pdoc.pid|default(pdoc.docId) %}{% set _pidLabel = _pid if _pid.startsWith('P') else 'P' + _pid %}<span>{{ _pidLabel }}</span>
+  </nav>
+
+  <header class="ax-pd__head">
+    <div class="ax-pd__title-row">
+      <span class="ax-pd__badge">{{ _pidLabel }}</span>
+      <h1 class="ax-pd__title">{{ pdoc.title }}</h1>
+      {% set _diff = pdoc['difficulty'] or lib.difficulty(pdoc.nSubmit, pdoc.nAccept) %}
+      {% if _diff and _diff >= 1 and _diff <= 5 %}
+        <span class="ax-diff ax-diff--{{ _diff }}">{% if _diff == 1 %}入门{% elif _diff == 2 %}普及−{% elif _diff == 3 %}普及/提高−{% elif _diff == 4 %}提高+/省选−{% elif _diff == 5 %}NOI/NOI+{% else %}{{ _diff }}{% endif %}</span>
+      {% endif %}
+      {% if psdoc and psdoc.status %}
+        <span class="ax-tag ax-tag--status">{{ model.builtin.STATUS_TEXTS[psdoc.status] }}</span>
+      {% endif %}
+      {% if handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) and not tdoc %}
+        <form class="form--inline ax-pd__star" action="" method="post">
+          <input type="hidden" name="star" value="{{ 'true' if not psdoc.star else 'false' }}">
+          <input type="hidden" name="operation" value="star">
+          <button class="star{% if psdoc.star %} activated{% endif %}" type="submit">
+            <span class="starred--hide"><span class="icon icon-star--outline" data-tooltip="{{ _('Star') }}"></span></span>
+            <span class="starred--show"><span class="icon icon-star" data-tooltip="{{ _('Unstar') }}"></span></span>
+          </button>
+        </form>
+      {% endif %}
+      {% if handler.user.hasPerm(perm.PERM_SUBMIT_PROBLEM) %}
+        <a class="ax-btn ax-btn--primary ax-pd__submit" href="{{ url('problem_submit', pid=pdoc.pid|default(pdoc.docId)) }}">
+          <span class="icon icon-send"></span> 在线提交评测
+        </a>
+      {% elif not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
+        <a class="ax-btn ax-btn--primary ax-pd__submit" href="javascript:showSignInDialog();">
+          <span class="icon icon-send"></span> 登录后提交
+        </a>
+      {% endif %}
     </div>
+
+    {% if pdoc.tag.length %}
+    <div class="ax-pd__tags">
+      {%- for tag in pdoc.tag -%}
+        <a class="ax-tag ax-tag--link" href="{{ url('problem_main', query={q: 'category:' + tag}) }}">{{ tag }}</a>
+      {%- endfor -%}
+    </div>
+    {% endif %}
+
+    {% if tdoc and tdoc.pids|length <= 26 and tdoc.pids|length > 1 %}
+      <div class="section__tools contest-problems">
+        {% for pid in tdoc.pids -%}
+          {% set status = tsdoc.detail[pid].status %}
+          {% set pass = status == STATUS.STATUS_ACCEPTED %}
+          {% set fail = status and not pass %}
+          <a href="{{ url('problem_detail', pid=pid, query={tid:tdoc.docId}) }}"
+             class="{% if pass %}pass{% elif fail %}fail{% endif %}
+                    {% if pid==pdoc.docId %} active{% endif %}">
+            <span class="id">{{ utils.getAlphabeticId(loop.index0) }}</span>
+            {% if status %}<span class="icon icon-{% if pass %}check{% else %}close{% endif %}"></span>{% endif %}
+          </a>
+        {%- endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="row" data-sticky-parent>
+  <div class="medium-9 columns">
     <div class="section">
       <div class="problem-content-container"><div class="problem-content" data-marker-enabled>
         <div class="section__header non-scratchpad--hide">
@@ -142,9 +134,55 @@
     {% include "partials/problem_sidebar.html" %}
   </div></div>
 </div>
+</div>
 <div style="display:none" class="outer-loader-container"><div class="loader"></div></div>
 <div class="scratchpad-container" style="display:none">
   <div style="display:none" class="loader-container"><div class="loader"></div></div>
   <div id="scratchpad" style="opacity:0"></div>
 </div>
+<script>
+(function () {
+  // 给题面里的每个代码块/样例加「复制」按钮（对齐设计稿的样例框）
+  function decorate() {
+    var root = document.querySelector('.problem-content');
+    if (!root) return;
+    Array.prototype.forEach.call(root.querySelectorAll('pre'), function (pre) {
+      if (pre.querySelector('.ax-copy')) return;
+      // Hydro 已给「样例输入/输出」块加了自带复制条，这里跳过，避免出现两个复制按钮
+      var inner = pre.querySelector('code');
+      if (inner && /language-(input|output|sample)/i.test(inner.className)) return;
+      if (getComputedStyle(pre).position === 'static') pre.style.position = 'relative';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'ax-copy';
+      btn.textContent = '复制';
+      btn.addEventListener('click', function () {
+        var code = pre.querySelector('code') || pre;
+        var text = code.innerText;
+        var done = function () {
+          btn.textContent = '已复制';
+          btn.classList.add('is-done');
+          setTimeout(function () { btn.textContent = '复制'; btn.classList.remove('is-done'); }, 1500);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, function () { fallback(text, done); });
+        } else fallback(text, done);
+      });
+      pre.appendChild(btn);
+    });
+  }
+  function fallback(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) {}
+    document.body.removeChild(ta);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', decorate);
+  else decorate();
+})();
+</script>
 {% endblock %}

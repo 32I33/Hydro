@@ -1,6 +1,66 @@
 {% import "components/user.html" as user with context %}
 {% import "components/problem.html" as problem with context %}
-<div class="section side section--problem-sidebar">
+{% set _ac = pdoc.nAccept or 0 %}
+{% set _sub = pdoc.nSubmit or 0 %}
+{% set _pct = 0 %}
+{% if _sub > 0 %}{% set _pct = (_ac * 100 / _sub) | int %}{% endif %}
+{% if page_name == 'problem_detail' %}
+<div class="ax-side">
+  <div class="ax-side__head">题目属性 <em>Standard</em></div>
+  <div class="ax-side__body">
+    {% if pdoc.config.type != 'objective' and pdoc.config.type != 'submit_answer' %}
+    <div class="ax-spec">
+      <div class="ax-spec__cell">
+        <span class="ax-spec__k">时间限制</span>
+        <span class="ax-spec__v">{{ pdoc.config.timeMax if pdoc.config.timeMax == pdoc.config.timeMin else pdoc.config.timeMin + '~' + pdoc.config.timeMax }}</span>
+      </div>
+      <div class="ax-spec__cell">
+        <span class="ax-spec__k">空间限制</span>
+        <span class="ax-spec__v">{{ pdoc.config.memoryMax if pdoc.config.memoryMax == pdoc.config.memoryMin else pdoc.config.memoryMin + '~' + pdoc.config.memoryMax }}MiB</span>
+      </div>
+    </div>
+    {% endif %}
+    <div class="ax-spec__row"><span>评测方式</span><b>{{ _('problem_type.' + pdoc.config.type).format(pdoc.config.subType) }}</b></div>
+    {% if pdoc.config.type == 'default' and pdoc.config.subType %}
+    <div class="ax-spec__row"><span>输入输出</span><b>{{ _('File IO: {0}').format(pdoc.config.subType) }}</b></div>
+    {% else %}
+    <div class="ax-spec__row"><span>输入输出</span><b>标准 I/O</b></div>
+    {% endif %}
+    <div class="ax-spec__row"><span>题目提供者</span><b>{% if owner_udoc %}{{ owner_udoc.uname }}{% else %}—{% endif %}</b></div>
+  </div>
+</div>
+
+<div class="ax-side">
+  <div class="ax-side__head">统计与通过率 <em>Hud Metrics</em></div>
+  <div class="ax-side__body">
+    <div class="ax-spec">
+      <div class="ax-spec__cell">
+        <span class="ax-spec__k">通过人数</span>
+        <span class="ax-spec__v">{{ _ac }}</span>
+      </div>
+      <div class="ax-spec__cell">
+        <span class="ax-spec__k">总提交数</span>
+        <span class="ax-spec__v">{{ _sub }}</span>
+      </div>
+    </div>
+    <div class="ax-rate-big"><span>通过率 (AC Rate)</span><b>{{ _pct }}%</b></div>
+    <div class="ax-rate">
+      <span class="ax-rate__bar">
+        <span class="ax-rate__fill{% if _pct >= 60 %} ax-rate__fill--high{% elif _pct >= 30 %} ax-rate__fill--mid{% endif %}" style="width: {{ _pct }}%"></span>
+      </span>
+    </div>
+    {% if _sub > 0 %}
+    <div class="ax-badges">
+      <span class="ac">AC {{ _pct }}%</span>
+      <span class="wa">尝试 {{ _sub }}</span>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+
+<div class="ax-side">
+  <div class="ax-side__head">操作 <em>Actions</em></div>
 {% if page_name != 'problem_detail' and page_name != 'contest_detail_problem' %}
   <div class="section__header">
     <h1 class="section__title">{{ pdoc['title'] }}</h1>
@@ -124,10 +184,8 @@
 </div>
 {% endif %}
 {% if page_name == 'problem_detail' and (tdocs.length or ctdocs.length or htdocs.length) %}
-<div class="section side">
-  <div class="section__header">
-    <h1 class="section__title">{{ _('Related') }}</h1>
-  </div>
+<div class="ax-side">
+  <div class="ax-side__head">{{ _('Related') }} <em>Relation</em></div>
   <div class="section__body typo">
   {% if tdocs.length %}
     <p>{{ _('In following training plans') }}: </p>

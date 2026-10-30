@@ -67,12 +67,12 @@
             <td class="col--status record-status--border edit-mode-hide"></td>
           {% endif %}
         {% endif %}
-        <td class="col--pid-ax">P{{ pdoc.pid|default(pdoc.docId) }}</td>
+        {% set _pid = pdoc.pid|default(pdoc.docId) %}<td class="col--pid-ax">{{ _pid if _pid.startsWith('P') else 'P' + _pid }}</td>
         <td class="col--name col--problem-name" data-star-action="{{ url('problem_detail', pid=pdoc.docId) }}" {% if handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %} data-star="{{ psdoc.star }}"{% endif %}>
           {{ problem.render_problem_title(pdoc, show_pid=false) }}
         </td>
         <td class="col--difficulty">
-          {% if diff %}
+          {% if diff and diff >= 1 and diff <= 5 %}
             <span class="ax-diff ax-diff--{{ diff }}">{% if diff == 1 %}入门{% elif diff == 2 %}普及−{% elif diff == 3 %}普及/提高−{% elif diff == 4 %}提高+/省选−{% elif diff == 5 %}NOI/NOI+{% else %}{{ diff }}{% endif %}</span>
           {% else %}
             <span class="ax-diff">—</span>
