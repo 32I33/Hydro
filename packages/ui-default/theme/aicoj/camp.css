@@ -1,0 +1,330 @@
+/*
+ * AICOJ · Pixel Arcade — 训练 / 作业 / 比赛 共用列表与卡片
+ */
+
+/* ================= 页面标题区 ================= */
+html body .ax-page-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 6px 2px 16px;
+}
+
+html body .ax-eyebrow {
+  display: inline-block;
+  padding: 2px 10px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-primary-bright);
+  color: #fff;
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  box-shadow: var(--ax-shadow-1);
+}
+
+html body .ax-page-title {
+  margin: 10px 0 0;
+  font-family: var(--ax-font-head);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ax-ink);
+  line-height: 1.15;
+}
+
+html body .ax-page-sub {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--ax-muted);
+}
+
+html body .ax-page-head__side {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+html body .ax-head-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 16px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  background: var(--ax-surface);
+  box-shadow: var(--ax-shadow-2);
+}
+html body .ax-head-stat em {
+  font-family: var(--ax-font-mono);
+  font-style: normal;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--ax-muted);
+  text-transform: uppercase;
+}
+html body .ax-head-stat b {
+  font-family: var(--ax-font-head);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ax-ink);
+}
+
+/* ================= 卡片网格 ================= */
+html body .ax-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+html body .ax-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 14px;
+  background: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-3);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+html body .ax-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--ax-shadow-4);
+}
+
+html body .ax-card__badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface-3);
+  color: var(--ax-ink-soft);
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+html body .ax-card__badge--live {
+  background: var(--ax-primary-bright);
+  color: #fff;
+}
+html body .ax-card__badge--done {
+  background: var(--ax-mint);
+  color: var(--ax-green);
+  border-color: var(--ax-green);
+}
+html body .ax-card__badge--warn {
+  background: var(--ax-yellow-soft);
+  color: var(--ax-primary-wash);
+}
+html body .ax-card__badge--danger {
+  background: var(--ax-red-soft);
+  color: var(--ax-red);
+  border-color: var(--ax-red);
+}
+
+html body .ax-card__title {
+  margin: 0;
+  font-family: var(--ax-font-head);
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--ax-ink);
+}
+html body .ax-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+html body .ax-card__title a:hover {
+  color: var(--ax-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+html body .ax-card__desc {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--ax-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ================= 训练营卡片 ================= */
+html body .ax-camp__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+html body .ax-camp__levels {
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ax-muted);
+  white-space: nowrap;
+}
+
+html body .ax-camp__prog {
+  margin-top: 2px;
+}
+
+html body .ax-camp__prog-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 5px;
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  color: var(--ax-muted);
+}
+html body .ax-camp__prog-head b {
+  color: var(--ax-ink);
+  font-size: 11.5px;
+}
+
+html body .ax-camp__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px dashed var(--ax-surface-4);
+}
+
+html body .ax-camp__stat {
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  color: var(--ax-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* ================= 分页容器 ================= */
+html body .ax-plist__pager {
+  margin-top: 16px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-2);
+  overflow: hidden;
+  background: var(--ax-surface-2);
+}
+html body .ax-plist__pager .pager {
+  border-top: 0;
+  background: transparent;
+}
+
+/* ================= 响应式 ================= */
+@media (max-width: 900px) {
+  html body .ax-cards {
+    grid-template-columns: 1fr;
+  }
+  html body .ax-page-title {
+    font-size: 24px;
+  }
+  html body .ax-page-head {
+    align-items: flex-start;
+  }
+}
+
+/* ================= 作业 / 比赛：复用同族卡片 =================
+ * 这两页保留 Hydro 原有模板结构（含日历视图、比赛倒计时等逻辑），
+ * 只把列表项和页头统一成 AICOJ 外观，避免重写引入回归。
+ */
+html body .page--homework_main .section__header,
+html body .page--contest_main .section__header,
+html body .page--training_main .section__header {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 6px 2px 14px;
+}
+html body .page--homework_main .section__title,
+html body .page--contest_main .section__title {
+  font-family: var(--ax-font-head);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ax-ink);
+}
+
+html body .homework__list .section__list__item,
+html body .contest__list .section__list__item {
+  background: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  box-shadow: var(--ax-shadow-3);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+html body .homework__list .section__list__item:hover,
+html body .contest__list .section__list__item:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: var(--ax-shadow-4);
+}
+
+html body .homework__title,
+html body .contest__title {
+  font-family: var(--ax-font-head);
+  font-size: 16px;
+  font-weight: 800;
+}
+html body .homework__title a,
+html body .contest__title a {
+  color: var(--ax-ink);
+  text-decoration: none;
+}
+html body .homework__title a:hover,
+html body .contest__title a:hover {
+  color: var(--ax-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+html body .homework__list .numbox,
+html body .contest__list .numbox {
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface-2);
+  padding: 6px 10px;
+  min-width: 64px;
+  text-align: center;
+}
+html body .homework__list .numbox__num,
+html body .contest__list .numbox__num {
+  font-family: var(--ax-font-head);
+  font-weight: 800;
+  color: var(--ax-primary);
+}
+html body .homework__list .numbox__text,
+html body .contest__list .numbox__text {
+  font-family: var(--ax-font-mono);
+  font-size: 9px;
+  letter-spacing: .06em;
+  color: var(--ax-muted);
+  text-transform: uppercase;
+}
+
+/* 比赛状态标记 */
+html body .contest__list .contest__status,
+html body .contest__list .contest__info-attended {
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  color: var(--ax-muted);
+}

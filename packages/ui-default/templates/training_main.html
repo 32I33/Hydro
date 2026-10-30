@@ -1,107 +1,127 @@
 {% extends "layout/basic.html" %}
 {% block content %}
-<div class="row">
-  <div class="large-9 columns">
-    <div class="section">
-      <div class="section__header">
-        <h1 class="section__title">{{ _('All Training Plans') }}</h1>
-        <div class="section__tools">
-          <form method="get" class="filter-form" name="filter-form">
-            <input type="text" class="inline compact textbox" name="q" value="{{ q }}" placeholder="{{ _('Search training...') }}">
-            <button type="submit" class="compact button">
-              {{ _('Search') }}
-            </button>
-          </form>
-        </div>
+{% import "components/paginator.html" as paginator with context %}
+{% import "components/nothing.html" as nothing with context %}
+<div class="ax-camp">
+  <header class="ax-page-head">
+    <div class="ax-page-head__main">
+      <span class="ax-eyebrow">Stage Camp · Training</span>
+      <h1 class="ax-page-title">训练计划营</h1>
+      <p class="ax-page-sub">阶梯式进阶关卡，由浅入深掌握算法体系 · 闯关即获勋章</p>
+    </div>
+    <div class="ax-page-head__side">
+      <div class="ax-head-stat">
+        <em>营地总数</em>
+        <b>{{ tdocs.length }} 个</b>
       </div>
-      {% if not tdocs.length %}
-        {{ nothing.render('Sorry, there are no training plans.') }}
-      {% else %}
-        <ol class="section__list all primary training__list">
-          {%- for tdoc in tdocs -%}
-            <li class="section__list__item training__item">
-              <div class="media">
-                <div class="media__left middle">
-                  <div class="training__participants numbox">
-                    <div class="numbox__num large">{{ tdoc.attend|default(0) }}</div>
-                    <div class="numbox__text">{{ _('Enrolled') }}</div>
-                  </div>
-                </div>
-                <div class="media__body middle">
-                  <h1 class="training__title"><a href="{{ url('training_detail', tid=tdoc.docId) }}" data-emoji-enabled>{{ tdoc.title }}</a></h1>
-                  <div class="training__intro typo">
-                    <p>{{ tdoc['content'] }}</p>
-                  </div>
-                  <ul class="supplementary list training__progress">
-                    <li>
-                      <span class="icon icon-flag text-blue"></span> {{ _('{0} sections').format(tdoc['dag']|length) }}, {{ _('{0} problems').format(model.training.getPids(tdoc.dag)|length) }}
-                    </li>
-                    <li>
-                    {% if tsdict[tdoc.docId]['enroll'] %}
-                      {% if not tsdict[tdoc.docId]['done'] %}
-                        <span class="icon training-status--icon progress"></span>
-                        <span class="training-status--text progress">{{ _('Completed') }} {{ (100 * tsdict[tdoc.docId]['donePids']|length / model.training.getPids(tdoc.dag)|length)|round|int }}%</span>
-                      {% else %}
-                        <span class="icon training-status--icon done"></span>
-                        <span class="training-status--text done">{{ _('Completed') }} 100%</span>
-                      {% endif %}
-                    {% elif handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
-                      <span class="icon training-status--icon outside"></span> <span class="training-status--text outside">{{ _('Not Enrolled') }}</span>
-                    {% endif %}
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </li>
-          {%- endfor -%}
-        </ol>
-        {{ paginator.render(page, tpcount, add_qs=qs) }}
+      {% if handler.user.hasPerm(perm.PERM_CREATE_TRAINING) %}
+        <a class="ax-btn" href="{{ url('training_create') }}">
+          <span class="icon icon-add"></span> 新建训练营
+        </a>
       {% endif %}
     </div>
+  </header>
+
+  <form method="get" name="filter-form" action="{{ url('training_main') }}" class="ax-search">
+    <div class="ax-search__field">
+      <span class="icon icon-search"></span>
+      <input type="text" name="q" value="{{ q }}" placeholder="搜索训练计划名称或知识点…">
+    </div>
+    <button type="submit" class="ax-btn ax-btn--primary">搜索</button>
+  </form>
+
+  <div class="ax-filters">
+    <div class="ax-filter-row">
+      <span class="ax-filter-row__label">训练状态</span>
+      <div class="ax-filter-row__items" id="ax-camp-filter">
+        <button type="button" class="ax-pill is-active" data-state="">全部训练</button>
+        <button type="button" class="ax-pill" data-state="ongoing">进行中</button>
+        <button type="button" class="ax-pill" data-state="done">已完成</button>
+        <button type="button" class="ax-pill" data-state="none">未参加</button>
+      </div>
+    </div>
   </div>
-  <div class="large-3 columns">
-    {% if handler.user.hasPerm(perm.PERM_CREATE_TRAINING) %}
-      <div class="section side">
-        <div class="section__header">
-          <h1 class="section__title">{{ _('Create Training Plan') }}</h1>
-        </div>
-        <ol class="menu">
-          <li class="menu__item">
-            <a href="{{ url('training_create') }}" class="menu__link"><span class="icon icon-add"></span> {{ _('New Training Plan') }}</a>
-          </li>
-        </ol>
-        <div class="section__body">
-          <div class="typo supplementary">
-            <p>{{ _('You can create your own training plans and share them with others.') }}</p>
+
+  {% if not tdocs.length %}
+    {{ nothing.render('Sorry, there are no training plans.') }}
+  {% else %}
+    <div class="ax-cards">
+      {%- for tdoc in tdocs -%}
+        {% set ts = tsdict[tdoc.docId] %}
+        {% set _pids = model.training.getPids(tdoc.dag) %}
+        {% set _total = _pids|length %}
+        {% set _done = ts['donePids']|length %}
+        {% set _pct = 0 %}
+        {% if _total > 0 %}{% set _pct = (_done * 100 / _total) | int %}{% endif %}
+        {% set _state = 'none' %}
+        {% if ts['enroll'] %}{% if ts['done'] %}{% set _state = 'done' %}{% else %}{% set _state = 'ongoing' %}{% endif %}{% endif %}
+        <article class="ax-card ax-camp__card" data-state="{{ _state }}">
+          <div class="ax-camp__top">
+            {% if _state == 'done' %}
+              <span class="ax-card__badge ax-card__badge--done">已通关</span>
+            {% elif _state == 'ongoing' %}
+              <span class="ax-card__badge ax-card__badge--live">进行中</span>
+            {% else %}
+              <span class="ax-card__badge">{% if handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}{{ _('Not Enrolled') }}{% else %}训练营{% endif %}</span>
+            {% endif %}
+            <span class="ax-camp__levels">{{ tdoc.dag|length }} 关卡</span>
           </div>
-        </div>
-      </div>
-    {% endif %}
-    {% if handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
-      <div class="section side">
-        <div class="section__header">
-          <h1 class="section__title">{{ _('Enrolled') }}</h1>
-        </div>
-        <div class="section__body">
-          <ol class="my secondary training__list">
-            {%- for tid, tsdoc in tsdict -%}
-              {% if tsdoc['enroll'] %}
-                {% set progress = (100 * (tsdoc['donePids']|length) / (model.training.getPids(tdict[tsdoc['docId']].dag)|length))|round|int %}
-                <li class="training__item"><div class="media">
-                  <div class="media__left">
-                    <span class="icon training-status--icon {% if tsdoc['done'] %}done{% else %}progress{% endif %}"></span>
-                  </div>
-                  <div class="media__body">
-                    <h1 class="training__title"><a href="{{ url('training_detail', tid=tsdoc.docId) }}" data-emoji-enabled>{{ tdict[tsdoc['docId']]['title'] }}</a></h1>
-                    <div class="supplementary training__progress"><div class="training__progress-bar"><div class="training__progress-track" style="width:{{ progress }}%;"></div></div> {{ _('Complete') }} {{ progress }}%</div>
-                  </div>
-                </div></li>
-              {% endif %}
-            {%- endfor -%}
-          </ol>
-        </div>
-      </div>
-    {% endif %}
-  </div>
+
+          <h2 class="ax-card__title">
+            <a href="{{ url('training_detail', tid=tdoc.docId) }}" data-emoji-enabled>{{ tdoc.title }}</a>
+          </h2>
+
+          <p class="ax-card__desc">{{ tdoc['content'] }}</p>
+
+          <div class="ax-camp__prog">
+            <div class="ax-camp__prog-head">
+              <span>闯关进度</span>
+              <b>{{ _done }} / {{ _total }}（{{ _pct }}%）</b>
+            </div>
+            <span class="ax-rate__bar">
+              <span class="ax-rate__fill{% if _pct >= 60 %} ax-rate__fill--high{% elif _pct >= 30 %} ax-rate__fill--mid{% endif %}" style="width: {{ _pct }}%"></span>
+            </span>
+          </div>
+
+          <div class="ax-camp__foot">
+            <span class="ax-camp__stat">
+              <span class="icon icon-user"></span> {{ tdoc.attend|default(0) }} 人参加
+            </span>
+            {% if _state == 'done' %}
+              <a class="ax-btn" href="{{ url('training_detail', tid=tdoc.docId) }}">回顾题单</a>
+            {% elif _state == 'ongoing' %}
+              <a class="ax-btn ax-btn--primary" href="{{ url('training_detail', tid=tdoc.docId) }}">继续冲关 →</a>
+            {% else %}
+              <a class="ax-btn ax-btn--primary" href="{{ url('training_detail', tid=tdoc.docId) }}">开启挑战 →</a>
+            {% endif %}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+
+    <div class="ax-plist__pager">
+      {{ paginator.render(page, tpcount, add_qs=qs) }}
+    </div>
+  {% endif %}
 </div>
+
+<script>
+(function () {
+  var box = document.getElementById('ax-camp-filter');
+  if (!box) return;
+  var cards = document.querySelectorAll('.ax-camp__card');
+  box.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.ax-pill') : null;
+    if (!btn) return;
+    var want = btn.getAttribute('data-state');
+    Array.prototype.forEach.call(box.querySelectorAll('.ax-pill'), function (el) {
+      el.classList.toggle('is-active', el === btn);
+    });
+    Array.prototype.forEach.call(cards, function (c) {
+      var s = c.getAttribute('data-state') || '';
+      c.style.display = (!want || s === want) ? '' : 'none';
+    });
+  });
+})();
+</script>
 {% endblock %}

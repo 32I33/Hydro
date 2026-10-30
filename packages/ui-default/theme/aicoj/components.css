@@ -380,7 +380,9 @@ html body .ax-rate {
   gap: 7px;
 }
 html body .ax-rate__bar {
+  display: block;
   flex: 1 1 auto;
+  width: 100%;
   height: 8px;
   border: 2px solid var(--ax-line);
   border-radius: var(--ax-radius-pill);

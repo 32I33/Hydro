@@ -31,6 +31,7 @@ import './aicoj/base.css';
 import './aicoj/nav.css';
 import './aicoj/components.css';
 import './aicoj/problem.css';
+import './aicoj/camp.css';
 
 // load all page stylesheets
 const pageStyleReq = require.context('../', true, /\.page\.styl$/i);
