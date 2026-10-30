@@ -300,6 +300,19 @@ html body .ax-user-head__meta {
   letter-spacing: 0.02em;
 }
 
+html body .ax-user-head__role {
+  margin-left: auto;
+  flex: 0 0 auto;
+  padding: 2px 9px;
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-mint);
+  color: var(--ax-green);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.5;
+  border: 1px solid var(--ax-green);
+}
+
 /* 菜单行 */
 html body .ax-user-menu .menu__item {
   margin: 0;

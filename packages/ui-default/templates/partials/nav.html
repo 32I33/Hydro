@@ -75,6 +75,7 @@
               <b class="ax-user-head__name">{% if handler.user.displayName and handler.user.displayName != handler.user.uname %}{{ handler.user.displayName }}{% else %}{{ handler.user.uname }}{% endif %}</b>
               <span class="ax-user-head__meta">UID: {{ handler.user._id }}</span>
             </span>
+            <span class="ax-user-head__role">{% if handler.user.hasPriv(PRIV.PRIV_EDIT_SYSTEM) %}管理员{% elif handler.user.hasPriv(PRIV.PRIV_CREATE_DOMAIN) %}教师{% else %}学生{% endif %}</span>
           </li>
 
           <li class="menu__item">
