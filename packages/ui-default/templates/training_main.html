@@ -3,17 +3,29 @@
 {% import "components/paginator.html" as paginator with context %}
 {% import "components/nothing.html" as nothing with context %}
 <div class="ax-camp">
-  <header class="ax-page-head">
+  <header class="ax-page-head ax-panel">
     <div class="ax-page-head__main">
-      <span class="ax-eyebrow">Stage Camp · Training</span>
-      <h1 class="ax-page-title">训练计划营</h1>
+      <span class="ax-eyebrow">Stage Camp · Season 2025</span>
+      <h1 class="ax-page-title">训练计划营 <span class="ax-page-title__en">(Training)</span></h1>
       <p class="ax-page-sub">阶梯式进阶关卡，由浅入深掌握算法体系 · 闯关即获勋章</p>
     </div>
     <div class="ax-page-head__side">
-      <div class="ax-head-stat">
-        <em>营地总数</em>
-        <b>{{ tdocs.length }} 个</b>
+      <div class="ax-head-stat ax-head-stat--mint">
+        <span class="ax-head-stat__icon"><span class="icon icon-flag"></span></span>
+        <span class="ax-head-stat__body">
+          <em>营地在列</em>
+          <b>{{ tdocs.length }} 个</b>
+        </span>
       </div>
+      {% if handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
+      <div class="ax-head-stat ax-head-stat--gold">
+        <span class="ax-head-stat__icon"><span class="icon icon-check"></span></span>
+        <span class="ax-head-stat__body">
+          <em>累计 AC</em>
+          <b>{{ handler.user.nAccept|default(0) }} 题</b>
+        </span>
+      </div>
+      {% endif %}
       {% if handler.user.hasPerm(perm.PERM_CREATE_TRAINING) %}
         <a class="ax-btn" href="{{ url('training_create') }}">
           <span class="icon icon-add"></span> 新建训练营
@@ -30,7 +42,7 @@
     <button type="submit" class="ax-btn ax-btn--primary">搜索</button>
   </form>
 
-  <div class="ax-filters">
+  <div class="ax-filters ax-filters--bare">
     <div class="ax-filter-row">
       <span class="ax-filter-row__label">训练状态</span>
       <div class="ax-filter-row__items" id="ax-camp-filter">

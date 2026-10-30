@@ -4,12 +4,14 @@
  * 色值取自设计稿 tailwind.config，勿凭感觉修改。
  */
 :root:root {
-  /* 底色与表面 */
-  --ax-bg: #faf8ff;
+  /* 底色与表面
+     设计稿原值为 #faf8ff / #f2f3ff 一带的冷调浅紫，实机观感偏「旧紫调」，
+     这里统一拉回暖白纸面，与橙主色/墨线搭配才是像素街机的浅色桌面。 */
+  --ax-bg: #faf9f4;
   --ax-surface: #ffffff;
-  --ax-surface-2: #f2f3ff;
-  --ax-surface-3: #eaedff;
-  --ax-surface-4: #dbe2fb;
+  --ax-surface-2: #f6f4ee;
+  --ax-surface-3: #eeebe1;
+  --ax-surface-4: #d9d4c6;
 
   /* 墨色与文字 */
   --ax-ink: #141b2d;
@@ -64,14 +66,14 @@
   --text-1-color: #141b2d;
   --text-2-color: #5b4138;
   --text-3-color: #8f7066;
-  --background-color: #faf8ff;
+  --background-color: #faf9f4;
   --section-bg-color: #ffffff;
   --border-color: #141b2d;
   --menu-drop-bg-color: #ffffff;
   --default-font-family: var(--ax-font-body);
 
   /* Mantine（ui-next / React 页面） */
-  --mantine-color-body: #faf8ff;
+  --mantine-color-body: #faf9f4;
   --mantine-color-text: #141b2d;
   --mantine-color-dimmed: #8f7066;
   --mantine-color-default-border: #141b2d;
@@ -79,5 +81,5 @@
   --mantine-primary-color-filled-hover: #aa3600;
   --mantine-color-dark-0: #141b2d;
   --mantine-color-dark-6: #ffffff;
-  --mantine-color-dark-7: #faf8ff;
+  --mantine-color-dark-7: #faf9f4;
 }

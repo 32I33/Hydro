@@ -471,3 +471,147 @@ html body .pager-top {
   border-top: 0;
   border-bottom: 2px solid var(--ax-line);
 }
+
+/* =================================================================
+ * 原生控件收口（Hydro 自带 .button / input / select / textarea）
+ * 这些是 stylus 在构建期写死 #5f9fd6 蓝色，靠 CSS 变量覆盖不到，
+ * 必须在这里显式压过。比赛侧栏「创建比赛」、评测筛选、管理页都用它们。
+ * ================================================================= */
+html body .button:not(.codicon),
+html body .typo .button:not(.codicon) {
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-head);
+  font-size: 13px;
+  font-weight: 700;
+  box-shadow: var(--ax-shadow-1);
+  text-shadow: none;
+  transition: transform .12s ease, box-shadow .12s ease, background-color .12s ease;
+}
+
+html body .button:not(.codicon):not(.disabled):hover,
+html body .button:not(.codicon):not(.disabled):focus,
+html body .typo .button:not(.codicon):not(.disabled):hover {
+  background: var(--ax-surface-2);
+  border-color: var(--ax-line);
+  box-shadow: var(--ax-shadow-2);
+  transform: translate(-1px, -1px);
+  color: var(--ax-ink);
+}
+
+html body .button.primary:not(.codicon),
+html body .typo .button.primary:not(.codicon) {
+  background: var(--ax-primary-bright);
+  border-color: var(--ax-line);
+  color: #fff;
+  box-shadow: var(--ax-shadow-2);
+}
+
+html body .button.primary:not(.codicon):not(.disabled):hover,
+html body .button.primary:not(.codicon):not(.disabled):focus,
+html body .typo .button.primary:not(.codicon):not(.disabled):hover {
+  background: var(--ax-primary);
+  border-color: var(--ax-line);
+  color: #fff;
+  box-shadow: var(--ax-shadow-3);
+}
+
+html body .button.rounded {
+  border-radius: var(--ax-radius-pill);
+}
+
+html body .button.disabled,
+html body .button[disabled] {
+  opacity: .5;
+  box-shadow: none;
+  transform: none;
+}
+
+/* 表单控件：粗描边 + 聚焦橙色硬环 */
+html body input[type="text"],
+html body input[type="password"],
+html body input[type="email"],
+html body input[type="number"],
+html body input[type="search"],
+html body input[type="url"],
+html body input[type="tel"],
+html body textarea,
+html body select {
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-body);
+  box-shadow: none;
+  transition: box-shadow .12s ease, border-color .12s ease;
+}
+
+html body input[type="text"]:focus,
+html body input[type="password"]:focus,
+html body input[type="email"]:focus,
+html body input[type="number"]:focus,
+html body input[type="search"]:focus,
+html body textarea:focus,
+html body select:focus {
+  border-color: var(--ax-primary-bright);
+  box-shadow: 0 0 0 3px var(--ax-primary-soft);
+  outline: none;
+}
+
+html body select {
+  padding-right: 26px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ax-ink) 50%),
+    linear-gradient(135deg, var(--ax-ink) 50%, transparent 50%);
+  background-position: calc(100% - 14px) 52%, calc(100% - 9px) 52%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* 复选框 / 单选框 */
+html body input[type="checkbox"],
+html body input[type="radio"] {
+  accent-color: var(--ax-primary-bright);
+}
+
+/* 表头 / 分节标题里的原生小工具条 */
+html body .section__tools .button {
+  box-shadow: none;
+}
+
+/* 搜索条里的输入不要再套一层描边（.ax-search__field 自己已是胶囊） */
+html body .ax-search .ax-search__field input[type="text"],
+html body .ax-search .ax-search__field input[type="text"]:focus {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  outline: none;
+}
+
+/* 英文字号后缀（训练页标题里的 (Training)） */
+html body .ax-page-title__en {
+  font-family: var(--ax-font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--ax-muted);
+}
+
+/* 排序下拉会被 Foundation 的 select{width:100%} 撑满，锁死宽度 */
+html body .ax-search__sort {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 170px;
+}
+
+/* 搜索框里的输入框字号与左右对齐 */
+html body .ax-search .ax-search__field {
+  min-width: 260px;
+}

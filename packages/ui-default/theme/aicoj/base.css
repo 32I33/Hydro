@@ -14,6 +14,12 @@ html body {
   text-rendering: optimizeLegibility;
 }
 
+/* Hydro 把页面底色写在 #panel 上（$page-bg-color = #edf0f2 冷灰），
+   body 的 background 压不到它，必须单独覆盖，否则整站仍是旧冷灰底。 */
+html body #panel {
+  background: var(--ax-bg);
+}
+
 html body ::selection {
   background: var(--ax-primary-soft);
   color: var(--ax-ink);
@@ -94,12 +100,66 @@ html body ::-webkit-scrollbar-thumb:hover {
   background: var(--ax-muted);
 }
 
-/* ---------- 页脚 ---------- */
+/* ---------- 页脚 ----------
+   原来的 $footer-bg-color 带淡紫调，整条像一块旧 bleed；
+   改成白纸面 + 橙色像素条 + 墨线硬边，链接走橙主色。 */
 html body .footer {
+  position: relative;
+  margin-top: 28px;
+  padding-top: 10px;
   border-top: 2px solid var(--ax-line);
-  background: var(--ax-surface-2);
+  background: var(--ax-surface);
   color: var(--ax-text-2);
   font-size: 13px;
+  box-shadow: inset 0 6px 0 -4px var(--ax-primary-bright);
+}
+
+/* 顶部橙色像素条：橙色短段 + 墨色隔断，像素街机的分隔感 */
+html body .footer::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--ax-primary-bright) 0 26px,
+    var(--ax-line) 26px 32px
+  );
+  pointer-events: none;
+}
+
+html body .footer h1 {
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ax-ink);
+}
+
+html body .footer h1::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 6px;
+  background: var(--ax-primary-bright);
+  border: 1px solid var(--ax-line);
+  vertical-align: 1px;
+}
+
+html body .footer__category__item a {
+  color: var(--ax-text-2);
+  text-decoration: none;
+  border-bottom: 1px dashed transparent;
+}
+
+html body .footer__category__item a:hover {
+  color: var(--ax-primary);
+  border-bottom-color: var(--ax-primary);
+  text-decoration: none;
 }
 
 /* ---------- 主内容容器 ---------- */

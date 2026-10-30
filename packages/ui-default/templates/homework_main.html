@@ -1,76 +1,150 @@
 {% extends "layout/basic.html" %}
 {% block content %}
 {{ set(UiContext, 'docs', calendar) }}
-<div class="row">
-  <div class="medium-12 columns">
-    <div class="section">
-      <div class="section__header">
-        <h1 class="section__title">{{ _('All Homeworks') }}</h1>
-        <div class="section__tools">
-          <span class="nojs--hide">
-            {{ _('View') }}:
-            <select class="inline compact select" name="homework_display">
-              <option value="calendar">{{ _('Calendar View') }}</option>
-              <option value="list" selected>{{ _('List View') }}</option>
-            </select>
-          </span>
-          <form method="get" class="filter-form" name="filter-form">
-            <input type="text" class="inline compact textbox" name="q" value="{{ q }}" placeholder="{{ _('Search homeworks...') }}">
-            <select class="inline compact select" name="group">
-              <option value=""{% if not group %} selected{% endif %}>{{ _('All') }}</option>
-              {%- for g in groups -%}
-                <option value="{{ g }}"{% if group == g %} selected{% endif %}>{{ g }}</option>
-              {%- endfor -%}
-              {%- if not groups|length -%}
-                <option disabled>{{ _('No group available') }}</option>
-              {%- endif -%}
-            </select>
-            <button type="submit" class="compact button hasjs--hide">
-              {{ _('Search') }}
-            </button>
-          </form>
-        {% if handler.user.hasPerm(perm.PERM_CREATE_HOMEWORK) %}
-          <a class="compact button" href="{{ url('homework_create') }}">{{ _('Create Homework') }}</a>
-        {% endif %}
-        </div>
+{% set _ongoing = [] %}
+{% set _closed = [] %}
+{% for _t in tdocs %}
+  {% if model.contest.isDone(_t) or model.contest.isExtended(_t) %}
+    {% set _ = _closed.push(1) %}
+  {% else %}
+    {% set _ = _ongoing.push(1) %}
+  {% endif %}
+{% endfor %}
+<div class="ax-camp">
+  <nav class="ax-crumb">
+    <a href="/">首页</a><i>/</i>
+    <span>班级作业</span>
+  </nav>
+
+  <header class="ax-page-head ax-panel">
+    <div class="ax-page-head__main">
+      <span class="ax-eyebrow">Hydro OJ · Class Assignment</span>
+      <h1 class="ax-page-title">班级作业 <span class="ax-page-title__en">(Homework)</span></h1>
+      <p class="ax-page-sub">按周推进的阶段性任务，提交后可查看批阅报告与题解</p>
+    </div>
+    <div class="ax-page-head__side">
+      <div class="ax-head-stat">
+        <span class="ax-head-stat__icon"><span class="icon icon-homework"></span></span>
+        <span class="ax-head-stat__body">
+          <em>本页作业</em>
+          <b>{{ tdocs.length }} 份</b>
+        </span>
       </div>
-      <div class="section__body no-padding">
-      {% if not tdocs.length %}
-        {{ nothing.render('There is no homework so far ╰(*°▽°*)╯') }}
-      {% else %}
-        <ol class="section__list homework__list">
-        {%- for tdoc in tdocs -%}
-          <li class="section__list__item homework__item">
-            <div class="media">
-              <div class="media__left medium">
-                <div class="homework__date numbox">
-                  <div class="numbox__num large">{{ datetimeSpan(tdoc['penaltySince'], false, 'D')|safe }}</div>
-                  <div class="numbox__text">{{ datetimeSpan(tdoc['penaltySince'], false, 'YYYY-M')|safe }}</div>
-                </div>
-              </div>
-              <div class="media__body medium">
-                <h1 class="homework__title"><a href="{{ url('homework_detail', tid=tdoc.docId) }}" data-emoji-enabled>{{ tdoc.title }}</a></h1>
-                <ul class="supplementary list">
-                  <li>{{ _('Status') }}: {{ _(model.contest.statusText(tdoc)) }}</li>
-                  <li>{{ _('Open Since') }}: {{ datetimeSpan(tdoc['beginAt'])|safe }}</li>
-                  <li>
-                  {% if model.contest.isExtended(tdoc) or model.contest.isDone(tdoc) %}
-                    {{ _('Hard Deadline') }}: {{ datetimeSpan(tdoc['endAt'])|safe }}
-                  {% else %}
-                    {{ _('Deadline') }}: {{ datetimeSpan(tdoc['penaltySince'])|safe }}
-                  {% endif %}
-                  </li>
-                </ul>
+      <div class="ax-head-stat ax-head-stat--mint">
+        <span class="ax-head-stat__icon"><span class="icon icon-schedule"></span></span>
+        <span class="ax-head-stat__body">
+          <em>进行中</em>
+          <b>{{ _ongoing|length }} 份</b>
+        </span>
+      </div>
+      <div class="ax-head-stat ax-head-stat--gold">
+        <span class="ax-head-stat__icon"><span class="icon icon-check"></span></span>
+        <span class="ax-head-stat__body">
+          <em>已截止</em>
+          <b>{{ _closed|length }} 份</b>
+        </span>
+      </div>
+      {% if handler.user.hasPerm(perm.PERM_CREATE_HOMEWORK) %}
+        <a class="ax-btn" href="{{ url('homework_create') }}">
+          <span class="icon icon-add"></span> 创建作业
+        </a>
+      {% endif %}
+    </div>
+  </header>
+
+  <div class="ax-toolbar">
+    <div class="ax-filter-row">
+      <span class="ax-filter-row__label">状态</span>
+      <div class="ax-filter-row__items" id="ax-hw-filter">
+        <button type="button" class="ax-pill is-active" data-state="">全部作业</button>
+        <button type="button" class="ax-pill" data-state="ongoing">进行中</button>
+        <button type="button" class="ax-pill" data-state="closed">已截止 / 归档</button>
+      </div>
+    </div>
+    <form method="get" class="ax-toolbar__form" name="filter-form">
+      <div class="ax-search__field">
+        <span class="icon icon-search"></span>
+        <input type="text" name="q" value="{{ q }}" placeholder="{{ _('Search homeworks...') }}">
+      </div>
+      <select class="ax-select" name="group">
+        <option value=""{% if not group %} selected{% endif %}>{{ _('All') }}</option>
+        {%- for g in groups -%}
+          <option value="{{ g }}"{% if group == g %} selected{% endif %}>{{ g }}</option>
+        {%- endfor -%}
+        {%- if not groups|length -%}
+          <option disabled>{{ _('No group available') }}</option>
+        {%- endif -%}
+      </select>
+      <span class="nojs--hide ax-select-wrap">
+        {{ _('View') }}:
+        <select class="ax-select" name="homework_display">
+          <option value="calendar">{{ _('Calendar View') }}</option>
+          <option value="list" selected>{{ _('List View') }}</option>
+        </select>
+      </span>
+      <button type="submit" class="ax-btn ax-btn--primary">搜索</button>
+    </form>
+  </div>
+
+  <div class="section section--bare">
+    <div class="section__body no-padding">
+    {% if not tdocs.length %}
+      {{ nothing.render('There is no homework so far ╰(*°▽°*)╯') }}
+    {% else %}
+      <ol class="section__list homework__list">
+      {%- for tdoc in tdocs -%}
+        {% set _isClosed = model.contest.isDone(tdoc) or model.contest.isExtended(tdoc) %}
+        <li class="section__list__item homework__item" data-state="{{ 'closed' if _isClosed else 'ongoing' }}">
+          <div class="media">
+            <div class="media__left medium">
+              <div class="homework__date numbox">
+                <div class="numbox__num large">{{ datetimeSpan(tdoc['penaltySince'], false, 'D')|safe }}</div>
+                <div class="numbox__text">{{ datetimeSpan(tdoc['penaltySince'], false, 'YYYY-M')|safe }}</div>
               </div>
             </div>
-          </li>
-        {%- endfor -%}
-        </ol>
+            <div class="media__body medium">
+              <h1 class="homework__title"><a href="{{ url('homework_detail', tid=tdoc.docId) }}" data-emoji-enabled>{{ tdoc.title }}</a></h1>
+              <ul class="supplementary list">
+                <li>{{ _('Status') }}: {{ _(model.contest.statusText(tdoc)) }}</li>
+                <li>{{ _('Open Since') }}: {{ datetimeSpan(tdoc['beginAt'])|safe }}</li>
+                <li>
+                {% if model.contest.isExtended(tdoc) or model.contest.isDone(tdoc) %}
+                  {{ _('Hard Deadline') }}: {{ datetimeSpan(tdoc['endAt'])|safe }}
+                {% else %}
+                  {{ _('Deadline') }}: {{ datetimeSpan(tdoc['penaltySince'])|safe }}
+                {% endif %}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </li>
+      {%- endfor -%}
+      </ol>
+      <div class="ax-plist__pager">
         {{ paginator.render(page, tpcount, add_qs=qs) }}
-        <div name="calendar_entry"></div>
-      {% endif %}
       </div>
+      <div name="calendar_entry"></div>
+    {% endif %}
     </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var box = document.getElementById('ax-hw-filter');
+  if (!box) return;
+  var items = document.querySelectorAll('.homework__item');
+  box.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.ax-pill') : null;
+    if (!btn) return;
+    var want = btn.getAttribute('data-state');
+    Array.prototype.forEach.call(box.querySelectorAll('.ax-pill'), function (el) {
+      el.classList.toggle('is-active', el === btn);
+    });
+    Array.prototype.forEach.call(items, function (it) {
+      it.style.display = (!want || it.getAttribute('data-state') === want) ? '' : 'none';
+    });
+  });
+})();
+</script>
 {% endblock %}
