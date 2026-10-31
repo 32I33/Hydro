@@ -779,3 +779,116 @@ html body .md-editor .md-editor-preview {
   --md-theme-link-color: var(--ax-primary);
   --md-theme-link-hover-color: var(--ax-primary-wash);
 }
+
+/* ------------------------------------------------------------------
+   用户主页：默认 profile-header 是蓝色渐变摄影图，压回像素街机纸卡。
+   ------------------------------------------------------------------ */
+html body .profile-header.user-profile-bg {
+  background-image: none !important;
+  background-color: var(--ax-surface);
+  border: 2px solid var(--ax-line);
+  box-shadow: var(--ax-shadow-3);
+  color: var(--ax-ink);
+  padding: 26px 28px;
+}
+
+html body .profile-header.user-profile-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(20, 27, 45, .045) 0 2px, transparent 2px 26px),
+    repeating-linear-gradient(90deg, rgba(20, 27, 45, .045) 0 2px, transparent 2px 26px);
+}
+
+html body .profile-header__content {
+  position: relative;
+  z-index: 1;
+}
+
+html body .profile-header .user-profile-avatar {
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  box-shadow: var(--ax-shadow-2);
+  background: var(--ax-surface-2);
+}
+
+html body .profile-header h1 {
+  color: var(--ax-ink);
+  font-family: var(--ax-font-head);
+  letter-spacing: .02em;
+}
+
+html body .profile-header__contact-item {
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface-2);
+  color: var(--ax-ink);
+  box-shadow: var(--ax-shadow-1);
+}
+
+html body .profile-header__contact-item:hover {
+  background: var(--ax-primary-soft);
+  color: var(--ax-primary);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--ax-shadow-2);
+}
+
+/* ------------------------------------------------------------------
+   富文本编辑器（个人简介 / 讨论回复）：默认 data-theme=dark 是纯黑，
+   这里强制成暖纸面 + 墨线，避免整页出现一块黑色矩形。
+   ------------------------------------------------------------------ */
+html body .md-editor[data-theme=dark],
+html body .md-editor {
+  --md-color: var(--ax-ink);
+  --md-hover-color: var(--ax-primary);
+  --md-bk-color: var(--ax-surface);
+  --md-bk-color-outstand: var(--ax-surface-2);
+  --md-bk-hover-color: var(--ax-surface-3);
+  --md-border-color: var(--ax-line);
+  --md-border-hover-color: var(--ax-primary-bright);
+  --md-border-active-color: var(--ax-primary);
+  --md-scrollbar-bg-color: var(--ax-surface-2);
+  --md-scrollbar-thumb-color: var(--ax-line-soft);
+  --md-scrollbar-thumb-hover-color: var(--ax-muted);
+  --md-scrollbar-thumb-active-color: var(--ax-ink-soft);
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  box-shadow: var(--ax-shadow-2);
+  overflow: hidden;
+}
+
+html body .md-editor .md-editor-toolbar-wrapper,
+html body .md-editor .md-editor-toolbar {
+  background: var(--ax-surface-2);
+  border-bottom: 2px solid var(--ax-line);
+  color: var(--ax-ink);
+}
+
+html body .md-editor .md-editor-content,
+html body .md-editor .md-editor-input-wrapper,
+html body .md-editor .md-editor-preview-wrapper {
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+}
+
+html body .md-editor .md-editor-input,
+html body .md-editor .md-editor-preview {
+  color: var(--ax-ink);
+}
+
+/* body 上没有 page--user_detail，改用结构选择器直接压过页面层 */
+html body .profile-header__main h1,
+html body .profile-header__main p,
+html body .profile-header__main .time,
+html body .profile-header__main .time a,
+html body .profile-header__contact-item,
+html body .profile-header__contact-item .icon {
+  color: var(--ax-ink) !important;
+}
+
+html body .profile-header__contact-item {
+  background: var(--ax-surface-2) !important;
+  border-color: var(--ax-line) !important;
+}

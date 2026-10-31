@@ -171,3 +171,10 @@ html body .main {
 html body .nav--placeholder {
   height: var(--ax-nav-h);
 }
+
+/* 全局兜底：避免默认暗色组件在浅色站里留下纯黑底 */
+html body .md-editor[data-theme=dark] textarea,
+html body .md-editor[data-theme=dark] .md-editor-input {
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+}
