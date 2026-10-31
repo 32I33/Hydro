@@ -41,7 +41,8 @@ export default class Editor extends DOMAttachedObject {
     const { load } = await import('vj/components/monaco/loader');
     const {
       onChange, language = 'markdown',
-      theme = `vs-${getTheme()}`,
+      // AICOJ uses a light paper theme; keep Monaco on the matching light skin.
+      theme = 'vs',
       model = `file://model-${Math.random().toString(16).slice(2)}.${language}`,
       autoResize = true, autoLayout = true,
       hide = [], lineNumbers = 'on',

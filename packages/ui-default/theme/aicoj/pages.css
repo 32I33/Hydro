@@ -892,3 +892,11 @@ html body .profile-header__contact-item {
   background: var(--ax-surface-2) !important;
   border-color: var(--ax-line) !important;
 }
+
+/* 权限矩阵：默认样式的蓝色表头/分组条与像素街机纸面不协调 */
+html body .domain-users .data-table thead th,
+html body .domain-users .data-table .col--family {
+  background: var(--ax-primary-soft) !important;
+  color: var(--ax-ink) !important;
+  border-color: var(--ax-line) !important;
+}
