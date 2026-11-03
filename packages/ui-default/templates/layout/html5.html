@@ -5,7 +5,7 @@
 {% import "components/noscript_note.html" as noscript_note with context %}
 {% import "components/user.html" as user with context %}
 <!DOCTYPE html>
-{% set theme = 'light' %}{#- AICOJ 像素街机主题只有浅色版本，暂不听用户 theme 偏好；暗色变体留待后续阶段 -#}
+{% set theme = 'light' %}{#- AICOJ 鍍忕礌琛楁満涓婚鍙湁娴呰壊鐗堟湰锛屾殏涓嶅惉鐢ㄦ埛 theme 鍋忓ソ锛涙殫鑹插彉浣撶暀寰呭悗缁樁娈?-#}
 <html data-page="{{ page_name }}" data-layout="{{ layout_name }}" class="layout--{{ layout_name }} page--{{ page_name }} theme--{{ theme }} nojs" data-mantine-color-scheme="{{ 'dark' if theme.includes('dark') else 'light' }}" lang="{{ UserContext.viewLang }}" data-app="Hydro">
 <head>
   <meta charset="UTF-8">
@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" href="{{ UiContext.cdn_prefix }}favicon-16x16.png" sizes="16x16">
   {% if handler.context.request.url %}<link rel="canonical" href="{{ model.system.get('server.url') }}{{ handler.context.request.url.substring(1) }}">{% endif %}
   <meta name="theme-color" content="#ff5e1a">
-  {#- AICOJ · Pixel Arcade 字体：Space Grotesk / Plus Jakarta Sans / Space Mono -#}
+  {#- AICOJ 路 Pixel Arcade 瀛椾綋锛歋pace Grotesk / Plus Jakarta Sans / Space Mono -#}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" media="all" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
@@ -44,10 +44,10 @@
     {% endif %}
   </style>
   {% if process.env.DEV %}
-    <script src="/default.theme.js?version={{ global.Hydro.version['ui-default'] }}"></script>
-    <link rel="stylesheet" media="all" href="/theme-{{ global.Hydro.version['ui-default'] }}.css">
+    <script src="/default.theme.js?version={{ global.Hydro.version['ui-default'] }}&v=6"></script>
+    <link rel="stylesheet" media="all" href="/theme-{{ global.Hydro.version['ui-default'] }}.css?v=18">
   {% else %}
-    <link rel="stylesheet" media="all" href="{{ UiContext.cdn_prefix }}theme-{{ global.Hydro.version['ui-default'] }}.css">
+    <link rel="stylesheet" media="all" href="{{ UiContext.cdn_prefix }}theme-{{ global.Hydro.version['ui-default'] }}.css?v=9">
   {% endif %}
   {% if not isIE(handler.request.headers['user-agent']) and not handler.session.legacy %}
     <script>
@@ -64,7 +64,7 @@
   {% if not isIE(handler.request.headers['user-agent']) and not handler.session.legacy %}
     <script type="text/javascript" src="{{ UiContext.cdn_prefix if UiContext.cdn_dynamic else '/' }}resource/{{ UiContext.constantVersion }}/entry.js"></script>
     <script type="text/javascript" src="{{ UiContext.cdn_prefix }}resource/{{ global.Hydro.version['ui-default'] }}/lang-{{ _('__id') }}.js"></script>
-    <script type="text/javascript" src="{{ UiContext.cdn_prefix }}hydro-{{ global.Hydro.version['ui-default'] }}.js{% if process.env.DEV %}?version=dev{% endif %}"></script>
+    <script type="text/javascript" src="{{ UiContext.cdn_prefix }}hydro-{{ global.Hydro.version['ui-default'] }}.js{% if process.env.DEV %}?version=dev&v=5{% endif %}"></script>
   {% endif %}
   {% block body %}{% endblock %}
   {% block script %}{% endblock %}
@@ -76,3 +76,7 @@
   {% endif %}
 </body>
 </html>
+
+
+
+

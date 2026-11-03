@@ -590,7 +590,7 @@ html body .data-table:not(.ax-table) .record-status--icon {
   border: 2px solid var(--ax-line);
   border-radius: var(--ax-radius);
   background-color: var(--ax-mint);
-  background-image: url('/components/navigation/aicoj-mascot.png');
+  background-image: url('/components/navigation/aicoj-mascot-128.png');
   background-size: 74% auto;
   background-position: center bottom;
   background-repeat: no-repeat;
@@ -899,4 +899,658 @@ html body .domain-users .data-table .col--family {
   background: var(--ax-primary-soft) !important;
   color: var(--ax-ink) !important;
   border-color: var(--ax-line) !important;
+}
+
+/* =================================================================
+ * 在线编程页：固定视口（Stitch「Hydro 原生答题评测」）
+ * 左题面内部滚，右编辑器填满，底部控制台 214px；整页不滚。
+ * ================================================================= */
+html body:has(.ax-submit) {
+  overflow: hidden;
+}
+html body:has(.ax-submit) .footer {
+  display: none;
+}
+html body .ax-submit {
+  height: calc(100vh - var(--ax-nav-h) - 18px);
+  max-width: none;
+  margin: 0;
+  padding: 10px 18px 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+html body .ax-submit__col {
+  min-height: 0;
+  height: 100%;
+}
+html body .ax-submit__col--prob {
+  overflow-y: auto;
+  padding-right: 4px;
+  overscroll-behavior: contain;
+}
+html body .ax-submit__col--editor {
+  position: static;
+  top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+}
+html body .ax-submit__prob {
+  padding: 14px 18px 26px;
+}
+html body .ax-submit .ax-editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  overflow: hidden;
+}
+html body .ax-submit .ax-editor__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+html body .ax-submit .ax-editor__code {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 10px 12px;
+}
+html body .ax-submit .ax-editor__code .row,
+html body .ax-submit .ax-editor__code .columns,
+html body .ax-submit .ax-editor__code .form__item {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+html body .ax-submit .ax-editor__code .form__item > label {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+}
+html body .ax-submit .ax-editor__code .form__item > label > div,
+html body .ax-submit .ax-editor__code .textarea-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+}
+html body .ax-submit .ax-editor__code .form__item > label > div::before {
+  display: none;
+}
+html body .ax-submit .ax-editor__code .form__item > label {
+  font-size: 0;
+}
+html body .ax-submit .ax-editor__code .textarea-container {
+  font-size: 13px;
+}
+html body .ax-submit .ax-editor__code textarea,
+html body .ax-submit .ax-editor__code textarea.ax-code {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  resize: none;
+}
+html body .ax-submit .ax-editor__code .textbox {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100% !important;
+  height: 100% !important;
+  overflow: hidden;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface);
+}
+html body .ax-submit .ax-editor__code .monaco-editor,
+html body .ax-submit .ax-editor__code .monaco-editor .overflow-guard {
+  border-radius: var(--ax-radius-sm);
+}
+html body .ax-editor__exit {
+  padding: 4px 6px;
+  color: var(--ax-muted);
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+html body .ax-editor__exit:hover {
+  color: var(--ax-primary);
+  text-decoration: none;
+}
+
+/* 底部控制台 */
+html body .ax-console {
+  flex: 0 0 214px;
+  min-height: 170px;
+  margin-top: 12px;
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+html body .ax-console__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
+  border-bottom: 2px solid var(--ax-line);
+  background: var(--ax-surface-2);
+}
+html body .ax-console__tabs {
+  display: flex;
+  gap: 6px;
+}
+html body .ax-console__tab {
+  padding: 4px 10px;
+  border: 2px solid transparent;
+  border-radius: var(--ax-radius-sm);
+  background: transparent;
+  color: var(--ax-muted);
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+html body .ax-console__tab:hover {
+  color: var(--ax-ink);
+}
+html body .ax-console__tab.is-active {
+  border-color: var(--ax-line);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  box-shadow: var(--ax-shadow-1);
+}
+html body .ax-console__status {
+  margin-left: auto;
+  color: var(--ax-muted);
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+}
+html body .ax-console__panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 12px 14px;
+  background: var(--ax-surface);
+}
+html body .ax-console__empty {
+  margin: 0 0 8px;
+  color: var(--ax-text-2);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+html body .ax-console__link {
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+/* 左侧渐进提示卡 */
+html body .ax-hint {
+  padding: 14px 16px 15px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  background: var(--ax-surface);
+  box-shadow: var(--ax-shadow-3);
+}
+html body .ax-hint__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed var(--ax-surface-4);
+}
+html body .ax-hint__avatar {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-primary-soft);
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+html body .ax-hint__head b {
+  display: block;
+  font-family: var(--ax-font-head);
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ax-ink);
+}
+html body .ax-hint__head em {
+  display: block;
+  font-style: normal;
+  color: var(--ax-muted);
+  font-size: 10.5px;
+}
+html body .ax-hint__tag {
+  margin-left: auto;
+  padding: 1px 8px;
+  border: 1.5px solid var(--ax-primary);
+  border-radius: 999px;
+  background: var(--ax-primary-soft);
+  color: var(--ax-primary);
+  font-family: var(--ax-font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+html body .ax-hint__levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 0;
+}
+html body .ax-hint__level {
+  padding: 4px 9px;
+  border: 1.5px solid var(--ax-line);
+  border-radius: 999px;
+  background: var(--ax-surface-2);
+  color: var(--ax-muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+html body .ax-hint__level:hover {
+  color: var(--ax-ink);
+}
+html body .ax-hint__level.is-active {
+  border-color: var(--ax-ink);
+  background: var(--ax-ink);
+  color: var(--ax-surface);
+}
+html body .ax-hint__body {
+  max-height: 300px;
+  overflow: auto;
+  padding: 2px 2px 4px;
+}
+html body .ax-hint__empty {
+  margin: 0;
+  color: var(--ax-text-2);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+html body .ax-hint__item {
+  margin: 0 0 10px;
+  padding: 9px 11px;
+  border: 1.5px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface-2);
+}
+html body .ax-hint__badge {
+  display: inline-block;
+  margin-bottom: 4px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--ax-primary-soft);
+  color: var(--ax-primary);
+  font-family: var(--ax-font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+}
+html body .ax-hint__item p {
+  margin: 0;
+  color: var(--ax-ink);
+  font-size: 12.5px;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+html body .ax-hint__err {
+  margin: 8px 0 0;
+  color: var(--ax-red);
+  font-size: 11.5px;
+}
+html body .ax-hint__foot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+}
+html body .ax-hint__link {
+  color: var(--ax-muted);
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+html body .ax-hint__link:hover {
+  color: var(--ax-primary);
+}
+
+@media (max-width: 1180px) {
+  html body:has(.ax-submit) {
+    overflow: auto;
+  }
+  html body .ax-submit {
+    height: auto;
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+  }
+  html body .ax-submit__col--prob,
+  html body .ax-submit__col--editor {
+    height: auto;
+    overflow: visible;
+  }
+  html body .ax-submit .ax-editor__code textarea,
+  html body .ax-submit .ax-editor__code textarea.ax-code {
+    min-height: 360px;
+  }
+  html body .ax-console {
+    flex: 0 0 auto;
+    min-height: 180px;
+  }
+  html body .ax-hint__body {
+    max-height: none;
+  }
+}
+
+/* 在线编程页：html 也不能滚，否则 body 隐藏后 html 仍会滚 40-60px */
+html:has(.ax-submit),
+html body:has(.ax-submit) {
+  overflow: hidden !important;
+  height: 100%;
+}
+
+/* ==========================================================================
+   在线编程页：顶栏工具（评测记录 / 自测）+ 自测面板
+   ========================================================================== */
+html body .ax-editor__tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+html body .ax-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+  box-shadow: var(--ax-shadow-1);
+  transition: background .12s ease, transform .12s ease, box-shadow .12s ease;
+}
+html body .ax-tool::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--ax-primary-bright);
+}
+html body .ax-tool:hover {
+  background: var(--ax-surface-2);
+}
+html body .ax-tool:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+/* 评测记录列表 */
+html body .ax-rec {
+  display: flex;
+  flex-direction: column;
+}
+html body .ax-rec__row {
+  display: grid;
+  grid-template-columns: 116px minmax(0, 1fr) 92px;
+  gap: 10px;
+  align-items: baseline;
+  padding: 5px 4px;
+  border-bottom: 1px dashed var(--ax-surface-4);
+  color: var(--ax-ink);
+  font-size: 12px;
+  text-decoration: none;
+}
+html body .ax-rec__row:last-child {
+  border-bottom: 0;
+}
+html body .ax-rec__row:hover {
+  background: var(--ax-surface-2);
+  text-decoration: none;
+}
+html body .ax-rec__status {
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+html body .ax-rec__status.is-pass {
+  color: var(--ax-green);
+}
+html body .ax-rec__status.is-fail {
+  color: var(--ax-red);
+}
+html body .ax-rec__status.is-wait {
+  color: var(--ax-muted);
+}
+html body .ax-rec__meta,
+html body .ax-rec__time {
+  color: var(--ax-muted);
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+}
+html body .ax-rec__time {
+  text-align: right;
+}
+html body .ax-console__foot {
+  margin: 8px 0 0;
+  padding-top: 7px;
+  border-top: 2px dashed var(--ax-surface-4);
+}
+
+/* 自测面板 */
+html body .ax-pt {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  align-items: stretch;
+}
+html body .ax-pt__field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0;
+}
+html body .ax-pt__label {
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--ax-muted);
+}
+html body .ax-pt__input {
+  flex: 1 1 auto;
+  min-height: 64px;
+  margin: 0;
+  padding: 8px 10px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  resize: none;
+}
+html body .ax-pt__side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+html body .ax-pt__side .ax-btn {
+  align-self: flex-start;
+  cursor: pointer;
+}
+html body .ax-pt__result {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+html body .ax-pt__verdict {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 2px 8px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+html body .ax-pt__verdict.is-pass {
+  background: var(--ax-green-soft);
+  color: var(--ax-ink);
+}
+html body .ax-pt__verdict.is-fail {
+  background: var(--ax-red-soft);
+  color: var(--ax-ink);
+}
+html body .ax-pt__verdict.is-wait {
+  background: var(--ax-yellow-soft);
+  color: var(--ax-ink);
+}
+html body .ax-pt__bits {
+  margin: 0 0 6px;
+  color: var(--ax-muted);
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+}
+html body .ax-pt__out {
+  margin: 0 0 6px;
+  padding: 8px 10px;
+  max-height: 84px;
+  overflow: auto;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface-2);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-mono);
+  font-size: 11.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+html body .ax-pt__out--err {
+  border-color: var(--ax-red);
+  color: var(--ax-red);
+}
+html body .ax-pt__err {
+  color: var(--ax-red);
+}
+
+@media (max-width: 1180px) {
+  html body .ax-pt {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  html body .ax-rec__row {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
+  html body .ax-rec__time {
+    display: none;
+  }
+}
+
+html body .ax-tool.is-active {
+  background: var(--ax-primary-soft);
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+
+html body .ax-rec__time {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 代码区里的 label 会继承 text-transform: uppercase，把编辑器文字也顶成大写，这里复位 */
+html body .ax-editor__code .textarea-container,
+html body .ax-editor__code textarea,
+html body .ax-editor__code .monaco-editor,
+html body .ax-editor__code .monaco-editor * {
+  text-transform: none;
+}
+
+/* 自测面板：控制台高度有限，输出框收窄一点，避免内部滚动 */
+html body .ax-console__panel {
+  padding: 10px 12px;
+}
+html body .ax-pt__out {
+  max-height: 56px;
+}
+html body .ax-rec__time {
+  font-size: 10px;
+}
+
+/* 自测面板高度对齐控制台：输入框固定高、输出框给足空间，避免面板内滚动 */
+html body .ax-pt__input {
+  height: 92px;
+  min-height: 92px;
+  resize: none;
+}
+html body .ax-pt__out {
+  max-height: 96px;
+}
+html body .ax-console__panel {
+  overflow: auto;
+}
+
+/* 面板里两列不要互相撑高，输入框固定高度；控制台多给 8px，自测面板正好放下 */
+html body .ax-pt {
+  align-items: start;
+}
+html body .ax-pt__input {
+  flex: 0 0 auto;
+  height: 92px;
+  min-height: 92px;
+}
+html body .ax-console {
+  flex: 0 0 222px;
+}
+
+/* 控制台多 8px，自测面板正好放下（需要更高特异性压过原有 214px） */
+html body .ax-submit .ax-console {
+  flex: 0 0 222px;
+}
+
+/* 自测面板：标题行与运行按钮一行，下面才是输入/结果两列 */
+html body .ax-pt__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+html body .ax-pt__label {
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--ax-muted);
+}
+/* 编程页是固定视口工作区，右下角气泡会和自测输出框重叠，这里收起来 */
+html body:has(.ax-submit) .omnibar-toggle {
+  display: none !important;
+}
+
+/* 记录行时间列收窄：只显示 11月3日 16:22 */
+html body .ax-rec__row {
+  grid-template-columns: 116px minmax(0, 1fr) 96px;
 }

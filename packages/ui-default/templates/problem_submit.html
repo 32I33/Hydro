@@ -6,13 +6,6 @@
 {% set _diff = pdoc['difficulty'] or lib.difficulty(pdoc.nSubmit, pdoc.nAccept) %}
 <div class="ax-submit">
   <div class="ax-submit__col ax-submit__col--prob">
-    <nav class="ax-crumb">
-      <a href="/">首页</a><i>/</i>
-      <a href="{{ url('problem_main') }}">题库</a><i>/</i>
-      <a href="{{ url('problem_detail', pid=pdoc.docId) }}">{{ _pidLabel }}</a><i>/</i>
-      <span>提交评测</span>
-    </nav>
-
     <div class="ax-panel ax-submit__prob">
       <header class="ax-submit__prob-head">
         <span class="ax-pd__badge">{{ _pidLabel }}</span>
@@ -28,28 +21,39 @@
           </div>
         {% endif %}
       </header>
+
+    <div class="ax-panel ax-hint" data-hint data-pid="{{ _pid }}" data-title="{{ pdoc.title }}">
+      <div class="ax-hint__head">
+        <img class="ax-hint__avatar" src="{{ UiContext.cdn_prefix }}components/navigation/aicoj-mascot-128.png" width="36" height="36" style="width:36px;height:36px" alt="">
+        <div>
+          <b>AI 助教 · 像素小八</b>
+          <em>先想一步，再要下一步；不会直接替你写完</em>
+        </div>
+        <span class="ax-hint__tag">渐进提示</span>
+      </div>
+
+      <div class="ax-hint__levels" role="group" aria-label="提示层级">
+        <button type="button" class="ax-hint__level is-active" data-hint-level="1">第一层 · 方向</button>
+        <button type="button" class="ax-hint__level" data-hint-level="2">第二层 · 关键步骤</button>
+        <button type="button" class="ax-hint__level" data-hint-level="3">第三层 · 代码骨架</button>
+      </div>
+
+      <div class="ax-hint__body" data-hint-body>
+        <p class="ax-hint__empty">卡住时点下面的按钮。小八会先问你「这题在考什么」，再一步步往下提示。</p>
+      </div>
+
+      <div class="ax-hint__foot">
+        <button type="button" class="ax-btn ax-btn--primary ax-btn--sm" data-hint-ask>
+          <span class="icon icon-send"></span> 给我一点提示
+        </button>
+        <a class="ax-hint__link" href="/ai-coach/chat?pid={{ pdoc.docId }}">打开完整对话</a>
+      </div>
+    </div>
       <div class="problem-content">
         {% include "partials/problem_description.html" %}
       </div>
     </div>
 
-    <div class="ax-panel ax-ai-card">
-      <div class="ax-ai-card__head">
-        <img class="ax-ai-card__avatar" src="{{ UiContext.cdn_prefix }}components/navigation/aicoj-mascot.png" alt="">
-        <div>
-          <b>AI 助教 · 像素小八</b>
-          <em>卡住时可以先把题面丢给助教做拆解</em>
-        </div>
-        <span class="ax-ai-card__tag">AI</span>
-      </div>
-      <p class="ax-ai-card__body">让助教把题意拆成「输入 → 处理 → 输出」三步，或直接生成一组同类练习；写完再回来提交，不用离开这一页。</p>
-      <div class="ax-ai-card__foot">
-        <a class="ax-btn ax-btn--primary ax-btn--sm" href="/ai-coach/chat?pid={{ pdoc.docId }}">
-          <span class="icon icon-send"></span> 打开助教工作台
-        </a>
-        <a class="ax-btn ax-btn--sm" href="{{ url('problem_detail', pid=pdoc.docId) }}">返回题目</a>
-      </div>
-    </div>
   </div>
 
   <div class="ax-submit__col ax-submit__col--editor">
@@ -67,24 +71,387 @@
           </div>
           <div class="nojs--hide ax-editor__lang" id="codelang-selector"></div>
           <span class="ax-editor__spacer"></span>
+          <div class="ax-editor__tools">
+            <button type="button" class="ax-tool" data-console-open="records">评测记录</button>
+            <button type="button" class="ax-tool" data-console-open="pretest">自测</button>
+          </div>
+          <a class="ax-editor__exit" href="{{ url('problem_detail', pid=pdoc.docId) }}">退出</a>
           <input type="submit" class="ax-btn ax-btn--primary ax-editor__submit" value="{{ _('Submit') }}">
         </div>
 
         <div class="ax-editor__code">
-          <div name="submit_section"></div>
           {{ form.form_textarea({label:'Code', columns:12, name:'code', extra_class:'monospace ax-code', autofocus:true, nospellcheck:true}) }}
-        </div>
-
-        <div class="ax-editor__foot">
-          <span class="ax-editor__file">
-            {{ _('Or upload a file:') }} <input type="file" name="file">
-          </span>
-          <span class="ax-editor__hint">提交后可在「评测记录」查看结果与 AI 诊断</span>
         </div>
       </form>
     </div>
 
-    {% include "partials/problem_sidebar.html" %}
+    <div class="ax-panel ax-console" data-console data-docid="{{ pdoc.docId }}" data-domain="{{ pdoc.domainId }}"
+         data-uid="{{ handler.user._id }}" data-records-url="{{ url('record_main', query={pid: pdoc.docId, uid: handler.user._id}) }}">
+      <div class="ax-console__head">
+        <div class="ax-console__tabs">
+          <button type="button" class="ax-console__tab is-active" data-console-tab="records">评测记录</button>
+          <button type="button" class="ax-console__tab" data-console-tab="pretest">自测</button>
+          <button type="button" class="ax-console__tab" data-console-tab="ai">AI 诊断</button>
+        </div>
+        <span class="ax-console__status" data-console-status>提交后自动刷新</span>
+      </div>
+      <div class="ax-console__panel is-active" data-console-panel="records">
+        <div class="ax-rec" data-records>
+          <p class="ax-console__empty" data-records-empty>正在读取评测记录…</p>
+        </div>
+        <p class="ax-console__foot">
+          <a class="ax-console__link" href="{{ url('record_main', query={pid: pdoc.docId, uid: handler.user._id}) }}">查看我的全部评测记录</a>
+        </p>
+      </div>
+      <div class="ax-console__panel" data-console-panel="pretest" hidden>
+        <div class="ax-pt__head">
+          <span class="ax-pt__label">自定义输入</span>
+          <button type="button" class="ax-btn ax-btn--primary ax-btn--sm" data-pt-run>运行自测</button>
+        </div>
+        <div class="ax-pt">
+          <label class="ax-pt__field">
+            <textarea class="ax-pt__input" data-pt-input rows="3" spellcheck="false" placeholder="把一组测试数据粘到这里，格式和题目里的「输入格式」一致"></textarea>
+          </label>
+          <div class="ax-pt__side">
+            <div class="ax-pt__result" data-pt-result>
+              <p class="ax-console__empty">自测不会计入提交次数，也不会影响排名。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ax-console__panel" data-console-panel="ai" hidden>
+        <p class="ax-console__empty">提交后，AI 会结合错误测试点和代码给出诊断；做题中请先用左侧的三层提示。</p>
+        <a class="ax-console__link" href="/ai-coach/growth">去成长档案看历史问题</a>
+      </div>
+    </div>
   </div>
 </div>
+
+<script>
+(function () {
+  var root = document.querySelector('[data-hint]');
+  if (!root) return;
+  var pid = root.getAttribute('data-pid') || '';
+  var title = root.getAttribute('data-title') || '';
+  var body = root.querySelector('[data-hint-body]');
+  var ask = root.querySelector('[data-hint-ask]');
+  var levelButtons = Array.prototype.slice.call(root.querySelectorAll('[data-hint-level]'));
+  var level = 1;
+  var busy = false;
+
+  function setLevel(n) {
+    level = n;
+    levelButtons.forEach(function (btn) {
+      btn.classList.toggle('is-active', Number(btn.getAttribute('data-hint-level')) === n);
+    });
+  }
+
+  levelButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      setLevel(Number(btn.getAttribute('data-hint-level')));
+    });
+  });
+
+  function statement() {
+    var content = document.querySelector('.problem-content');
+    var text = content ? (content.innerText || content.textContent || '') : '';
+    return text.replace(/\s+\n/g, '\n').trim().slice(0, 6000);
+  }
+
+  function promptFor(n) {
+    var guide = {
+      1: '只给方向性提示：点出这题在考什么、应该先想哪一步。不要给代码，也不要给完整步骤，3 到 5 句。',
+      2: '给关键思路和边界条件，可以用伪代码，但不要给可以直接提交的完整代码。',
+      3: '给接近完整的解法步骤和一小段关键代码，但保留让学生自己补全的部分，并提醒他自己写一遍。',
+    }[n] || '给方向性提示。';
+    return '你正在 AICOJ 的题目页给学生做分层提示。学生正在写这道题：\n'
+      + '题目：' + title + '\n题面：' + statement() + '\n\n'
+      + '这是第 ' + n + ' 层提示。' + guide + '\n'
+      + '不要直接给最终答案；用中文；不要提你是模型；不要输出 Markdown 代码围栏以外的寒暄。';
+  }
+
+  function textOf(message) {
+    var parts = (message && message.parts) || [];
+    return parts.map(function (p) {
+      if (typeof p.text === 'string') return p.text;
+      if (p.type === 'code') return p.code || '';
+      return '';
+    }).join('\n').trim();
+  }
+
+  function addHint(text, n) {
+    var item = document.createElement('div');
+    item.className = 'ax-hint__item';
+    var badge = document.createElement('span');
+    badge.className = 'ax-hint__badge';
+    badge.textContent = '第 ' + n + ' 层';
+    var p = document.createElement('p');
+    p.textContent = text;
+    item.appendChild(badge);
+    item.appendChild(p);
+    body.appendChild(item);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  ask.addEventListener('click', async function () {
+    if (busy) return;
+    busy = true;
+    ask.disabled = true;
+    var old = ask.innerHTML;
+    ask.textContent = '小八正在想…';
+    try {
+      var res = await fetch('/ai-coach/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: promptFor(level),
+          sessionId: 'hint-' + pid,
+          clientMessageId: 'hint-' + pid + '-' + level + '-' + Date.now(),
+        }),
+      });
+      var data = await res.json();
+      if (!res.ok || !data.message) throw new Error(data.error || ('HTTP ' + res.status));
+      var text = textOf(data.message);
+      if (!text) throw new Error('empty reply');
+      addHint(text, level);
+      var empty = body.querySelector('.ax-hint__empty');
+      if (empty) empty.remove();
+    } catch (e) {
+      var err = document.createElement('p');
+      err.className = 'ax-hint__err';
+      err.textContent = '这次没连上 AI 助教：' + (e && e.message ? e.message : '请稍后再试');
+      body.appendChild(err);
+    } finally {
+      ask.disabled = false;
+      ask.innerHTML = old;
+      busy = false;
+    }
+  });
+
+})();
+
+(function () {
+  var root = document.querySelector('[data-console]');
+  if (!root) return;
+
+  var docId = root.getAttribute('data-docid') || '';
+  var domainId = root.getAttribute('data-domain') || 'system';
+  var recordsUrl = root.getAttribute('data-records-url') || '';
+  var statusEl = root.querySelector('[data-console-status]');
+  var recordsBox = root.querySelector('[data-records]');
+  var ptInput = root.querySelector('[data-pt-input]');
+  var ptRun = root.querySelector('[data-pt-run]');
+  var ptResult = root.querySelector('[data-pt-result]');
+  var tabs = Array.prototype.slice.call(root.querySelectorAll('[data-console-tab]'));
+  var panels = Array.prototype.slice.call(root.querySelectorAll('[data-console-panel]'));
+  var STATUS_TEXT = {
+    0: '排队中', 1: '通过', 2: '答案错误', 3: '运行超时', 4: '内存超限',
+    5: '输出超限', 6: '运行错误', 7: '编译错误', 8: '系统错误',
+    9: '已取消', 10: '未知错误', 11: '被攻击',
+    20: '运行中', 21: '编译中', 22: '取回数据中', 30: '已忽略', 31: '格式错误',
+  };
+  var PENDING = [0, 20, 21, 22];
+  var socket = null;
+  var ptBusy = false;
+  var recordsLoaded = false;
+
+  function esc(text) {
+    return String(text == null ? '' : text).replace(/[&<>"]/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c];
+    });
+  }
+
+  function setStatus(text) {
+    if (statusEl) statusEl.textContent = text;
+  }
+
+  function activate(name) {
+    tabs.forEach(function (tab) {
+      tab.classList.toggle('is-active', tab.getAttribute('data-console-tab') === name);
+    });
+    panels.forEach(function (panel) {
+      var on = panel.getAttribute('data-console-panel') === name;
+      panel.classList.toggle('is-active', on);
+      panel.hidden = !on;
+    });
+    if (name === 'records' && !recordsLoaded) loadRecords();
+    Array.prototype.forEach.call(document.querySelectorAll('[data-console-open]'), function (btn) {
+      btn.classList.toggle('is-active', btn.getAttribute('data-console-open') === name);
+    });
+  }
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activate(tab.getAttribute('data-console-tab')); });
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-console-open]'), function (btn) {
+    btn.addEventListener('click', function () {
+      var name = btn.getAttribute('data-console-open');
+      activate(name);
+      if (name === 'pretest' && ptInput && !ptInput.value) ptInput.focus();
+    });
+  });
+
+  function shortTime(text) {
+    var m = /(\d{4})-(\d{1,2})-(\d{1,2})[ T]+(\d{1,2}):(\d{2})/.exec(text || '');
+    if (!m) return text || '';
+    return m[2] + '\u6708' + m[3] + '\u65e5 ' + m[4] + ':' + m[5];
+  }
+
+  function cellText(row, selector) {
+    var el = row.querySelector(selector);
+    return el ? el.textContent.replace(/\s+/g, ' ').trim() : '';
+  }
+
+  function loadRecords() {
+    if (!recordsUrl) return;
+    recordsLoaded = true;
+    fetch(recordsUrl, { credentials: 'same-origin' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.text();
+      })
+      .then(function (html) {
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var rows = Array.prototype.slice.call(doc.querySelectorAll('tr[data-rid]')).slice(0, 10);
+        if (!rows.length) {
+          recordsBox.innerHTML = '<p class="ax-console__empty">还没有提交记录。提交一次之后，这里会列出每一次的结果。</p>';
+          setStatus('暂无记录');
+          return;
+        }
+        var out = '';
+        rows.forEach(function (row) {
+          var rid = row.getAttribute('data-rid') || '';
+          var link = row.querySelector('.record-status--text');
+          var kind = link && /pass/.test(link.className) ? 'is-pass'
+            : (link && /fail/.test(link.className) ? 'is-fail' : 'is-wait');
+          out += '<a class="ax-rec__row" href="/record/' + esc(rid) + '">'
+            + '<span class="ax-rec__status ' + kind + '">' + esc(link ? link.textContent.replace(/\s+/g, ' ').trim() : '—') + '</span>'
+            + '<span class="ax-rec__meta">' + esc([cellText(row, '.col--time'), cellText(row, '.col--memory'), cellText(row, '.col--lang')].filter(Boolean).join(' · ')) + '</span>'
+            + '<span class="ax-rec__time">' + esc(shortTime(cellText(row, '.col--submit-at'))) + '</span>'
+            + '</a>';
+        });
+        recordsBox.innerHTML = out;
+        setStatus(rows.length + ' 次记录');
+      })
+      .catch(function () {
+        recordsBox.innerHTML = '<p class="ax-console__empty">暂时读不到记录，可以直接刷新页面重试。</p>';
+        setStatus('读取失败');
+      });
+  }
+
+  function codeValue() {
+    var textarea = document.querySelector('[name="code"]');
+    return textarea ? textarea.value : '';
+  }
+
+  function langValue() {
+    var select = document.querySelector('[name="lang"]');
+    return select ? select.value : '';
+  }
+
+  function renderPretest(rdoc) {
+    var status = rdoc.status;
+    var kind = status === 1 ? 'is-pass' : (PENDING.indexOf(status) >= 0 ? 'is-wait' : 'is-fail');
+    var caseInfo = (rdoc.testCases && rdoc.testCases[0]) || null;
+    var bits = [];
+    if (caseInfo) {
+      if (typeof caseInfo.time === 'number') bits.push((Math.round(caseInfo.time * 100) / 100) + ' ms');
+      if (typeof caseInfo.memory === 'number') bits.push(Math.max(1, Math.round(caseInfo.memory / 1024)) + ' MiB');
+    }
+    var html = '<div class="ax-pt__verdict ' + kind + '">' + esc(STATUS_TEXT[status] || ('状态 ' + status)) + '</div>';
+    if (bits.length) html += '<p class="ax-pt__bits">' + esc(bits.join(' · ')) + '</p>';
+    var message = caseInfo && (caseInfo.message || '') ? String(caseInfo.message) : '';
+    var compiler = (rdoc.compilerTexts || []).filter(Boolean).join('\n');
+    if (compiler) html += '<pre class="ax-pt__out ax-pt__out--err">' + esc(compiler) + '</pre>';
+    if (message) html += '<pre class="ax-pt__out">' + esc(message) + '</pre>';
+    if (!compiler && !message) {
+      html += '<p class="ax-pt__bits">' + (PENDING.indexOf(status) >= 0 ? '正在运行…' : '没有输出内容。') + '</p>';
+    }
+    ptResult.innerHTML = html;
+  }
+
+  function watch(rid) {
+    if (socket) { try { socket.close(); } catch (e) { /* ignore */ } }
+    var proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    var url = proto + '//' + location.host + '/record-detail-conn?domainId=' + encodeURIComponent(domainId)
+      + '&rid=' + encodeURIComponent(rid) + '&noTemplate=1';
+    try {
+      socket = new WebSocket(url);
+    } catch (e) {
+      return;
+    }
+    socket.onmessage = function (event) {
+      var msg;
+      try { msg = JSON.parse(event.data); } catch (e) { return; }
+      if (!msg || !msg.rdoc) return;
+      renderPretest(msg.rdoc);
+      if (PENDING.indexOf(msg.rdoc.status) < 0) {
+        setStatus('自测完成');
+        try { socket.close(); } catch (e) { /* ignore */ }
+      }
+    };
+    socket.onerror = function () {
+      ptResult.innerHTML = '<p class="ax-console__empty">自测已提交，但没连上实时结果。'
+        + '<a href="/record/' + esc(rid) + '">打开这条记录</a>看结果。</p>';
+      setStatus('连接中断');
+    };
+  }
+
+  function runPretest() {
+    if (ptBusy) return;
+    var input = ptInput ? ptInput.value : '';
+    if (!input.trim()) {
+      ptResult.innerHTML = '<p class="ax-console__empty ax-pt__err">先填一组输入数据再运行。</p>';
+      if (ptInput) ptInput.focus();
+      return;
+    }
+    var code = codeValue();
+    if (!code.trim()) {
+      ptResult.innerHTML = '<p class="ax-console__empty ax-pt__err">代码区还是空的，先写点东西。</p>';
+      return;
+    }
+    ptBusy = true;
+    if (ptRun) { ptRun.disabled = true; ptRun.textContent = '运行中…'; }
+    setStatus('自测提交中…');
+    ptResult.innerHTML = '<p class="ax-console__empty">正在编译并运行…</p>';
+    fetch(location.pathname, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({ lang: langValue(), code: code, pretest: true, input: [input] }),
+    })
+      .then(function (res) {
+        return res.json().catch(function () { return {}; }).then(function (data) {
+          if (!res.ok || !data.rid) {
+            var detail = data && data.error && (data.error.message || data.error.name) ? (data.error.message || data.error.name) : ('HTTP ' + res.status);
+            throw new Error(detail);
+          }
+          return data.rid;
+        });
+      })
+      .then(function (rid) { watch(rid); })
+      .catch(function (err) {
+        ptResult.innerHTML = '<p class="ax-console__empty ax-pt__err">自测没跑起来：' + esc(err && err.message ? err.message : '请稍后再试') + '</p>';
+        setStatus('自测失败');
+      })
+      .then(function () {
+        ptBusy = false;
+        if (ptRun) { ptRun.disabled = false; ptRun.textContent = '运行自测'; }
+      });
+  }
+
+  if (ptRun) ptRun.addEventListener('click', runPretest);
+  if (ptInput) {
+    ptInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Tab') return;
+      if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+        event.preventDefault();
+        runPretest();
+      }
+    });
+  }
+
+  loadRecords();
+})();
+</script>
 {% endblock %}
