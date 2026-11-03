@@ -1554,3 +1554,15 @@ html body:has(.ax-submit) .omnibar-toggle {
 html body .ax-rec__row {
   grid-template-columns: 116px minmax(0, 1fr) 96px;
 }
+
+/* 自测版块的说明文字 */
+html body .ax-pt__head {
+  align-items: baseline;
+}
+html body .ax-pt__note {
+  margin-left: auto;
+  margin-right: 10px;
+  font-size: 10.5px;
+  color: var(--ax-muted);
+  text-align: right;
+}

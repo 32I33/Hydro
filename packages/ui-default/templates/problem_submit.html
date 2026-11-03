@@ -106,6 +106,7 @@
       <div class="ax-console__panel" data-console-panel="pretest" hidden>
         <div class="ax-pt__head">
           <span class="ax-pt__label">自定义输入</span>
+          <span class="ax-pt__note">自测只检查能不能跑通，不比对答案；判对错要看提交后的评测。</span>
           <button type="button" class="ax-btn ax-btn--primary ax-btn--sm" data-pt-run>运行自测</button>
         </div>
         <div class="ax-pt">
@@ -358,7 +359,8 @@
       if (typeof caseInfo.time === 'number') bits.push((Math.round(caseInfo.time * 100) / 100) + ' ms');
       if (typeof caseInfo.memory === 'number') bits.push(Math.max(1, Math.round(caseInfo.memory / 1024)) + ' MiB');
     }
-    var html = '<div class="ax-pt__verdict ' + kind + '">' + esc(STATUS_TEXT[status] || ('状态 ' + status)) + '</div>';
+    var verdictLabel = status === 1 ? '运行通过' : (STATUS_TEXT[status] || ('\u72b6\u6001 ' + status));
+    var html = '<div class="ax-pt__verdict ' + kind + '">' + esc(verdictLabel) + '</div>';
     if (bits.length) html += '<p class="ax-pt__bits">' + esc(bits.join(' · ')) + '</p>';
     var message = caseInfo && (caseInfo.message || '') ? String(caseInfo.message) : '';
     var compiler = (rdoc.compilerTexts || []).filter(Boolean).join('\n');
