@@ -30,7 +30,10 @@ window.UserContext = JSON.parse(window.UserContext);
 try {
   __webpack_public_path__ = UiContext.cdn_prefix;
 } catch (e) { }
-if ('serviceWorker' in navigator) {
+if (process.env.NODE_ENV !== 'production' && 'serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then((rs) => rs.forEach((r) => r.unregister()));
+}
+if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
   const sendConfig = () => fetch('/service-worker-config', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -70,3 +73,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   await window._hydroLoad();
   await window.HydroExports.initPageLoader();
 }, false);
+

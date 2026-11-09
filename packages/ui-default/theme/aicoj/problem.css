@@ -107,6 +107,59 @@ html body .ax-pd__submit {
   font-size: 14px;
 }
 
+/* Stitch 式题目标签页：真链接，选中项用墨线纸卡 */
+html body .ax-pd__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 7px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius-lg);
+  background: var(--ax-surface-2);
+  box-shadow: var(--ax-shadow-2);
+}
+html body .ax-pd__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 6px 13px;
+  border: 2px solid transparent;
+  border-radius: var(--ax-radius);
+  color: var(--ax-ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: background .14s ease, color .14s ease, transform .14s ease, box-shadow .14s ease;
+}
+html body .ax-pd__tab b {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border: 1.5px solid currentColor;
+  border-radius: 999px;
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  line-height: 1;
+  opacity: .75;
+}
+html body .ax-pd__tab:hover {
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+html body .ax-pd__tab.is-active {
+  border-color: var(--ax-line);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  box-shadow: var(--ax-shadow-2);
+}
+
 /* 标签行 */
 html body .ax-pd__tags {
   display: flex;
@@ -283,6 +336,34 @@ html body .ax-side__body {
   padding: 12px;
 }
 
+html body .ax-side__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+html body .ax-side__cta {
+  width: 100%;
+  justify-content: center;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+html body .ax-side__text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 4px 2px;
+  color: var(--ax-muted);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+html body .ax-side__text-link:hover {
+  color: var(--ax-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* 属性网格 */
 html body .ax-spec {
   display: grid;
@@ -456,4 +537,24 @@ html body .ax-pd .sample .toolbar a:hover {
   background: var(--ax-primary-soft);
   opacity: 1;
   text-decoration: none;
+}
+
+/* 详情页 tab：纸片胶囊，选中黑底白字 */
+html body .ax-pd__tabs {
+  background: var(--ax-surface);
+  border-color: var(--ax-ink);
+}
+html body .ax-pd__tab {
+  border-color: var(--ax-line);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+}
+html body .ax-pd__tab.is-active {
+  border-color: var(--ax-ink);
+  background: var(--ax-ink);
+  color: var(--ax-surface);
+}
+html body .ax-pd__tab.is-active b {
+  border-color: currentColor;
+  opacity: 1;
 }

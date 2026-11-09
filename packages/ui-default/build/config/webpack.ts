@@ -333,6 +333,7 @@ export default async function (env: { watch?: boolean, production?: boolean, mea
           { from: root('static') },
           { from: root('components/navigation/nav-logo-small_dark.png'), to: 'components/navigation/nav-logo-small_dark.png' },
           { from: root('components/navigation/aicoj-mascot.png'), to: 'components/navigation/aicoj-mascot.png' },
+          { from: root('components/navigation/aicoj-mascot-128.png'), to: 'components/navigation/aicoj-mascot-128.png' },
           { from: root(`${dirname(require.resolve('streamsaver/package.json'))}/mitm.html`), to: 'streamsaver/mitm.html' },
           { from: root(`${dirname(require.resolve('streamsaver/package.json'))}/sw.js`), to: 'streamsaver/sw.js' },
           { from: `${dirname(require.resolve('monaco-themes/package.json'))}/themes`, to: 'monaco/themes/' },

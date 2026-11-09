@@ -26,7 +26,7 @@
     {% else %}
     <div class="ax-spec__row"><span>输入输出</span><b>标准 I/O</b></div>
     {% endif %}
-    <div class="ax-spec__row"><span>题目提供者</span><b>{% if owner_udoc %}{{ owner_udoc.uname }}{% else %}—{% endif %}</b></div>
+    <div class="ax-spec__row"><span>题目提供者</span><b>{% if owner_udoc %}{{ 'AICOJ' if owner_udoc.uname == 'Hydro' else owner_udoc.uname }}{% else %}—{% endif %}</b></div>
   </div>
 </div>
 
@@ -66,6 +66,20 @@
     <h1 class="section__title">{{ pdoc['title'] }}</h1>
   </div>
 {% endif %}
+  {% if page_name == 'problem_detail' %}
+  <div class="ax-side__body ax-side__actions">
+    {% if handler.user.hasPerm(perm.PERM_SUBMIT_PROBLEM) %}
+    <a class="ax-btn ax-btn--primary ax-side__cta" href="{{ url('problem_submit', pid=pdoc.pid|default(pdoc.docId)) }}">
+      <span class="icon icon-send"></span> 进入在线编程模式
+    </a>
+    {% endif %}
+    {% if handler.user.own(pdoc, perm.PERM_EDIT_PROBLEM_SELF) or handler.user.hasPerm(perm.PERM_EDIT_PROBLEM) %}
+    <a class="ax-side__text-link" href="{{ url('problem_edit', pid=pdoc.pid|default(pdoc.docId)) }}">
+      <span class="icon icon-edit"></span> 编辑题目
+    </a>
+    {% endif %}
+  </div>
+  {% else %}
   <div>
     <ol class="menu">
     {% if page_name == 'discussion_node' or page_name == 'discussion_detail' %}
@@ -174,6 +188,7 @@
     {% endif %}
     </ol>
   </div>
+  {% endif %}
 </div>
 {% if page_name not in ['problem_config', 'problem_detail', 'homework_detail_problem', 'contest_detail_problem'] %}
 <div class="section side">

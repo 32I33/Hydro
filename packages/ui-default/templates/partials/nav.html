@@ -32,10 +32,10 @@
 <nav class="nav slideout-menu" id="menu">
   <div class="ax-nav">
     <a class="ax-brand" href="{{ url('homepage') }}">
-      <img class="ax-brand__mark" src="/components/navigation/aicoj-mascot.png" alt="">
+      <img class="ax-brand__mark" src="/components/navigation/aicoj-mascot-128.png" width="28" height="28" style="width:28px;height:28px" alt="">
       <span class="ax-brand__text">
         <b class="ax-brand__name">AICOJ</b>
-        <i class="ax-brand__sub">Hydro · Pixel Arcade</i>
+        <i class="ax-brand__sub">Pixel Arcade</i>
       </span>
     </a>
 
@@ -65,12 +65,12 @@
       </li>
       <li class="nav__list-item ax-user-drop" data-dropdown-pos="bottom right" data-dropdown-custom-class="ax-user-menu" data-dropdown-target="#menu-nav-user" data-dropdown-disabledconstrainToWindow data-dropdown-trigger-desktop-only>
         <a href="{{ url('user_detail', uid=handler.user._id) }}" class="ax-avatar" aria-label="{{ _('My Profile') }}">
-          <img class="ax-avatar__img" loading="lazy" src="{{ avatarUrl(handler.user.avatar) }}" alt="">
+          <img class="ax-avatar__img" loading="lazy" src="{{ avatarUrl(handler.user.avatar) }}" width="26" height="26" style="width:26px;height:26px" alt="">
           <span class="ax-avatar__caret"></span>
         </a>
         <ol class="dropdown-target menu ax-user-menu" id="menu-nav-user">
           <li class="ax-user-head">
-            <img class="ax-user-head__avatar" loading="lazy" src="{{ avatarUrl(handler.user.avatar) }}" alt="">
+            <img class="ax-user-head__avatar" loading="lazy" src="{{ avatarUrl(handler.user.avatar) }}" width="44" height="44" style="width:44px;height:44px" alt="">
             <span class="ax-user-head__info">
               <b class="ax-user-head__name">{% if handler.user.displayName and handler.user.displayName != handler.user.uname %}{{ handler.user.displayName }}{% else %}{{ handler.user.uname }}{% endif %}</b>
               <span class="ax-user-head__meta">UID: {{ handler.user._id }}</span>

@@ -1,9 +1,8 @@
 import $ from 'jquery';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import Editor from 'vj/components/editor';
 import { renderLanguageSelect } from 'vj/components/languageselect';
 import { NamedPage } from 'vj/misc/Page';
-import { getAvailableLangs, i18n, tpl } from 'vj/utils';
+import { getAvailableLangs } from 'vj/utils';
 
 const page = new NamedPage(['problem_submit', 'contest_detail_problem_submit', 'homework_detail_problem_submit'], async () => {
   const { config } = UiContext.pdoc;
@@ -38,21 +37,26 @@ const page = new NamedPage(['problem_submit', 'contest_detail_problem_submit', '
     preferences,
   );
 
-  if (localStorage.getItem('submit-hint') === 'dismiss') return;
-  $(tpl`<div name="hint" class="typo"></div>`).prependTo('[name="submit_section"]');
-  const root = ReactDOM.createRoot(document.querySelector('[name="hint"]'));
-  function ignore() {
-    root.unmount();
-    localStorage.setItem('submit-hint', 'dismiss');
-  }
-
-  root.render(<blockquote className="note">
-    <p>{i18n('This page is only for pasting code from other sources.')}</p>
-    <p>{i18n("To get a better editing experience, with code highlighting and test runs, \
-please go back to the problem detail page and use 'Open Scratchpad' button.")}
-    </p>
-    <a onClick={() => root.unmount()}>{i18n('Dismiss')}</a> / <a onClick={ignore}>{i18n("Don't show again")}</a>
-  </blockquote>);
+  const code = document.querySelector('textarea[name="code"]') as HTMLTextAreaElement | null;
+  if (!code) return;
+  const selected = (document.querySelector('[name="lang"]') as HTMLSelectElement | null)?.value
+    || UserContext.codeLang
+    || 'cpp';
+  const base = selected.split('.')[0];
+  const monacoLang = ({
+    bash: 'plaintext',
+    sh: 'plaintext',
+    python3: 'python',
+    py: 'python',
+    nodejs: 'javascript',
+    javascript: 'javascript',
+  } as Record<string, string>)[base] || base;
+  new Editor($(code), {
+    language: monacoLang,
+    autoResize: false,
+    autoLayout: true,
+    lineNumbers: 'on',
+  });
 });
 
 export default page;

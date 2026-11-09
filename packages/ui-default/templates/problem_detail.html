@@ -72,7 +72,7 @@
       {% endif %}
       {% if handler.user.hasPerm(perm.PERM_SUBMIT_PROBLEM) %}
         <a class="ax-btn ax-btn--primary ax-pd__submit" href="{{ url('problem_submit', pid=pdoc.pid|default(pdoc.docId)) }}">
-          <span class="icon icon-send"></span> 在线提交评测
+          <span class="icon icon-send"></span> 进入在线编程模式
         </a>
       {% elif not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
         <a class="ax-btn ax-btn--primary ax-pd__submit" href="javascript:showSignInDialog();">
@@ -105,6 +105,21 @@
       </div>
     {% endif %}
   </header>
+
+  {% if not tdoc %}
+  {% set _canViewSolution = handler.user.hasPerm(perm.PERM_VIEW_PROBLEM_SOLUTION) or (handler.user.hasPerm(perm.PERM_VIEW_PROBLEM_SOLUTION_ACCEPT) and psdoc and psdoc.status == STATUS.STATUS_ACCEPTED) %}
+  <nav class="ax-pd__tabs" aria-label="题目导航">
+    <a class="ax-pd__tab is-active" href="{{ url('problem_detail', pid=_pid) }}">题目描述</a>
+    {% if handler.user.hasPerm(perm.PERM_VIEW_DISCUSSION) %}
+    <a class="ax-pd__tab" href="{{ url('discussion_node', type='problem', name=pdoc.docId) }}">讨论区 <b>{{ discussionCount|default(0) }}</b></a>
+    {% endif %}
+    {% if _canViewSolution %}
+    <a class="ax-pd__tab" href="{{ url('problem_solution', pid=_pid) }}">题解 <b>{{ solutionCount|default(0) }}</b></a>
+    {% endif %}
+    <a class="ax-pd__tab" href="{{ url('record_main', query={pid: pdoc.docId, uid: handler.user._id}) }}">我的提交</a>
+    <a class="ax-pd__tab" href="{{ url('problem_statistics', pid=_pid) }}">统计分布</a>
+  </nav>
+  {% endif %}
 
   <div class="row" data-sticky-parent>
   <div class="medium-9 columns">

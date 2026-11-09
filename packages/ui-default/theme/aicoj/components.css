@@ -330,20 +330,22 @@ html body .ax-table .col--name .problem__tags .problem__tag {
   margin: 0;
 }
 html body .ax-table .col--name .problem__tag-link {
-  display: inline-block;
-  padding: 0 8px;
-  border: 1px solid var(--ax-surface-4);
-  border-radius: var(--ax-radius-sm);
-  background: var(--ax-surface-3);
-  color: var(--ax-ink-soft);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border: 1.5px solid var(--ax-line) !important;
+  border-radius: 999px !important;
+  background: var(--ax-surface) !important;
+  color: var(--ax-ink) !important;
   font-family: var(--ax-font-mono);
-  font-size: 10px;
-  line-height: 1.8;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.7 !important;
   text-decoration: none;
 }
 html body .ax-table .col--name .problem__tag-link:hover {
   background: var(--ax-primary-soft);
-  color: var(--ax-primary);
+  color: var(--ax-ink);
   text-decoration: none;
 }
 
@@ -445,8 +447,8 @@ html body .pager .pager__item {
   padding: 5px 9px;
   border: 2px solid var(--ax-line);
   border-radius: var(--ax-radius-sm);
-  background: var(--ax-surface);
-  color: var(--ax-ink);
+  background: var(--ax-surface) !important;
+  color: var(--ax-ink) !important;
   font-family: var(--ax-font-mono);
   font-size: 12px;
   font-weight: 700;
@@ -614,4 +616,76 @@ html body .ax-search__sort {
 /* 搜索框里的输入框字号与左右对齐 */
 html body .ax-search .ax-search__field {
   min-width: 260px;
+}
+
+/* 分页当前页：黑底白字，别再用橙底粉字 */
+html body .pager .pager__item.current,
+html body .pager a.pager__item.current {
+  background: var(--ax-ink) !important;
+  border-color: var(--ax-ink) !important;
+  color: var(--ax-surface) !important;
+}
+
+/* 题目标签：和筛选胶囊同一套墨线纸片 */
+html body .problem__tag-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border: 1.5px solid var(--ax-line) !important;
+  border-radius: 999px !important;
+  background: var(--ax-surface-2);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-mono);
+  font-size: 10.5px;
+  font-weight: 700;
+  line-height: 1.7;
+  text-decoration: none;
+  white-space: nowrap;
+}
+html body .problem__tag-link:hover {
+  background: var(--ax-primary-soft);
+  color: var(--ax-ink);
+  text-decoration: none;
+}
+
+/* 题库右侧分类 chip：默认/悬浮都用纸片，不再出现蓝色 */
+html body .chip-list__item a,
+html body .chip-list__item a.typo-a {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border: 1.5px solid var(--ax-line);
+  border-radius: 999px;
+  background: var(--ax-surface);
+  color: var(--ax-ink-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-decoration: none;
+}
+html body .chip-list__item a:hover,
+html body .chip-list__item a.typo-a:hover {
+  background: var(--ax-primary-soft);
+  color: var(--ax-ink);
+  text-decoration: none;
+}
+
+/* 菜单/浮层 hover 统一橙色，不再沿用默认蓝 */
+html body .menu .menu__link:hover,
+html body .dropdown .menu__link:hover,
+html body .ax-user-menu .menu__link:hover {
+  background: var(--ax-surface-2);
+  border-left-color: var(--ax-primary-bright);
+  color: var(--ax-ink);
+  text-decoration: none;
+}
+
+/* 原生 .textbox 的聚焦蓝边（stylus 高特异性）统一压成橙色硬环 */
+html body input.textbox:focus,
+html body textarea.textbox:focus,
+html body select.textbox:focus,
+html body input.textbox:focus-visible,
+html body textarea.textbox:focus-visible {
+  border-color: var(--ax-primary-bright) !important;
+  box-shadow: 0 0 0 3px var(--ax-primary-soft) !important;
+  outline: none !important;
 }
