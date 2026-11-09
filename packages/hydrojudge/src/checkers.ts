@@ -2,6 +2,7 @@ import { DetailType, STATUS } from '@hydrooj/common';
 import { FormatError, SystemError } from './error';
 import { CopyInFile, runQueued } from './sandbox';
 import { parse } from './testlib';
+import { bash } from './shell';
 
 export interface CheckConfig {
     execute: string;
@@ -103,7 +104,7 @@ fi
 `;
 
 const getDefaultChecker = (strict: boolean) => async (config: CheckConfig) => {
-    const { code, stdout } = await runQueued(`/bin/bash compare.sh${strict ? '' : ' BZ'}`, {
+    const { code, stdout } = await runQueued(`${bash()} compare.sh${strict ? '' : ' BZ'}`, {
         copyIn: {
             usrout: config.user_stdout,
             answer: config.output,

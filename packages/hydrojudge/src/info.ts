@@ -1,5 +1,6 @@
 import { LangConfig } from '@hydrooj/common';
 import { runQueued } from './sandbox';
+import { bash } from './shell';
 
 export async function compilerVersions(langs: Record<string, LangConfig>) {
     const result = {};
@@ -18,7 +19,7 @@ export async function compilerVersions(langs: Record<string, LangConfig>) {
 }
 
 export async function stackSize() {
-    const res = await runQueued('/bin/bash -c "ulimit -s"', {
+    const res = await runQueued(`${bash()} -c "ulimit -s"`, {
         copyIn: {},
         time: 10000,
         memory: 256,
