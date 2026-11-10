@@ -24,7 +24,7 @@
       </a></li>
     {% else %}
       {% if not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
-        <li class="menu__item"><a class="menu__link" href="javascript:showSignInDialog();">
+        <li class="menu__item"><a class="menu__link" href="{{ url('user_login', query={redirect: url('discussion_create', type='contest', name=tdoc.docId)}) }}">
         <span class="icon icon-add"></span> {{ _('Login to Create a Discussion') }}</a></li>
       {% elif not handler.user._dudoc.join %}
         <li class="menu__item"><a class="menu__link" href="/domain/join?target={{ tdoc.domainId }}">
@@ -100,7 +100,7 @@
         </div>
       </div>
     {% elif not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
-        <a class="menu__link" href="javascript:showSignInDialog()">
+        <a class="menu__link" href="{{ url('user_login', query={redirect: handler.request.path}) }}">
           <span class="icon icon-add"></span> {{ _('Login to Attend Contest') }}
         </a>
     {% elif not handler.user._dudoc.join %}

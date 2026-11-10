@@ -54,6 +54,12 @@ class UserLoginHandler extends Handler {
 
     @param('redirect', Types.String, true)
     async get(domainId: string, redirect: string = '') {
+        if (this.user._id) {
+            const redirectPath = redirect.split('?')[0].replace(/\/+$/, '');
+            const safeRedirect = redirect.startsWith('/') && !redirect.startsWith('//');
+            this.response.redirect = safeRedirect && !redirectPath.endsWith('/login') ? redirect : this.url('homepage');
+            return;
+        }
         this.response.template = 'user_login.html';
         this.response.body = {
             redirect,

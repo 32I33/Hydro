@@ -401,3 +401,106 @@ html body .ax-user-menu:before {
     display: none;
   }
 }
+
+/* 移动端顶栏：Hydro 默认是蓝色横条，这里改成与 Pixel Arcade 一致的纸质卡片栏 */
+@media only screen and (max-width: 600px) {
+  html body .header--mobile,
+  html body .location {
+    background: var(--ax-surface);
+    border-bottom: 2px solid var(--ax-line);
+    color: var(--ax-ink);
+    line-height: 1.2;
+    padding: 10px 0;
+  }
+  html body .header--mobile a,
+  html body .header--mobile a:visited,
+  html body .header--mobile a:hover,
+  html body .location a,
+  html body .location a:visited,
+  html body .location a:hover {
+    color: var(--ax-ink);
+  }
+  html body .header--mobile__domain {
+    display: inline-flex;
+    align-items: center;
+    height: auto;
+    margin-top: 0;
+  }
+  html body .header--mobile .ax-brand {
+    padding: 4px 10px 4px 6px;
+    gap: 8px;
+  }
+  html body .header--mobile .ax-brand__mark {
+    width: 24px;
+    height: 24px;
+  }
+  html body .header--mobile .ax-brand__name {
+    font-size: 15px;
+  }
+  html body .header__hamburger {
+    padding: 6px;
+    margin-top: 2px;
+  }
+  html body .header--mobile .hamburger-inner,
+  html body .header--mobile .hamburger-inner::before,
+  html body .header--mobile .hamburger-inner::after {
+    background-color: var(--ax-ink);
+  }
+
+  /* 抽屉导航：Hydro 的 .nav.slideout-menu 在移动端是右侧抽屉，
+   * 不能让桌面端的 sticky / flex 横排规则把它压成顶部横条。 */
+  html body .nav.slideout-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: auto;
+    width: 272px;
+    max-width: 84vw;
+    height: 100vh;
+    min-height: 0;
+    padding: 14px 12px 24px;
+    overflow-y: auto;
+    border-left: 2px solid var(--ax-line);
+    border-bottom: 0;
+    background: var(--ax-surface);
+    z-index: 1000;
+  }
+  html body .ax-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    height: auto;
+    max-width: none;
+    padding: 0;
+  }
+  html body .ax-brand {
+    align-self: flex-start;
+  }
+  html body .ax-nav__items,
+  html body .ax-nav__right {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    width: 100%;
+    margin: 0;
+    overflow: visible;
+  }
+  html body .ax-nav__items .nav__list-item,
+  html body .ax-nav__right .nav__list-item {
+    display: block;
+    width: 100%;
+  }
+  html body .ax-nav__items .nav__item {
+    display: block;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--ax-surface-3);
+  }
+  html body .ax-nav__right .nav__item--round {
+    display: block;
+    margin-top: 8px;
+    text-align: center;
+  }
+}

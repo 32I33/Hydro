@@ -89,7 +89,7 @@
       </a></li>
     {% else %}
       {% if not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
-        <li class="menu__item"><a class="menu__link" href="javascript:showSignInDialog();">
+        <li class="menu__item"><a class="menu__link" href="{{ url('user_login', query={redirect: url('discussion_create', type='problem', name=pdoc.docId)}) }}">
         <span class="icon icon-add"></span> {{ _('Login to Create a Discussion') }}</a></li>
       {% elif not handler.user._dudoc.join %}
         <li class="menu__item"><a class="menu__link" href="/domain/join?target={{ pdoc.domainId }}">
@@ -120,7 +120,7 @@
         <span class="icon icon-send"></span> {{ _('Submit') }}
       </a></li>
     {% elif not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
-      <li class="menu__item scratchpad--hide"><a class="menu__link{% if page_name == 'problem_submit' %} active{% endif %}" href="javascript:showSignInDialog();">
+      <li class="menu__item scratchpad--hide"><a class="menu__link{% if page_name == 'problem_submit' %} active{% endif %}" href="{{ url('user_login', query={redirect: url('problem_submit', pid=pdoc.pid|default(pdoc.docId))}) }}">
         <span class="icon icon-send"></span> {{ _('Login to Submit') }}
       </a></li>
     {% elif not handler.user._dudoc.join %}

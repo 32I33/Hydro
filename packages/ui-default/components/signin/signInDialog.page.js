@@ -1,27 +1,28 @@
 import { browserSupportsWebAuthnAutofill, startAuthentication } from '@simplewebauthn/browser';
 import $ from 'jquery';
-import responsiveCutoff from 'vj/breakpoints.json';
-import DomDialog from 'vj/components/dialog/DomDialog';
-import { alert } from 'vj/components/dialog/index';
 import Notification from 'vj/components/notification';
 import { AutoloadPage } from 'vj/misc/Page';
-import { i18n, mediaQuery, request } from 'vj/utils';
+import { i18n, request } from 'vj/utils';
+
+function getLoginUrl() {
+  const navLogin = $('[name="nav_login"]');
+  return navLogin.length > 0 ? navLogin.attr('href') : '/login';
+}
+
+function normalizePath(pathname) {
+  return pathname.replace(/\/+$/, '') || '/';
+}
 
 const signinDialogPage = new AutoloadPage('signinDialogPage', null, () => {
-  const signInDialog = DomDialog.getOrConstruct($('.dialog--signin'), {
-    cancelByClickingBack: true,
-    cancelByEsc: true,
-  });
-
   let authnInitialized = false;
 
   async function initPasskey() {
     if (authnInitialized || !window.isSecureContext) return;
     authnInitialized = true;
-    const support = await browserSupportsWebAuthnAutofill();
+    const support = await browserSupportsWebAuthnAutofill().catch(() => false);
     if (!support) return;
-    const authnInfo = await request.get('/user/webauthn', { login: true });
-    if (!authnInfo.authOptions) return;
+    const authnInfo = await request.get('/user/webauthn', { login: true }).catch(() => null);
+    if (!authnInfo?.authOptions) return;
     const result = await startAuthentication({ optionsJSON: authnInfo.authOptions, useBrowserAutofill: true })
       .catch((e) => {
         Notification.error(i18n('Failed to get credential: {0}', e));
@@ -40,45 +41,20 @@ const signinDialogPage = new AutoloadPage('signinDialogPage', null, () => {
     }
   }
 
-  if (window.location.href.endsWith('/login')) initPasskey();
+  const isLoginPage = normalizePath(window.location.pathname).endsWith('/login');
+  const isIpHost = /^\d{1,3}(\.\d{1,3}){3}$/.test(window.location.hostname) || window.location.hostname.includes(':');
+  if (isLoginPage && !isIpHost) initPasskey();
 
-  function show() {
-    signInDialog.show();
-    initPasskey();
-  }
-
-  // don't show quick login dialog if in mobile
-  if ($('[name="nav_login"]').length > 0) {
-    // nav
-    $('[name="nav_login"]').on('click', (ev) => {
-      if (mediaQuery.isBelow(responsiveCutoff.mobile)) return;
-      if (ev.shiftKey || ev.metaKey || ev.ctrlKey) return;
-      show();
-      ev.preventDefault();
-    });
-  }
-
-  if ($('.dialog--signin').length > 0) {
-    // dialog
-    $('[name="dialog--signin__close"]').on('click', () => {
-      signInDialog.hide();
-    });
-  }
-
+  // All login entrances lead to the standalone login page.
   window.showSignInDialog = () => {
-    if (mediaQuery.isBelow(responsiveCutoff.mobile)) {
-      if ($('[name="nav_login"]').length > 0) {
-        window.location.href = $('[name="nav_login"]').attr('href');
-        return;
-      }
+    const loginUrl = new URL(getLoginUrl(), window.location.origin);
+    if (normalizePath(loginUrl.pathname) === normalizePath(window.location.pathname)) {
+      $('input[name="uname"]').trigger('focus');
+      return;
     }
-    show();
+    loginUrl.searchParams.set('redirect', window.location.pathname + window.location.search + window.location.hash);
+    window.location.href = loginUrl.toString();
   };
-
-  $('[data-lostpass]').on('click', (e) => {
-    e.preventDefault();
-    alert(i18n('Relax and try to remember your password.'));
-  });
 });
 
 export default signinDialogPage;

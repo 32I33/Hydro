@@ -17,11 +17,14 @@
         </div></div>
         <div class="row"><div class="columns">
           <div class="text-center">
-            <input type="submit" value="{{ _('Send Password Reset Email') }}" class="inverse rounded primary button">
+            <input type="submit" value="{{ _('Send Password Reset Email') }}" class="inverse expanded rounded primary button">
           </div>
         </div></div>
       </form>
     {% endif %}
+    <div class="text-center supplementary inverse immersive--backlink">
+      <a href="{{ url('user_login') }}">&larr; {{ _('Login') }}</a>
+    </div>
   </div>
 </div></div>
 {% endblock %}

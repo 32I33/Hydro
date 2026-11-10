@@ -1,8 +1,12 @@
 <div class="header--mobile">
   <div class="row"><div class="columns clearfix">
     <div class="float-left">
-      <a class="header--mobile__domain" href="/" target="_self">
-        <img src="{{ ctx.setting.get('ui-default.nav_logo_dark') }}">
+      <a class="header--mobile__domain ax-brand" href="{{ url('homepage') }}" target="_self">
+        <img class="ax-brand__mark" src="/components/navigation/aicoj-mascot-128.png" width="24" height="24" alt="">
+        <span class="ax-brand__text">
+          <b class="ax-brand__name">AICOJ</b>
+          <i class="ax-brand__sub">Pixel Arcade</i>
+        </span>
       </a>
     </div>
     <div class="float-right">

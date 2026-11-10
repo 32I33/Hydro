@@ -48,7 +48,7 @@
       <div class="section__body typo richmedia">
         {% if not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
           <blockquote class="typo note">
-            <p>{{ _('Login to join training plan') }}</p>
+            <p><a href="{{ url('user_login', query={redirect: handler.request.path}) }}">{{ _('Login to join training plan') }}</a></p>
           </blockquote>
         {% elif not tsdoc.enroll %}
           <blockquote class="typo note">

@@ -32,7 +32,7 @@
           </button>
         </form>
     {% elif not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
-        <a class="menu__link" href="javascript:showSignInDialog()">
+        <a class="menu__link" href="{{ url('user_login', query={redirect: handler.request.path}) }}">
           <span class="icon icon-add"></span> {{ _('Login to Claim Homework') }}
         </a>
     {% elif not handler.user._dudoc.join %}

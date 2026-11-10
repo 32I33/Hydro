@@ -75,7 +75,7 @@
           <span class="icon icon-send"></span> 进入在线编程模式
         </a>
       {% elif not handler.user.hasPriv(PRIV.PRIV_USER_PROFILE) %}
-        <a class="ax-btn ax-btn--primary ax-pd__submit" href="javascript:showSignInDialog();">
+        <a class="ax-btn ax-btn--primary ax-pd__submit" href="{{ url('user_login', query={redirect: url('problem_submit', pid=pdoc.pid|default(pdoc.docId))}) }}">
           <span class="icon icon-send"></span> 登录后提交
         </a>
       {% endif %}

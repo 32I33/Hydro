@@ -606,6 +606,19 @@ html body .data-table:not(.ax-table) .record-status--icon {
   letter-spacing: -0.02em;
 }
 
+/* Small phones: let the card shrink with the viewport instead of overflowing at a fixed 372px. */
+@media only screen and (max-width: 599px) {
+  .layout--immersive body .immersive--center {
+    width: auto;
+    max-width: 372px;
+    margin: 18px auto 28px;
+    padding: 24px 20px 26px;
+  }
+  .layout--immersive body .immersive--center h1 {
+    font-size: 24px;
+  }
+}
+
 /* 输入框：从「透明+白下划线」改成实心白卡输入 */
 .layout--immersive body label.inverse.material.textbox {
   color: var(--ax-muted);
@@ -637,6 +650,9 @@ html body .data-table:not(.ax-table) .record-status--icon {
 .layout--immersive body .supplementary.inverse a,
 .layout--immersive body .supplementary a {
   color: var(--ax-primary) !important;
+}
+.layout--immersive body .immersive--backlink {
+  margin-top: 16px;
 }
 .layout--immersive body .immersive--content h1,
 .layout--immersive body .immersive--content h2,
