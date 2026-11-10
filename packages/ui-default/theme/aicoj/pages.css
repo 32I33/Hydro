@@ -589,7 +589,7 @@ html body .data-table:not(.ax-table) .record-status--icon {
   margin: 0 auto 12px;
   border: 2px solid var(--ax-line);
   border-radius: var(--ax-radius);
-  background-color: var(--ax-mint);
+  background-color: transparent;
   background-image: url('/components/navigation/aicoj-mascot-128.png');
   background-size: 74% auto;
   background-position: center bottom;
