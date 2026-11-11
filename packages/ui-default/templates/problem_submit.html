@@ -156,7 +156,7 @@
   function statement() {
     var content = document.querySelector('.problem-content');
     var text = content ? (content.innerText || content.textContent || '') : '';
-    return text.replace(/\s+\n/g, '\n').trim().slice(0, 6000);
+    return text.replace(/\s+\n/g, '\n').trim();
   }
 
   function promptFor(n) {
