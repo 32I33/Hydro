@@ -62,6 +62,19 @@ html body .data-table:not(.ax-table) thead th {
   white-space: nowrap;
 }
 
+/* 排行榜表头对齐跟随列：上面的 thead th 左对齐会盖掉 .col--rp / .col--ac 等列的设定 */
+html.page--homepage body .data-table:not(.ax-table) thead th.col--rp,
+html.page--ranking body .data-table:not(.ax-table) thead th.col--rp {
+  text-align: right;
+}
+
+html.page--homepage body .data-table:not(.ax-table) thead th.col--ac,
+html.page--homepage body .data-table:not(.ax-table) thead th.col--detail,
+html.page--ranking body .data-table:not(.ax-table) thead th.col--ac,
+html.page--ranking body .data-table:not(.ax-table) thead th.col--detail {
+  text-align: center;
+}
+
 html body .data-table:not(.ax-table) tbody tr {
   border: 0;
   background: var(--ax-surface);
