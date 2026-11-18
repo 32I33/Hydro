@@ -14,6 +14,7 @@
       <span><i style="background:transparent;border-style:dashed;border-color:var(--ax-surface-4)"></i>未探索</span>
     </span>
   </div>
+  <div class="ax-plist__scroll">
   <table class="data-table ax-table hide-problem-tag">
     <colgroup>
       <col class="col--checkbox display-mode-hide">
@@ -94,6 +95,7 @@
     {%- endfor -%}
     </tbody>
   </table>
+  </div>
   {{ paginator.render(page, ppcount, add_qs=utils.buildQueryString(q=qs, sort='' if sort == 'default' else sort)) }}
 {% endif %}
 </div>

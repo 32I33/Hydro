@@ -145,6 +145,12 @@ export class HomeHandler extends Handler {
     }
 
     async get({ domainId }) {
+        // AICOJ: guests get the pixel brand landing; signed-in users keep the widget homepage.
+        if (!this.user._id) {
+            this.response.template = 'landing.html';
+            this.response.body = {};
+            return;
+        }
         const homepageConfig = this.ctx.setting.get('hydrooj.homepage');
         const info = yaml.load(homepageConfig) as any;
         const contents = [];

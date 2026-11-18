@@ -117,6 +117,7 @@
         {{ nothing.render('Oh, there are no tasks that match the filter!') }}
         {% endif %}
       {% else %}
+        <div class="ax-table-scroll">
         <table class="data-table record_main__table">
           <colgroup>
             <col class="col--status">
@@ -146,6 +147,7 @@
           {%- endfor -%}
           </tbody>
         </table>
+        </div>
         {% if handler.user.hasPriv(PRIV.PRIV_VIEW_JUDGE_STATISTICS) or filterTid or filterPid or filterUidOrName %}
         <ul class="pager">
           <li>

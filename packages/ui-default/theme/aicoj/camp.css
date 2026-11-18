@@ -424,6 +424,26 @@ html body .ax-toolbar__form .ax-search__field input[type="text"] {
   font-size: 13px;
 }
 
+/* 窄屏：搜索/下拉/按钮换行堆叠，避免 flex-end 把搜索框挤出左边界 */
+@media (max-width: 600px) {
+  html body .ax-toolbar__form {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    width: 100%;
+  }
+  html body .ax-toolbar__form .ax-search__field {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  html body .ax-toolbar__form .ax-select {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+  html body .ax-toolbar__form .ax-btn {
+    flex: 0 0 auto;
+  }
+}
+
 html body .ax-select {
   height: 34px;
   padding: 0 26px 0 10px;

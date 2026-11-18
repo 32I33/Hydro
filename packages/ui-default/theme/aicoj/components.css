@@ -425,6 +425,33 @@ html body .ax-table .col--ops {
   white-space: nowrap;
 }
 
+/* 题库列表：窄屏横向滚动兜底 + 收起次要统计列，保证行内主信息可读 */
+html body .ax-plist__scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+/* 宽表（评测记录等）窄屏横向滚动兜底，避免撑破视口 */
+html body .ax-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+html body .ax-table-scroll > table {
+  min-width: 640px;
+}
+@media (max-width: 600px) {
+  html body .ax-table .col--rate,
+  html body .ax-table .col--ac-tried,
+  html body .ax-table .col--difficulty {
+    display: none;
+  }
+  html body .ax-table tbody td {
+    padding: 10px 8px;
+  }
+  html body .ax-table .col--ops {
+    width: auto;
+  }
+}
+
 /* ================= 分页（pager） ================= */
 html body .pager {
   display: flex;
@@ -616,6 +643,21 @@ html body .ax-search__sort {
 /* 搜索框里的输入框字号与左右对齐 */
 html body .ax-search .ax-search__field {
   min-width: 260px;
+}
+
+/* 窄屏：搜索条换行，输入独占一行，排序/按钮落到第二行，避免 min-width 撑破视口 */
+@media (max-width: 600px) {
+  html body .ax-search {
+    flex-wrap: wrap;
+  }
+  html body .ax-search .ax-search__field {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  html body .ax-search__sort {
+    flex: 1 1 auto;
+    max-width: none;
+  }
 }
 
 /* 分页当前页：黑底白字，别再用橙底粉字 */
