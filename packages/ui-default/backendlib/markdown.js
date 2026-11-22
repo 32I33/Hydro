@@ -51,12 +51,18 @@ function plugin(func, ...args) {
   md.use(func, ...args);
 }
 
+// 从别处（网页 / 其他 OJ 导出的 HTML）粘贴过来的题面，常见「多转义一层」的实体，
+// 例如 0<=a&amp;#44;b<=10000000 会被原样显示成 &#44;。这里统一解一层。
+function normalizeEscapedEntities(text) {
+  return String(text ?? '').replace(/&amp;#(\d{1,6});/g, '&#$1;');
+}
+
 function render(text) {
-  return md.render(text);
+  return md.render(normalizeEscapedEntities(text));
 }
 
 function renderInline(text) {
-  return md.renderInline(text);
+  return md.renderInline(normalizeEscapedEntities(text));
 }
 
 module.exports = {
