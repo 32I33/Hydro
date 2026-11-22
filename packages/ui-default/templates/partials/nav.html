@@ -1,6 +1,9 @@
 {%- macro nav_item(item, label) -%}
+{% set _href = url(item.name, item.args, query=item.args.query(handler) if typeof(item.args.query) == 'function' else item.args.query or {}) %}
+{#- 访客点任何导航都先回登录页（首页除外，首页就是落地页） -#}
+{% set _target = _href if (item.name == 'homepage' or handler.user.hasPriv(PRIV.PRIV_USER_PROFILE)) else url('user_login', query={redirect: _href}) %}
 <li class="nav__list-item">
-  <a href="{{ url(item.name, item.args, query=item.args.query(handler) if typeof(item.args.query) == 'function' else item.args.query or {}) }}" class="nav__item{% if page_name.startsWith(item.args.prefix) %} nav--active{% endif %}">
+  <a href="{{ _target }}" class="nav__item{% if page_name.startsWith(item.args.prefix) %} nav--active{% endif %}">
     {{ label or _(item.displayName or item.name) }}
   </a>
 </li>
@@ -35,7 +38,7 @@
       <img class="ax-brand__mark" src="/components/navigation/aicoj-mascot-128.png" width="28" height="28" style="width:28px;height:28px" alt="">
       <span class="ax-brand__text">
         <b class="ax-brand__name">AICOJ</b>
-        <i class="ax-brand__sub">Pixel Arcade</i>
+        <i class="ax-brand__sub">您的AI编程助手</i>
       </span>
     </a>
 
