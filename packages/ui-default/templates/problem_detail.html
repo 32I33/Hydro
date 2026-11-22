@@ -1,4 +1,4 @@
-{% extends "layout/basic.html" %}
+﻿{% extends "layout/basic.html" %}
 {% block content %}
 <script>
 {{ set(UiContext, {
@@ -109,18 +109,19 @@
   {% if not tdoc %}
   {% set _canViewSolution = handler.user.hasPerm(perm.PERM_VIEW_PROBLEM_SOLUTION) or (handler.user.hasPerm(perm.PERM_VIEW_PROBLEM_SOLUTION_ACCEPT) and psdoc and psdoc.status == STATUS.STATUS_ACCEPTED) %}
   <nav class="ax-pd__tabs" aria-label="题目导航">
-    <a class="ax-pd__tab is-active" href="{{ url('problem_detail', pid=_pid) }}">题目描述</a>
+    <a class="ax-pd__tab is-active" data-ax-tab="home" href="{{ url('problem_detail', pid=_pid) }}">题目描述</a>
     {% if handler.user.hasPerm(perm.PERM_VIEW_DISCUSSION) %}
-    <a class="ax-pd__tab" href="{{ url('discussion_node', type='problem', name=pdoc.docId) }}">讨论区 <b>{{ discussionCount|default(0) }}</b></a>
+    <a class="ax-pd__tab" data-ax-tab="pane" href="{{ url('discussion_node', type='problem', name=pdoc.docId) }}">讨论区 <b>{{ discussionCount|default(0) }}</b></a>
     {% endif %}
     {% if _canViewSolution %}
-    <a class="ax-pd__tab" href="{{ url('problem_solution', pid=_pid) }}">题解 <b>{{ solutionCount|default(0) }}</b></a>
+    <a class="ax-pd__tab" data-ax-tab="pane" href="{{ url('problem_solution', pid=_pid) }}">题解 <b>{{ solutionCount|default(0) }}</b></a>
     {% endif %}
-    <a class="ax-pd__tab" href="{{ url('record_main', query={pid: pdoc.docId, uid: handler.user._id}) }}">我的提交</a>
-    <a class="ax-pd__tab" href="{{ url('problem_statistics', pid=_pid) }}">统计分布</a>
+    <a class="ax-pd__tab" data-ax-tab="pane" href="{{ url('record_main', query={pid: pdoc.docId, uid: handler.user._id}) }}">我的提交</a>
+    <a class="ax-pd__tab" data-ax-tab="pane" href="{{ url('problem_statistics', pid=_pid) }}">统计分布</a>
   </nav>
   {% endif %}
 
+  <div class="ax-pd__body" data-ax-body>
   <div class="row" data-sticky-parent>
   <div class="medium-9 columns">
     <div class="section">
@@ -149,6 +150,8 @@
     {% include "partials/problem_sidebar.html" %}
   </div></div>
 </div>
+</div>
+<div class="ax-pd__pane" data-ax-pane hidden></div>
 </div>
 <div style="display:none" class="outer-loader-container"><div class="loader"></div></div>
 <div class="scratchpad-container" style="display:none">
@@ -198,6 +201,97 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', decorate);
   else decorate();
+})();
+</script>
+<script>
+// 题目页页签原地切换：讨论区 / 题解 / 我的提交 / 统计分布 不再整页跳转，
+// 内容以同源 iframe（?embed=1）装进面板里，地址栏同步更新，支持前进/后退。
+(function () {
+  var bodyEl = document.querySelector('[data-ax-body]');
+  var paneEl = document.querySelector('[data-ax-pane]');
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.ax-pd__tab'));
+  if (!bodyEl || !paneEl || !tabs.length) return;
+  var homeHref = location.pathname + location.search;
+  var homePath = location.pathname;
+  var frame = null;
+
+  function embedUrl(u) { return u + (u.indexOf('?') >= 0 ? '&' : '?') + 'embed=1'; }
+  function isPaneTab(t) { return t.getAttribute('data-ax-tab') === 'pane'; }
+
+  function syncTabs(activeUrl) {
+    tabs.forEach(function (t) {
+      var match = t.getAttribute('data-ax-tab') === 'home' ? activeUrl === homeHref : t.href === activeUrl;
+      t.classList[match ? 'add' : 'remove']('is-active');
+    });
+  }
+
+  function ensureFrame() {
+    if (frame) return frame;
+    var loader = document.createElement('div');
+    loader.className = 'ax-pd__pane-loader';
+    loader.innerHTML = '<span class="ax-spin"></span>';
+    paneEl.appendChild(loader);
+    frame = document.createElement('iframe');
+    frame.className = 'ax-pd__frame';
+    frame.setAttribute('scrolling', 'no');
+    frame.setAttribute('title', '题目页签内容');
+    frame.style.height = '600px';
+    frame.style.visibility = 'hidden';
+    frame.addEventListener('load', function () {
+      var l = paneEl.querySelector('.ax-pd__pane-loader');
+      if (l) l.remove();
+      frame.style.visibility = 'visible';
+    });
+    paneEl.appendChild(frame);
+    return frame;
+  }
+
+  function scrollToTabs() {
+    var nav = document.querySelector('.ax-pd__tabs');
+    if (!nav) return;
+    var y = nav.getBoundingClientRect().top + window.pageYOffset - 88;
+    window.scrollTo(0, Math.max(0, y));
+  }
+
+  function showPane(url, push) {
+    ensureFrame();
+    var src = embedUrl(url);
+    if (frame.getAttribute('src') !== src) frame.src = src;
+    bodyEl.hidden = true;
+    paneEl.hidden = false;
+    if (push) history.pushState({ axPane: url }, '', url);
+    syncTabs(url);
+    scrollToTabs();
+  }
+
+  function showBody(push) {
+    paneEl.hidden = true;
+    bodyEl.hidden = false;
+    if (push) history.pushState({ axPane: null }, '', homeHref);
+    syncTabs(homeHref);
+    scrollToTabs();
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function (ev) {
+      if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+      ev.preventDefault();
+      if (t.getAttribute('data-ax-tab') === 'home') showBody(true);
+      else showPane(t.href, true);
+    });
+  });
+
+  window.addEventListener('message', function (ev) {
+    if (!frame || ev.source !== frame.contentWindow) return;
+    var d = ev.data || {};
+    if (d.type === 'ax-embed-height' && d.height) frame.style.height = Math.max(320, Math.ceil(d.height)) + 'px';
+  });
+
+  window.addEventListener('popstate', function () {
+    if (location.pathname === homePath) { showBody(false); return; }
+    var hit = tabs.filter(function (t) { return isPaneTab(t) && t.pathname === location.pathname; })[0];
+    if (hit) showPane(location.href, false);
+  });
 })();
 </script>
 {% endblock %}

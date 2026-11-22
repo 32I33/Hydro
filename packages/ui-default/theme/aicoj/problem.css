@@ -4,10 +4,14 @@
  */
 
 /* ================= 页面外壳 ================= */
+/* 和题库/训练/成长档案同一套容器：限宽居中 + 左右留白，宽屏上不要铺满整屏 */
 html body .ax-pd {
-  padding-top: 14px;
+  max-width: 1560px;
+  margin: 0 auto;
+  padding: 14px 22px 26px;
+  box-sizing: border-box;
 }
-/* Foundation 的 .row 有 max-width 并居中，会让正文比标题区窄一截；这里放开 */
+/* Foundation 的 .row 有 max-width 并居中，会让正文比标题区窄一截；这里放开（外层已经限宽） */
 html body .ax-pd > .row {
   max-width: none;
   margin-left: 0;
@@ -558,3 +562,25 @@ html body .ax-pd__tab.is-active b {
   border-color: currentColor;
   opacity: 1;
 }
+
+/* ================= 页签面板（讨论区/题解/我的提交/统计分布 原地切换） ================= */
+html body .ax-pd__pane { min-height: 320px; }
+html body .ax-pd__pane[hidden] { display: none !important; }
+html body .ax-pd__frame { display: block; width: 100%; border: 0; background: transparent; }
+html body .ax-pd__pane-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+}
+
+/* ?embed=1 被嵌进 iframe 时：只留内容，把站点头尾藏掉 */
+html.ax-embed body > .nav,
+html.ax-embed body > .header--mobile,
+html.ax-embed .footer,
+html.ax-embed .omnibar-toggle,
+html.ax-embed .slideout-overlay,
+html.ax-embed .outer-loader-container { display: none !important; }
+html.ax-embed, html.ax-embed body { background: transparent !important; }
+html.ax-embed .main { padding-top: 0 !important; }
+html.ax-embed .ax-pd { padding-left: 0 !important; padding-right: 0 !important; }

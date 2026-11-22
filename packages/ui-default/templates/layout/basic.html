@@ -21,6 +21,27 @@
   </div>
   {% include "partials/footer.html" %}
 </div>
+<script>
+// 以 ?embed=1 嵌进 iframe 时（题目页页签原地切换）：隐藏站点头尾，并把内容高度报给父页面
+(function () {
+  if (!/[?&]embed=1(&|$)/.test(location.search)) return;
+  document.documentElement.className += ' ax-embed';
+  if (window.self === window.top) return;
+  var last = 0;
+  function post() {
+    var h = Math.max(document.documentElement.scrollHeight, document.body ? document.body.scrollHeight : 0);
+    if (!h || Math.abs(h - last) < 4) return;
+    last = h;
+    try { window.parent.postMessage({ type: 'ax-embed-height', height: h }, '*'); } catch (e) { /* noop */ }
+  }
+  window.addEventListener('load', post);
+  window.addEventListener('resize', post);
+  if (window.ResizeObserver) {
+    try { new ResizeObserver(post).observe(document.body); } catch (e) { /* noop */ }
+  }
+  setInterval(post, 800);
+})();
+</script>
 {% endblock %}
 {% block ogp %}
 {% endblock %}
