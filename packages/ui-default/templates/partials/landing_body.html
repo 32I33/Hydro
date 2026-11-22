@@ -1,4 +1,4 @@
-<!-- AICOJ · Pixel Arcade landing (guest homepage). UX ported from site-v2; skin = --ax-* tokens. Self-contained. -->
+﻿<!-- AICOJ · Pixel Arcade landing (guest homepage). UX ported from site-v2; skin = --ax-* tokens. Self-contained. -->
 <style>
 .axl{--paper:var(--ax-bg,#faf9f4);--surface:var(--ax-surface,#fff);--surface2:var(--ax-surface-2,#f6f4ee);--surface3:var(--ax-surface-3,#eeebe1);--ink:var(--ax-ink,#141b2d);--ink-soft:var(--ax-ink-soft,#293043);--text2:var(--ax-text-2,#5b4138);--muted:var(--ax-muted,#8f7066);--line:var(--ax-line,#141b2d);--orange:var(--ax-primary-bright,#ff5e1a);--orange-deep:var(--ax-primary,#aa3600);--orange-soft:var(--ax-primary-soft,#ffdbcf);--mint:var(--ax-mint,#5ffdb7);--green:var(--ax-green,#006c47);--green-soft:var(--ax-green-soft,#5cfab5);--gold:var(--ax-yellow,#f4bf00);--gold-soft:var(--ax-yellow-soft,#ffdf92);--red:var(--ax-red,#ba1a1a);--red-soft:var(--ax-red-soft,#ffdad6);--head:var(--ax-font-head,"Space Grotesk","PingFang SC","Microsoft YaHei",sans-serif);--body:var(--ax-font-body,"Plus Jakarta Sans","PingFang SC","Microsoft YaHei",sans-serif);--mono:var(--ax-font-mono,"Space Mono",Consolas,monospace);--nav:var(--ax-nav-h,64px);
   position:relative;background:var(--paper);color:var(--ink);font-family:var(--body);overflow:clip;}
@@ -415,6 +415,65 @@
       </div>
     </div>
     <div class="axl-hero-bottom"><div class="axl-shell"><span>不是刷题机器</span><i></i><span>是一个会陪你想清楚的学伴</span><a href="#axl-story">往下走 <svg class="axl-ic"><use href="#axl-i-down"/></svg></a></div></div>
+  </section>
+
+  <!-- ================= 三件事（AI 优先） ================= -->
+  <section class="axh-trio" id="axl-ai">
+    <div class="axl-shell">
+      <div class="axh-trio__head">
+        <h2>三件事，<br>先看哪件？</h2>
+        <p>对话、诊断、成长档案，其实是同一份证据的三个切面：说清你卡在哪、错在哪、下一步该做什么。</p>
+      </div>
+      <div class="axh-trio__grid">
+        <article class="axh-card axh-card--lift">
+          <span class="axh-card__icon"><svg class="axl-ic"><use href="#axl-i-message"/></svg></span>
+          <h3 class="axh-card__title">问一句，就有一道题</h3>
+          <p class="axh-card__text">卡在哪一行、为什么错、下一步写什么——它先问你一句，再陪你走一步。</p>
+          <div class="axh-card__sample">你：<b>第 8 行为什么只跑了 2 次？</b>
+它：先看 n=3 时 i 的取值，<b>再数边界</b>。</div>
+          <a class="axh-card__link" href="{{ url('user_login', query={redirect: url('ai_coach_chat_page')}) }}">和 AICOJ 聊 →</a>
+        </article>
+        <article class="axh-card">
+          <span class="axh-card__icon"><svg class="axl-ic"><use href="#axl-i-eye"/></svg></span>
+          <h3 class="axh-card__title">指得出第几行</h3>
+          <p class="axh-card__text">每次提交后给一条带行号的观察，错在哪个测试点也说得清——不是一句「再想想」。</p>
+          <div class="axh-card__sample">P1002 · 第 4 行
+<b>边界少一个</b>：i &lt; n 应为 i &lt;= n</div>
+          <a class="axh-card__link" href="#axl-story">看一次真实诊断 →</a>
+        </article>
+        <article class="axh-card axh-card--sunken">
+          <span class="axh-card__icon"><svg class="axl-ic"><use href="#axl-i-sprout"/></svg></span>
+          <h3 class="axh-card__title">哪类题在反复错</h3>
+          <p class="axh-card__text">按知识点记录掌握度，只给有证据的结论，不贴「你不行」的标签。</p>
+          <div class="axh-card__sample">循环边界　<b>3 ✓ / 5 ✗</b>
+前缀和　　　<b>2 ✓ / 1 ✗</b></div>
+          <a class="axh-card__link" href="{{ url('user_login', query={redirect: url('ai_coach_growth')}) }}">看成长档案 →</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 信任区 ================= -->
+  <section class="axh-proof">
+    <div class="axl-shell">
+      <h2 class="axh-proof__head">它不替你写，<span>但指得出第几行。</span></h2>
+      <div class="axh-proof__grid">
+        <div class="axh-proof__item"><b>三层提示</b><span>方向 → 步骤 → 骨架，一步一步给，最后一层才碰代码。</span></div>
+        <div class="axh-proof__item"><b>证据可查</b><span>每条观察都带行号和测试点，能回到提交里核对。</span></div>
+        <div class="axh-proof__item"><b>有误可申诉</b><span>觉得 AI 说错了，在记录页点「有误？」，老师可以复核。</span></div>
+        <div class="axh-proof__item"><b>判题以 Hydro 为准</b><span>对错由真实测试数据决定，AI 的解释只是线索。</span></div>
+      </div>
+      <div class="axh-loop">
+        <h3 class="axh-loop__head">一题走完一圈</h3>
+        <div class="axh-loop__row">
+          <span class="axh-loop__step">题库挑题</span><span class="axh-loop__arrow">→</span>
+          <span class="axh-loop__step">写代码</span><span class="axh-loop__arrow">→</span>
+          <span class="axh-loop__step axh-loop__step--ai">AI 诊断</span><span class="axh-loop__arrow">→</span>
+          <span class="axh-loop__step axh-loop__step--ai">复盘错法</span><span class="axh-loop__arrow">→</span>
+          <span class="axh-loop__step">下一步计划</span>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ================= AI STORY ================= -->

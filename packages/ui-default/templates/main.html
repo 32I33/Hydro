@@ -4,6 +4,7 @@
 {% import "components/problem.html" as problem with context %}
 {% import "components/user.html" as user with context %}
 {% block content %}
+{% include "partials/homepage/ai_home.html" %}
 <div class="row">
   {% for column in contents %}
     <div class="large-{{ column.width }} columns">

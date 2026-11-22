@@ -1,0 +1,126 @@
+{# AICOJ · 登录首页「AI 优先」区块（实验）
+   放在 Hydro 默认 widget 首页最上面：先把「今天做什么」说清楚，再往下才是功课/比赛/公告。
+   数据走已有的 /ai-coach/api/profile（本人 scope），拿不到就退回空态，不阻塞首屏渲染。 #}
+<div class="axh-home" data-axh-home>
+  <section class="axh-hero">
+    <div>
+      <div class="axh-hero__label">Today · 你的 AI 学伴</div>
+      <h2 class="axh-hero__title" data-axh-title>今天先做这件事</h2>
+      <p class="axh-hero__desc" data-axh-desc>正在读取你最近的表现…</p>
+      <div class="axh-hero__stats">
+        <div class="axh-hero__stat"><b data-axh-problems>–</b><span>刷过的题</span></div>
+        <div class="axh-hero__stat"><b data-axh-patterns>–</b><span>还没解决的错法</span></div>
+        <div class="axh-hero__stat"><b data-axh-mastery>–</b><span>有证据的知识点</span></div>
+      </div>
+      <div class="axh-hero__actions">
+        <a class="axh-btn axh-btn--primary" href="{{ url('ai_coach_chat_page') }}">继续和 AICOJ 对话 →</a>
+        <a class="axh-btn" href="{{ url('ai_coach_growth') }}">看成长档案</a>
+        <a class="axh-btn" href="{{ url('problem_main') }}">去题库挑一题</a>
+      </div>
+    </div>
+    <aside class="axh-hero__side">
+      <b>它不会替你写</b>
+      <span>只给方向、步骤和骨架；每一步都带证据——第几行、哪个测试点。</span>
+      <b>判题以 Hydro 为准</b>
+      <span>AI 的解释是线索，不是结论；觉得说错了，可以在记录页点「有误？」。</span>
+    </aside>
+  </section>
+
+  <div class="axh-grid">
+    <section class="axh-panel">
+      <div class="axh-panel__head">
+        <h3>最近在错的</h3>
+        <a href="{{ url('ai_coach_growth') }}">全部 →</a>
+      </div>
+      <ul class="axh-list" data-axh-pattern-list>
+        <li class="axh-empty">正在读取…</li>
+      </ul>
+    </section>
+    <section class="axh-panel">
+      <div class="axh-panel__head">
+        <h3>掌握度（只看有证据的）</h3>
+        <a href="{{ url('ai_coach_growth') }}">成长档案 →</a>
+      </div>
+      <ul class="axh-list" data-axh-mastery-list>
+        <li class="axh-empty">正在读取…</li>
+      </ul>
+    </section>
+  </div>
+</div>
+<script>
+(function () {
+  var root = document.querySelector('[data-axh-home]');
+  if (!root) return;
+  var titleEl = root.querySelector('[data-axh-title]');
+  var descEl = root.querySelector('[data-axh-desc]');
+  var nProb = root.querySelector('[data-axh-problems]');
+  var nPat = root.querySelector('[data-axh-patterns]');
+  var nMas = root.querySelector('[data-axh-mastery]');
+  var patList = root.querySelector('[data-axh-pattern-list]');
+  var masList = root.querySelector('[data-axh-mastery-list]');
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function empty(el, text) {
+    el.innerHTML = '<li class="axh-empty">' + esc(text) + '</li>';
+  }
+
+  function shortTag(key) {
+    // patternKey 形如 "tag:循环边界" / "tagKind:xxx"，去掉前缀更好读
+    return String(key || '').replace(/^[a-zA-Z]+:/, '');
+  }
+
+  fetch('{{ url("ai_coach_profile") }}', { credentials: 'same-origin', headers: { Accept: 'application/json' } })
+    .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+    .then(function (p) {
+      var totals = p.totals || {};
+      var pats = (p.activePatterns || []).slice(0, 3);
+      var mas = (p.mastery || []).slice(0, 4);
+      nProb.textContent = totals.distinctProblems == null ? '–' : totals.distinctProblems;
+      nPat.textContent = (p.activePatterns || []).length;
+      nMas.textContent = (p.mastery || []).length;
+
+      if (pats.length) {
+        var top = pats[0];
+        titleEl.textContent = '今天先把「' + shortTag(top.patternKey) + '」弄明白';
+        descEl.textContent = '这一类错法已经在 ' + (top.problemCount || 1) + ' 道题里出现 '
+          + (top.submissionCount || 1) + ' 次。建议先做 2 道同类题，再回到原来那道。';
+        patList.innerHTML = pats.map(function (x) {
+          return '<li><b>' + esc(shortTag(x.patternKey)) + '</b>'
+            + '<span>' + (x.problemCount || 0) + ' 道题 · ' + (x.submissionCount || 0) + ' 次</span>'
+            + '<i>' + esc((x.lastSeenAt || '').slice(0, 10)) + '</i></li>';
+        }).join('');
+      } else {
+        titleEl.textContent = '还没有足够的证据';
+        descEl.textContent = '再做几道题，AICOJ 才能从你的提交里看出「反复错在哪一类」，现在给结论都是猜的。';
+        empty(patList, '暂时没有反复出现的错法，挺好。');
+      }
+
+      if (mas.length) {
+        masList.innerHTML = mas.map(function (m) {
+          var ok = m.acceptedProblems || 0;
+          var bad = m.failedProblems || 0;
+          var total = ok + bad || 1;
+          var pct = Math.round((ok / total) * 100);
+          var cls = m.state === 'mastered' || pct >= 70 ? 'axh-bar__fill axh-bar__fill--ok' : 'axh-bar__fill';
+          return '<li><b>' + esc(shortTag(m.tagId)) + '</b>'
+            + '<span class="axh-bar"><span class="axh-bar__track"><span class="' + cls + '" style="width:' + pct + '%"></span></span></span>'
+            + '<i>' + ok + '✓ / ' + bad + '✗</i></li>';
+        }).join('');
+      } else {
+        empty(masList, '还没有带证据的知识点。');
+      }
+    })
+    .catch(function () {
+      titleEl.textContent = '今天先做这件事';
+      descEl.textContent = 'AI 助教暂时没有连上（或还没配置）。可以先去题库挑一道题，做完再看诊断。';
+      empty(patList, '暂时读不到诊断记录。');
+      empty(masList, '暂时读不到成长档案。');
+      [nProb, nPat, nMas].forEach(function (el) { el.textContent = '–'; });
+    });
+})();
+</script>
