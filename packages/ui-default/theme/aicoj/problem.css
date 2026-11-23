@@ -12,10 +12,18 @@ html body .ax-pd {
   box-sizing: border-box;
 }
 /* Foundation 的 .row 有 max-width 并居中，会让正文比标题区窄一截；这里放开（外层已经限宽） */
+/* 注意：页签化之后 .row 被包进了 .ax-pd__body，所以用后代选择器而不是直接子元素 */
+html body .ax-pd .row,
 html body .ax-pd > .row {
   max-width: none;
   margin-left: 0;
   margin-right: 0;
+}
+/* Foundation 的 .columns 自带 15px 内边距，会让正文卡片比上面的标题卡缩进一截；
+   用负边距把 .ax-pd__body 撑回去，正文卡与标题卡左右边对齐 */
+html body .ax-pd__body {
+  margin-left: -15px;
+  margin-right: -15px;
 }
 
 /* 面包屑 */
@@ -584,3 +592,17 @@ html.ax-embed .outer-loader-container { display: none !important; }
 html.ax-embed, html.ax-embed body { background: transparent !important; }
 html.ax-embed .main { padding-top: 0 !important; }
 html.ax-embed .ax-pd { padding-left: 0 !important; padding-right: 0 !important; }
+
+/* 嵌进页签时右栏（操作 / 信息 / 推荐 …）是重复信息，直接去掉，正文铺满 */
+html.ax-embed .row { max-width: none !important; margin-left: 0 !important; margin-right: 0 !important; }
+html.ax-embed .row > .medium-3.columns,
+html.ax-embed .row > .large-3.columns,
+html.ax-embed .row > .medium-4.columns { display: none !important; }
+html.ax-embed .row > .medium-9.columns,
+html.ax-embed .row > .large-9.columns,
+html.ax-embed .row > .medium-8.columns {
+  display: block !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 100% !important;
+}
