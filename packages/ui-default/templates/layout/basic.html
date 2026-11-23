@@ -23,8 +23,10 @@
 </div>
 <script>
 // 以 ?embed=1 嵌进 iframe 时（题目页页签原地切换）：隐藏站点头尾，并把内容高度报给父页面
+// 注意：iframe 内部点链接会丢掉 ?embed=1，所以"在 iframe 里"也一律按嵌入处理，
+//       否则页签里会再冒出一条站点导航栏（双层导航）。
 (function () {
-  if (!/[?&]embed=1(&|$)/.test(location.search)) return;
+  if (!/[?&]embed=1(&|$)/.test(location.search) && window.self === window.top) return;
   document.documentElement.className += ' ax-embed';
   if (window.self === window.top) return;
   var last = 0;
