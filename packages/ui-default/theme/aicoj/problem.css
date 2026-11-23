@@ -6,7 +6,7 @@
 /* ================= 页面外壳 ================= */
 /* 和题库/训练/成长档案同一套容器：限宽居中 + 左右留白，宽屏上不要铺满整屏 */
 html body .ax-pd {
-  max-width: 1560px;
+  max-width: 1720px;
   margin: 0 auto;
   padding: 14px 22px 26px;
   box-sizing: border-box;
