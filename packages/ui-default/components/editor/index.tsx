@@ -17,6 +17,7 @@ interface MonacoOptions {
   value?: string;
   hide?: string[];
   lineNumbers?: 'on' | 'off' | 'relative' | 'interval';
+  mouseWheelScrollSensitivity?: number;
 }
 type Options = MonacoOptions;
 
@@ -45,7 +46,7 @@ export default class Editor extends DOMAttachedObject {
       theme = 'vs',
       model = `file://model-${Math.random().toString(16).slice(2)}.${language}`,
       autoResize = true, autoLayout = true,
-      hide = [], lineNumbers = 'on',
+      hide = [], lineNumbers = 'on', mouseWheelScrollSensitivity,
     } = this.options;
     const { monaco, registerAction } = await load([language]);
     const { $dom } = this;
@@ -79,6 +80,7 @@ export default class Editor extends DOMAttachedObject {
       },
     };
     if (autoLayout) cfg.automaticLayout = true;
+    if (mouseWheelScrollSensitivity) cfg.mouseWheelScrollSensitivity = mouseWheelScrollSensitivity;
     let prevHeight = 0;
     const updateEditorHeight = () => {
       const editorElement = this.editor.getDomNode();

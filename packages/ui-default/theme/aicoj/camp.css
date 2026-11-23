@@ -577,9 +577,15 @@ html body .nothing-placeholder {
   font-size: 13px;
 }
 html body .nothing-icon {
-  height: 132px;
+  height: 118px;
   margin-bottom: 10px;
-  background-size: 132px auto;
+  /* 空态图标换成「AI 助教机器人」（lucide bot，ISC 许可，见 https://lucide.dev/icons/bot）；
+     用 mask 上色，跟着主题的 muted 色走。内联成 data URI 是为了不依赖额外静态文件，
+     css-loader 也不会把 /xxx.svg 当成模块去解析。 */
+  background: var(--ax-muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 8V4H8'/%3E%3Crect width='16' height='12' x='4' y='8' rx='2'/%3E%3Cpath d='M2 14h2'/%3E%3Cpath d='M20 14h2'/%3E%3Cpath d='M15 13v2'/%3E%3Cpath d='M9 13v2'/%3E%3C/svg%3E") no-repeat center center / 96px auto;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 8V4H8'/%3E%3Crect width='16' height='12' x='4' y='8' rx='2'/%3E%3Cpath d='M2 14h2'/%3E%3Cpath d='M20 14h2'/%3E%3Cpath d='M15 13v2'/%3E%3Cpath d='M9 13v2'/%3E%3C/svg%3E") no-repeat center center / 96px auto;
+  opacity: .8;
 }
 
 /* 已经处在 Foundation .columns 容器里的页面，不要再加一层留白 */

@@ -81,12 +81,13 @@ html body .ax-brand__name {
 }
 
 html body .ax-brand__sub {
-  font-family: var(--ax-font-mono);
-  font-size: 9px;
+  /* 副标题改成中文了：等宽体没有中文字形，换成正文无衬线，字重压到 600 */
+  font-family: var(--ax-font-body);
+  font-size: 10px;
   font-style: normal;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
   color: var(--ax-ink);
   white-space: nowrap;
 }

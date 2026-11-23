@@ -1595,3 +1595,348 @@ html body .ax-pt__note {
   color: var(--ax-muted);
   text-align: right;
 }
+
+/* =================================================================
+ * 做题页 v2：左上角标签页（题目描述 / 评测记录 / 自测 / AI 诊断）
+ * 右栏只留编辑器；评测结果在「评测记录」里就地渲染，不再跳页面。
+ * ================================================================= */
+html body .ax-submit__col--prob {
+  overflow: hidden;
+  padding-right: 0;
+}
+
+html body .ax-probcard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+html body .ax-probtabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  padding: 8px 10px 0;
+  background: var(--ax-surface-2);
+  border-bottom: 2px solid var(--ax-line);
+}
+
+html body .ax-probtab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: -2px;
+  padding: 7px 13px;
+  border: 2px solid transparent;
+  border-radius: var(--ax-radius-sm) var(--ax-radius-sm) 0 0;
+  background: transparent;
+  color: var(--ax-muted);
+  font-family: var(--ax-font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+
+html body .ax-probtab:hover {
+  color: var(--ax-ink);
+  background: var(--ax-surface-3);
+}
+
+html body .ax-probtab.is-active {
+  border-color: var(--ax-line);
+  border-bottom-color: var(--ax-surface);
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+}
+
+html body .ax-probtabs__spacer {
+  flex: 1 1 auto;
+}
+
+html body .ax-probtabs__status {
+  padding-bottom: 7px;
+  color: var(--ax-muted);
+  font-family: var(--ax-font-mono);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+html body .ax-probpanels {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+html body .ax-probpanel {
+  display: none;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px 18px 22px;
+  background: var(--ax-surface);
+}
+
+html body .ax-probpanel.is-active {
+  display: block;
+}
+
+/* 竖向像素转圈 */
+html body .ax-spin {
+  display: inline-block;
+  width: 11px;
+  height: 11px;
+  border: 2px solid var(--ax-primary-soft);
+  border-top-color: var(--ax-primary-bright);
+  border-radius: 2px;
+  animation: ax-spin .9s steps(8, end) infinite;
+}
+
+html body .ax-spin--lg {
+  width: 18px;
+  height: 18px;
+  border-width: 3px;
+}
+
+@keyframes ax-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 本次评测结果 */
+html body .ax-judge {
+  margin: 0 0 14px;
+  border: 2px solid var(--ax-line);
+  border-radius: var(--ax-radius);
+  background: var(--ax-surface);
+  box-shadow: var(--ax-shadow-2);
+  overflow: hidden;
+}
+
+html body .ax-judge__head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 12px;
+  background: var(--ax-surface-2);
+  border-bottom: 2px solid var(--ax-line);
+}
+
+html body .ax-judge__title {
+  font-family: var(--ax-font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ax-ink);
+}
+
+html body .ax-judge__title.is-pass { color: var(--ax-green); }
+html body .ax-judge__title.is-fail { color: var(--ax-red); }
+html body .ax-judge__title.is-wait { color: var(--ax-primary); }
+
+html body .ax-judge__meta {
+  color: var(--ax-muted);
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+}
+
+html body .ax-judge__link {
+  margin-left: auto;
+  font-family: var(--ax-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+html body .ax-judge__body {
+  padding: 10px 12px 12px;
+}
+
+html body .ax-judge__out {
+  margin: 0 0 8px;
+  padding: 9px 11px;
+  max-height: 168px;
+  overflow: auto;
+  border: 2px solid var(--ax-line-soft);
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface-2);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-mono);
+  font-size: 11.5px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+html body .ax-judge__out--err {
+  border-color: var(--ax-red);
+  color: var(--ax-red);
+}
+
+html body .ax-judge__hint {
+  margin: 6px 0 0;
+  color: var(--ax-text-2);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+html body .ax-judge__hint--err {
+  color: var(--ax-red);
+}
+
+html body .ax-judge__cases {
+  width: 100%;
+  margin-top: 6px;
+  border-collapse: collapse;
+  font-family: var(--ax-font-mono);
+  font-size: 11.5px;
+}
+
+html body .ax-judge__cases th {
+  padding: 4px 8px;
+  border-bottom: 2px solid var(--ax-line);
+  color: var(--ax-muted);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-align: left;
+}
+
+html body .ax-judge__cases td {
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--ax-surface-3);
+  color: var(--ax-ink);
+}
+
+html body .ax-judge__cases tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+html body .ax-judge__cid {
+  color: var(--ax-muted);
+}
+
+html body .ax-judge__msg {
+  color: var(--ax-text-2);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+html body .ax-judge__pill {
+  display: inline-block;
+  padding: 1px 7px;
+  border: 1.5px solid currentColor;
+  border-radius: var(--ax-radius-pill);
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+html body .ax-judge__pill.is-pass { color: var(--ax-green); }
+html body .ax-judge__pill.is-fail { color: var(--ax-red); }
+html body .ax-judge__pill.is-wait { color: var(--ax-primary); }
+
+html body .ax-judge__cases-wrap {
+  max-height: 200px;
+  overflow: auto;
+}
+
+/* 右栏：编辑器铺满 */
+html body .ax-submit .ax-editor {
+  height: 100%;
+  flex: 1 1 auto;
+}
+
+html body .ax-submit .ax-editor__code {
+  min-height: 320px;
+}
+
+html body .ax-submit .ax-editor__code .textbox {
+  position: relative;
+}
+
+html body .ax-editor__code .monaco-editor .scrollbar .slider {
+  background: var(--ax-line-soft) !important;
+}
+
+html body .ax-editor__code .monaco-editor .scrollbar .slider:hover {
+  background: var(--ax-muted) !important;
+}
+
+html body .ax-editor__submit.is-busy {
+  cursor: progress;
+  opacity: .75;
+}
+
+
+/* [hidden] 的 UA 规则会被 .ax-spin 的 display 覆盖，这里显式收回来 */
+html body .ax-spin[hidden],
+html body .ax-judge[hidden] {
+  display: none !important;
+}
+
+/* 语言下拉：主语言 + 子语言并排，不要上下堆 */
+html body .ax-editor__lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+html body .ax-editor__lang .columns,
+html body .ax-editor__lang .form__item {
+  display: inline-block;
+  width: auto;
+}
+
+/* 滚动条滑块用中性色，别喧宾夺主 */
+html body .ax-editor__code .monaco-editor .scrollbar .slider {
+  background: var(--ax-surface-4) !important;
+}
+/* ---------- 做题页：AI 诊断面板 ---------- */
+html body .ax-ai { display: flex; flex-direction: column; gap: 12px; }
+html body .ax-ai__head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  border: 2px solid var(--ax-line);
+  background: var(--ax-surface-2);
+  box-shadow: var(--ax-shadow-1);
+}
+html body .ax-ai__title {
+  font-family: var(--ax-font-head); font-size: 14px; font-weight: 700;
+  letter-spacing: .02em; color: var(--ax-ink);
+}
+html body .ax-ai__meta { font-family: var(--ax-font-mono); font-size: 11px; color: var(--ax-muted); }
+html body .ax-ai__spacer { flex: 1 1 auto; }
+html body .ax-ai__body { display: flex; flex-direction: column; gap: 10px; }
+html body .ax-ai__summary {
+  margin: 0; padding: 12px 14px;
+  border-left: 4px solid var(--ax-primary);
+  background: var(--ax-surface-2);
+  font-size: 14px; line-height: 1.75; color: var(--ax-ink);
+}
+html body .ax-ai__list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+html body .ax-ai__item {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--ax-line-soft);
+  background: var(--ax-surface);
+}
+html body .ax-ai__kind {
+  font-family: var(--ax-font-head); font-size: 12px; font-weight: 700;
+  padding: 2px 8px; color: var(--ax-primary-wash);
+  background: var(--ax-primary-soft); border: 1px solid var(--ax-primary);
+}
+html body .ax-ai__lines {
+  font-family: var(--ax-font-mono); font-size: 11.5px; color: var(--ax-ink);
+  padding: 2px 7px; background: var(--ax-surface-3); border: 1px solid var(--ax-line-soft);
+}
+html body .ax-ai__tags { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+html body .ax-ai__tag {
+  font-size: 11.5px; padding: 2px 7px; color: var(--ax-text-2);
+  background: var(--ax-surface-2); border: 1px dashed var(--ax-line-soft);
+}
+html body .ax-ai__conf { font-family: var(--ax-font-mono); font-size: 11px; color: var(--ax-muted); }
+html body .ax-ai__note { margin: 0; font-size: 12px; line-height: 1.7; color: var(--ax-muted); }
+@media (max-width: 760px) {
+  html body .ax-ai__item { align-items: flex-start; }
+}
