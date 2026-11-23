@@ -16,7 +16,6 @@
           <span class="ax-spin" data-rec-spin hidden></span>评测记录
         </button>
         <button type="button" class="ax-probtab" data-prob-tab="pretest" role="tab" aria-selected="false">自测</button>
-        <button type="button" class="ax-probtab" data-prob-tab="ai" role="tab" aria-selected="false">AI 诊断</button>
         <span class="ax-probtabs__spacer"></span>
         <span class="ax-probtabs__status" data-console-status>提交后自动刷新</span>
       </div>
@@ -106,25 +105,6 @@
             </div>
           </div>
         </section>
-
-        <section class="ax-probpanel" data-prob-panel="ai" role="tabpanel" hidden>
-          <div class="ax-ai" data-ai>
-            <div class="ax-ai__head">
-              <span class="ax-spin ax-spin--lg" data-ai-spin hidden></span>
-              <span class="ax-ai__title" data-ai-title>AI 诊断</span>
-              <span class="ax-ai__meta" data-ai-meta></span>
-              <span class="ax-ai__spacer"></span>
-              <button type="button" class="ax-btn ax-btn--sm" data-ai-refresh hidden>重新分析</button>
-            </div>
-            <div class="ax-ai__body" data-ai-body>
-              <p class="ax-console__empty">做题时先看左侧的「给我一点提示」；提交之后，这里会自动告诉你这次代码错在哪、在第几行、下一步怎么改。</p>
-            </div>
-            <p class="ax-console__foot">
-              <a class="ax-console__link" href="/ai-coach/growth">去成长档案看历史问题</a>
-              <a class="ax-console__link" data-ai-record hidden>打开这条记录</a>
-            </p>
-          </div>
-        </section>
       </div>
     </div>
   </div>
@@ -153,6 +133,24 @@
         </div>
       </form>
     </div>
+
+    <section class="ax-panel ax-ai" data-ai hidden aria-live="polite">
+      <div class="ax-ai__head">
+        <span class="ax-spin ax-spin--lg" data-ai-spin hidden></span>
+        <span class="ax-ai__title" data-ai-title>AI 诊断</span>
+        <span class="ax-ai__meta" data-ai-meta></span>
+        <span class="ax-ai__spacer"></span>
+        <button type="button" class="ax-btn ax-btn--sm" data-ai-refresh hidden>重新分析</button>
+        <button type="button" class="ax-ai__close" data-ai-close title="收起诊断" aria-label="收起诊断">×</button>
+      </div>
+      <div class="ax-ai__body" data-ai-body>
+        <p class="ax-console__empty">提交之后，这里会自动告诉你这次代码错在哪、在第几行、下一步怎么改。</p>
+      </div>
+      <p class="ax-console__foot">
+        <a class="ax-console__link" href="/ai-coach/growth">去成长档案看历史问题</a>
+        <a class="ax-console__link" data-ai-record hidden>打开这条记录</a>
+      </p>
+    </section>
   </div>
 </div>
 
@@ -285,12 +283,14 @@
   var judgeMeta = root.querySelector('[data-judge-meta]');
   var judgeLink = root.querySelector('[data-judge-link]');
   var judgeBody = root.querySelector('[data-judge-body]');
-  var aiSpin = root.querySelector('[data-ai-spin]');
-  var aiTitle = root.querySelector('[data-ai-title]');
-  var aiMeta = root.querySelector('[data-ai-meta]');
-  var aiBody = root.querySelector('[data-ai-body]');
-  var aiRefresh = root.querySelector('[data-ai-refresh]');
-  var aiRecord = root.querySelector('[data-ai-record]');
+  var aiSpin = document.querySelector('[data-ai-spin]');
+  var aiTitle = document.querySelector('[data-ai-title]');
+  var aiMeta = document.querySelector('[data-ai-meta]');
+  var aiBody = document.querySelector('[data-ai-body]');
+  var aiRefresh = document.querySelector('[data-ai-refresh]');
+  var aiRecord = document.querySelector('[data-ai-record]');
+  var aiBox = document.querySelector('[data-ai]');
+  var aiClose = document.querySelector('[data-ai-close]');
   var form = document.querySelector('.ax-editor__form');
   var submitBtn = document.querySelector('.ax-editor__submit');
   var STATUS_TEXT = {
@@ -700,16 +700,22 @@
       });
   }
 
-  // 提交结束且没通过时：自动切到「AI 诊断」并开始拉结果。
+  // 提交结束且没通过时：把诊断卡片直接展开在编辑器下方（不切页签、不跳转）。
   function autoDiagnose(rid) {
     if (!rid || rid === aiAutoRid) return;
     aiAutoRid = rid;
-    activate('ai');
+    if (aiBox) aiBox.hidden = false;
     loadAi(rid, false);
   }
 
   if (aiRefresh) {
     aiRefresh.addEventListener('click', function () { loadAi(aiRid, false); });
+  }
+  if (aiClose) {
+    aiClose.addEventListener('click', function () {
+      if (aiBox) aiBox.hidden = true;
+      if (aiTimer) { clearTimeout(aiTimer); aiTimer = null; }
+    });
   }
 
   // ---------- 提交 ----------

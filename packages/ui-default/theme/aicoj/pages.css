@@ -1892,8 +1892,23 @@ html body .ax-editor__lang .form__item {
 html body .ax-editor__code .monaco-editor .scrollbar .slider {
   background: var(--ax-surface-4) !important;
 }
-/* ---------- 做题页：AI 诊断面板 ---------- */
-html body .ax-ai { display: flex; flex-direction: column; gap: 12px; }
+/* ---------- 做题页：AI 诊断面板（直接展开在编辑器下方） ---------- */
+html body .ax-submit__col--editor > .ax-ai {
+  flex: 0 0 auto;
+  max-height: 44vh;
+  min-height: 0;
+  overflow: hidden;
+  padding: 10px 14px 8px;
+}
+html body .ax-ai[hidden] { display: none !important; }
+html body .ax-ai { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+html body .ax-ai__close {
+  width: 22px; height: 22px; line-height: 1;
+  font-size: 16px; font-weight: 700;
+  color: var(--ax-muted); background: transparent;
+  border: 1px solid var(--ax-line-soft); cursor: pointer;
+}
+html body .ax-ai__close:hover { color: var(--ax-ink); border-color: var(--ax-line); }
 html body .ax-ai__head {
   display: flex; align-items: center; gap: 10px;
   padding: 10px 12px;
@@ -1907,7 +1922,7 @@ html body .ax-ai__title {
 }
 html body .ax-ai__meta { font-family: var(--ax-font-mono); font-size: 11px; color: var(--ax-muted); }
 html body .ax-ai__spacer { flex: 1 1 auto; }
-html body .ax-ai__body { display: flex; flex-direction: column; gap: 10px; }
+html body .ax-ai__body { display: flex; flex-direction: column; gap: 10px; min-height: 0; overflow-y: auto; padding-right: 4px; }
 html body .ax-ai__summary {
   margin: 0; padding: 12px 14px;
   border-left: 4px solid var(--ax-primary);
