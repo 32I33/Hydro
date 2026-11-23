@@ -52,9 +52,10 @@
   --ax-shadow-4: 5px 5px 0 var(--ax-line);
 
   /* 字体 */
-  --ax-font-head: "Space Grotesk", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --ax-font-body: "Plus Jakarta Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --ax-font-mono: "Space Mono", "SFMono-Regular", Consolas, monospace;
+  /* 字体：使用本机字体与已打包的 JetBrains Mono，不请求境外字体服务 */
+  --ax-font-head: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ax-font-body: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --ax-font-mono: "JetBrains Mono", "Source Code Pro", "SFMono-Regular", Consolas, monospace;
 
   /* 尺寸 */
   --ax-nav-h: 64px;

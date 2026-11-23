@@ -1,349 +1,26 @@
-﻿<!-- AICOJ · Pixel Arcade landing (guest homepage). UX ported from site-v2; skin = --ax-* tokens. Self-contained. -->
+<!-- AICOJ · AI-first guest landing. No external fonts, no scroll hijacking. -->
 <style>
-.axl{--paper:var(--ax-bg,#faf9f4);--surface:var(--ax-surface,#fff);--surface2:var(--ax-surface-2,#f6f4ee);--surface3:var(--ax-surface-3,#eeebe1);--ink:var(--ax-ink,#141b2d);--ink-soft:var(--ax-ink-soft,#293043);--text2:var(--ax-text-2,#5b4138);--muted:var(--ax-muted,#8f7066);--line:var(--ax-line,#141b2d);--orange:var(--ax-primary-bright,#ff5e1a);--orange-deep:var(--ax-primary,#aa3600);--orange-soft:var(--ax-primary-soft,#ffdbcf);--mint:var(--ax-mint,#5ffdb7);--green:var(--ax-green,#006c47);--green-soft:var(--ax-green-soft,#5cfab5);--gold:var(--ax-yellow,#f4bf00);--gold-soft:var(--ax-yellow-soft,#ffdf92);--red:var(--ax-red,#ba1a1a);--red-soft:var(--ax-red-soft,#ffdad6);--head:var(--ax-font-head,"Space Grotesk","PingFang SC","Microsoft YaHei",sans-serif);--body:var(--ax-font-body,"Plus Jakarta Sans","PingFang SC","Microsoft YaHei",sans-serif);--mono:var(--ax-font-mono,"Space Mono",Consolas,monospace);--nav:var(--ax-nav-h,64px);
-  position:relative;background:var(--paper);color:var(--ink);font-family:var(--body);overflow:clip;}
-.axl *,.axl *::before,.axl *::after{box-sizing:border-box;}
-.axl h1,.axl h2,.axl h3{font-family:var(--head);margin:0;color:var(--ink);}
-.axl p{margin:0;}
-.axl a{color:inherit;text-decoration:none;}
-.axl button{font-family:inherit;cursor:pointer;}
-.axl .axl-shell{width:100%;max-width:1400px;margin:0 auto;padding:0 44px;}
-.axl .axl-ic{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block;}
-.axl section{scroll-margin-top:calc(var(--nav) + 12px);}
-/* pixel page scrollbar */
-.axl-scroll::-webkit-scrollbar{width:12px;height:12px;}
-.axl-scroll::-webkit-scrollbar-track{background:var(--surface3);border-left:2px solid var(--line);}
-.axl-scroll::-webkit-scrollbar-thumb{background:var(--orange);border:2px solid var(--line);}
-.axl-scroll::-webkit-scrollbar-thumb:hover{background:var(--orange-deep);}
-.axl-scroll{scrollbar-width:thin;scrollbar-color:var(--orange) var(--surface3);}
-/* kicker */
-.axl-kicker{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange-deep);}
-.axl-kicker .dot{width:8px;height:8px;background:var(--mint);border:2px solid var(--line);animation:axl-blink 1.6s steps(2,end) infinite;}
-.axl-kicker i{display:block;width:26px;height:2px;background:var(--line);opacity:.35;}
-@keyframes axl-blink{0%,60%{opacity:1}61%,100%{opacity:.25}}
-/* buttons */
-.axl .axl-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border:2px solid var(--line);border-radius:var(--ax-radius,10px);font-family:var(--head);font-weight:700;font-size:15px;background:var(--surface);color:var(--ink);box-shadow:4px 4px 0 var(--line);transition:transform .12s,box-shadow .12s;}
-.axl .axl-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--line);}
-.axl .axl-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line);}
-.axl .axl-btn--primary{background:var(--orange);color:#fff;}
-.axl .axl-btn--primary .axl-ic{stroke:#fff;}
-.axl .axl-btn--ink{background:var(--ink);color:#fff;}
-.axl .axl-btn--ink .axl-ic{stroke:#fff;}
-.axl-btn .orb{display:grid;place-items:center;width:26px;height:26px;border:2px solid currentColor;border-radius:50%;}
-.axl-btn .orb .axl-ic{width:13px;height:13px;}
-/* reveal */
-.axl .rv{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease;}
-.axl .rv.is-in{opacity:1;transform:none;}
-/* ============ HERO ============ */
-.axl-hero{position:relative;padding:calc(var(--nav) + 46px) 0 0;background:var(--paper);border-bottom:2px solid var(--line);overflow:hidden;}
-.axl-hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(20,27,45,.06) 2px,transparent 2px),linear-gradient(90deg,rgba(20,27,45,.06) 2px,transparent 2px);background-size:56px 56px;mask-image:linear-gradient(180deg,#000 0%,transparent 90%);pointer-events:none;}
-.axl-hero::after{content:"";position:absolute;right:-140px;top:-140px;width:420px;height:420px;background:var(--orange-soft);border:2px solid var(--line);transform:rotate(12deg);opacity:.5;pointer-events:none;}
-.axl-hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,.95fr) minmax(440px,1.05fr);gap:52px;align-items:center;padding-bottom:56px;}
-.axl-hero h1{font-size:clamp(46px,5.6vw,84px);line-height:1.02;letter-spacing:-.03em;font-weight:700;margin:22px 0 20px;}
-.axl-hero h1 span{position:relative;display:inline-block;color:var(--orange-deep);}
-.axl-hero h1 span::after{content:"";position:absolute;left:2px;right:6%;bottom:-6px;height:8px;background:var(--orange);transform:rotate(-1deg);}
-.axl-hero-copy>p{max-width:520px;color:var(--text2);font-size:16px;line-height:1.85;}
-.axl-hero-ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:30px;}
-.axl-proof{display:flex;gap:20px;flex-wrap:wrap;margin-top:28px;font-family:var(--mono);font-size:11px;color:var(--muted);}
-.axl-proof span{display:inline-flex;align-items:center;gap:7px;}
-.axl-proof .axl-ic{width:15px;height:15px;}
-.axl-proof span:nth-child(1) .axl-ic{color:var(--green);}
-.axl-proof span:nth-child(2) .axl-ic{color:var(--orange-deep);}
-.axl-proof span:nth-child(3) .axl-ic{color:var(--green);}
-/* desk visual */
-.axl-visual{position:relative;}
-.axl-visual-label{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;text-transform:uppercase;}
-.axl-desk{position:relative;min-height:470px;background:var(--surface);border:2px solid var(--line);border-radius:var(--ax-radius-lg,14px);box-shadow:10px 10px 0 var(--orange);transform:rotate(.4deg);overflow:hidden;}
-.axl-desk-top{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:15px 18px;border-bottom:2px solid var(--line);background:var(--surface2);font-family:var(--mono);font-size:10px;color:var(--text2);}
-.axl-desk-brand{display:inline-flex;align-items:center;gap:7px;font-weight:700;color:var(--ink);}
-.axl-desk-brand .axl-ic{color:var(--orange-deep);}
-.axl-desk-grid{position:absolute;inset:50px 0 0;background-image:linear-gradient(rgba(20,27,45,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(20,27,45,.07) 1px,transparent 1px);background-size:22px 22px;mask-image:linear-gradient(180deg,#000,transparent 94%);pointer-events:none;}
-.axl-note{position:absolute;z-index:2;border:2px solid var(--line);box-shadow:5px 5px 0 rgba(20,27,45,.18);}
-.axl-note-main{left:34px;top:92px;width:250px;padding:18px;background:var(--gold-soft);transform:rotate(-4deg);}
-.axl-note-label{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--orange-deep);text-transform:uppercase;}
-.axl-note-main strong{display:block;font-family:var(--head);font-size:21px;line-height:1.3;margin-top:12px;color:var(--ink);}
-.axl-note-sign{display:block;font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:14px;}
-.axl-note-side{right:34px;bottom:150px;width:150px;padding:14px;background:var(--mint);transform:rotate(4deg);display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:9px;color:var(--ink);}
-.axl-note-side b{font-family:var(--head);font-size:16px;}
-.axl-note-side .axl-ic{position:absolute;right:10px;bottom:8px;width:15px;height:15px;color:var(--orange-deep);}
-.axl-pin{position:absolute;left:50%;top:-7px;width:12px;height:12px;background:var(--orange);border:2px solid var(--line);transform:translateX(-50%);}
-.axl-desk-bot{position:absolute;z-index:3;left:50%;bottom:22px;width:130px;height:130px;transform:translateX(-50%);}
-.axl-desk-chip{position:absolute;z-index:4;display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:2px solid var(--line);background:var(--surface);font-family:var(--mono);font-size:10px;box-shadow:3px 3px 0 rgba(20,27,45,.2);}
-.axl-desk-chip .axl-ic{width:13px;height:13px;}
-.axl-chip-a{right:22px;top:88px;transform:rotate(3deg);background:var(--red-soft);color:var(--red);}
-.axl-chip-b{left:24px;bottom:24px;transform:rotate(-3deg);color:var(--orange-deep);}
-.axl-visual-foot{display:flex;align-items:center;gap:10px;margin-top:14px;font-family:var(--mono);font-size:9px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;}
-.axl-visual-foot i{flex:1;height:2px;background:var(--line);opacity:.2;}
-.axl-hero-bottom{position:relative;z-index:1;border-top:2px solid var(--line);background:var(--surface2);padding:15px 0;}
-.axl-hero-bottom .axl-shell{display:flex;align-items:center;gap:16px;font-family:var(--mono);font-size:11px;color:var(--text2);}
-.axl-hero-bottom i{flex:1;height:2px;background:var(--line);opacity:.2;}
-.axl-hero-bottom a{display:inline-flex;align-items:center;gap:6px;color:var(--orange-deep);font-weight:700;}
-.axl-hero-bottom a .axl-ic{width:13px;height:13px;}
-/* robot bob */
-.axl-bot{width:100%;height:100%;display:block;animation:axl-bob 3.4s ease-in-out infinite;}
-@keyframes axl-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-/* ============ AI STORY ============ */
-.axl-story{position:relative;padding:78px 0 60px;background:var(--surface2);border-bottom:2px solid var(--line);}
-.axl-story::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(20,27,45,.05) 2px,transparent 2px),linear-gradient(90deg,rgba(20,27,45,.05) 2px,transparent 2px);background-size:60px 60px;mask-image:linear-gradient(180deg,#000,transparent 96%);pointer-events:none;}
-.axl-story-shell{position:relative;z-index:1;max-width:1320px;margin:0 auto;padding:0 44px;}
-.axl-story-head{display:flex;justify-content:space-between;align-items:flex-end;gap:48px;margin-bottom:30px;}
-.axl-story-head h2{font-size:clamp(30px,3.4vw,46px);line-height:1.1;letter-spacing:-.02em;margin-top:14px;}
-.axl-story-head h2 span{position:relative;color:var(--orange-deep);}
-.axl-story-head h2 span::after{content:"";position:absolute;left:1px;right:8%;bottom:-4px;height:6px;background:var(--orange);transform:rotate(-.8deg);}
-.axl-story-head>p{max-width:320px;color:var(--text2);font-size:13px;line-height:1.8;padding-bottom:6px;}
-.axl-stack{position:relative;max-width:1180px;margin:0 auto;}
-.axl-stack-top{display:flex;justify-content:space-between;align-items:center;padding:0 4px 10px;border-bottom:2px solid var(--line);font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--text2);text-transform:uppercase;}
-.axl-stack-counter{display:flex;align-items:baseline;gap:4px;color:var(--orange-deep);}
-.axl-stack-counter strong{font-size:18px;}
-.axl-stack-viewport{position:relative;height:calc(100vh - 320px);min-height:520px;max-height:680px;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;}
-.axl-slide{display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:center;height:100%;min-height:520px;scroll-snap-align:start;scroll-snap-stop:always;padding:26px 6px 20px;}
-.axl-slide-copy{padding-left:12px;}
-.axl-paper-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:var(--orange-deep);text-transform:uppercase;}
-.axl-slide h3{font-size:clamp(30px,3.6vw,52px);line-height:1.06;letter-spacing:-.02em;margin-top:16px;}
-.axl-slide-copy>p{max-width:360px;font-size:13px;line-height:1.85;color:var(--text2);margin-top:16px;}
-.axl-tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;}
-.axl-tag{padding:6px 10px;border:2px solid var(--line);font-family:var(--mono);font-size:10px;background:var(--surface);box-shadow:2px 2px 0 var(--line);}
-.axl-tag--orange{background:var(--orange-soft);color:var(--orange-deep);}
-.axl-tag--mint{background:var(--mint);color:var(--ink);}
-.axl-tag--gold{background:var(--gold-soft);color:var(--ink);}
-.axl-dialogue{display:flex;flex-direction:column;gap:7px;margin-top:22px;max-width:360px;}
-.axl-bubble{padding:10px 12px;border:2px solid var(--line);font-size:12px;line-height:1.55;box-shadow:3px 3px 0 rgba(20,27,45,.15);}
-.axl-bubble--me{margin-left:26px;background:var(--orange-soft);color:var(--ink);border-radius:10px 10px 2px 10px;}
-.axl-bubble--ai{background:var(--surface);color:var(--ink);border-radius:10px 10px 10px 2px;}
-.axl-plan{display:flex;align-items:center;gap:11px;max-width:340px;margin-top:24px;padding:12px;background:var(--surface);border:2px solid var(--line);box-shadow:5px 5px 0 var(--mint);}
-.axl-plan-check{display:grid;place-items:center;width:26px;height:26px;background:var(--mint);border:2px solid var(--line);color:var(--ink);}
-.axl-plan-check .axl-ic{width:14px;height:14px;}
-.axl-plan>div{display:flex;flex-direction:column;gap:2px;flex:1;}
-.axl-plan strong{font-size:13px;font-family:var(--head);}
-.axl-plan span{font-size:11px;color:var(--muted);font-family:var(--mono);}
-.axl-plan-arrow{color:var(--orange-deep);}
-/* paper boards */
-.axl-board{position:relative;min-height:430px;height:100%;background:var(--surface);border:2px solid var(--line);box-shadow:8px 8px 0 var(--orange);transform:rotate(-.8deg);overflow:hidden;}
-.axl-board-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(20,27,45,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(20,27,45,.07) 1px,transparent 1px);background-size:22px 22px;pointer-events:none;}
-.axl-heat{position:absolute;left:20%;top:16%;width:340px;height:250px;display:grid;grid-template-columns:repeat(16,1fr);grid-auto-rows:1fr;gap:3px;opacity:.8;}
-.axl-heat i{display:block;background:var(--orange-soft);}
-.axl-heat i:nth-child(3n){background:var(--orange);}
-.axl-heat i:nth-child(5n){background:var(--gold);}
-.axl-heat i:nth-child(7n){background:var(--orange-deep);}
-.axl-heat i:nth-child(11n){background:var(--mint);}
-.axl-sticky{position:absolute;z-index:2;padding:13px 12px;border:2px solid var(--line);box-shadow:5px 6px 0 rgba(20,27,45,.18);}
-.axl-sticky strong{display:block;font-size:13px;font-family:var(--head);margin-top:6px;}
-.axl-sticky>span:last-child{display:block;font-size:11px;color:var(--text2);margin-top:5px;line-height:1.5;}
-.axl-sticky--top{right:7%;top:9%;width:196px;transform:rotate(4deg);background:var(--gold-soft);}
-.axl-sticky--bottom{left:11%;bottom:12%;width:180px;transform:rotate(-4deg);background:var(--mint);}
-.axl-sticky-tab{display:inline-block;background:var(--ink);color:var(--mint);padding:2px 6px;font-family:var(--mono);font-size:9px;}
-.axl-mini-label{position:absolute;z-index:2;font-family:var(--mono);font-size:9px;color:var(--text2);background:var(--surface);padding:4px 6px;border:2px solid var(--line);}
-.axl-mini-a{left:7%;top:8%;}
-.axl-mini-b{right:8%;bottom:6%;}
-.axl-board--talk .axl-bigword{position:absolute;left:8%;top:20%;font-family:var(--head);font-size:56px;font-weight:700;line-height:1;letter-spacing:-.03em;color:var(--ink);}
-.axl-stamp{position:absolute;right:9%;top:11%;padding:7px 10px;border:2px solid var(--orange-deep);color:var(--orange-deep);font-family:var(--mono);font-size:10px;transform:rotate(6deg);background:var(--surface);}
-.axl-talk-card{position:absolute;z-index:2;display:flex;gap:9px;padding:12px;width:216px;background:var(--surface);border:2px solid var(--line);box-shadow:5px 5px 0 rgba(20,27,45,.18);}
-.axl-talk-card .axl-ic{width:17px;height:17px;color:var(--orange-deep);}
-.axl-talk-card strong{display:block;font-size:12px;font-family:var(--head);}
-.axl-talk-card small{display:block;font-size:10px;line-height:1.55;color:var(--text2);margin-top:3px;}
-.axl-talk-a{right:7%;bottom:24%;transform:rotate(3deg);}
-.axl-talk-b{left:7%;bottom:9%;transform:rotate(-3deg);}
-.axl-board-bot{position:absolute;right:11%;bottom:5%;width:100px;height:100px;z-index:3;}
-.axl-board--final .axl-final-title{position:absolute;left:8%;top:9%;font-family:var(--mono);font-size:10px;letter-spacing:.14em;line-height:1.5;color:var(--text2);text-transform:uppercase;}
-.axl-board--final .axl-final-title b{display:block;font-family:var(--head);font-size:30px;letter-spacing:-.02em;color:var(--orange-deep);}
-.axl-final-line{position:absolute;left:8%;right:8%;top:31%;border-top:2px solid var(--line);}
-.axl-final-row{position:absolute;left:8%;right:8%;display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:8px;border-bottom:2px solid var(--surface3);padding:11px 0;font-size:12px;}
-.axl-final-row:nth-of-type(4){top:36%;}
-.axl-final-row:nth-of-type(5){top:49%;}
-.axl-final-row:nth-of-type(6){top:62%;}
-.axl-final-row span{font-family:var(--mono);font-size:10px;color:var(--orange-deep);}
-.axl-final-row strong{font-size:13px;font-family:var(--head);font-weight:600;}
-.axl-final-row em{font-family:var(--mono);font-size:10px;color:var(--muted);font-style:normal;}
-.axl-final-sign{position:absolute;left:8%;bottom:8%;font-family:var(--mono);font-size:10px;color:var(--muted);}
-.axl-pixel-star{position:absolute;right:10%;bottom:9%;font-size:30px;color:var(--gold);}
-.axl-fire{position:absolute;left:50%;bottom:7%;width:10px;height:10px;background:var(--orange);transform:translateX(-50%);box-shadow:13px 0 var(--gold),26px 0 var(--orange),-13px 13px var(--gold),0 13px var(--gold),13px 13px var(--orange),26px 13px var(--orange-deep),-13px 26px var(--orange-deep),0 26px var(--orange),13px 26px var(--gold),26px 26px var(--orange-deep),0 39px var(--ink),13px 39px var(--orange-deep),26px 39px var(--ink);}
-.axl-stack-bottom{display:flex;align-items:center;gap:12px;padding-top:12px;font-family:var(--mono);font-size:10px;color:var(--text2);}
-.axl-stack-progress{height:6px;flex:1;background:var(--surface3);border:2px solid var(--line);overflow:hidden;}
-.axl-stack-progress i{display:block;height:100%;width:33%;background:var(--orange);transition:width .25s;}
-.axl-stack-dots{display:flex;gap:6px;}
-.axl-stack-dots button{width:12px;height:12px;border:2px solid var(--line);background:var(--surface);padding:0;}
-.axl-stack-dots button.active{background:var(--orange);}
-/* ============ FEATURE TIMELINE (dark arcade) ============ */
-.axl-timeline{position:relative;height:280vh;background:var(--ink);border-top:2px solid var(--line);}
-.axl-timeline::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,94,26,.09) 2px,transparent 2px),linear-gradient(90deg,rgba(255,94,26,.09) 2px,transparent 2px);background-size:64px 64px;mask-image:linear-gradient(180deg,#000,transparent 95%);pointer-events:none;}
-.axl-timeline-sticky{position:sticky;top:var(--nav);height:calc(100vh - var(--nav));overflow:hidden;display:flex;flex-direction:column;padding-top:48px;}
-.axl-timeline-head{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:40px;flex-shrink:0;}
-.axl-timeline-head .axl-kicker{color:var(--mint);}
-.axl-timeline-head .axl-kicker i{background:var(--mint);opacity:.4;}
-.axl-timeline-head h2{font-size:clamp(30px,3.5vw,48px);line-height:1.08;letter-spacing:-.02em;margin-top:14px;color:#fff;}
-.axl-timeline-head h2 span{position:relative;color:var(--orange);}
-.axl-timeline-head h2 span::after{content:"";position:absolute;left:1px;right:9%;bottom:-5px;height:6px;background:var(--mint);transform:rotate(-.8deg);}
-.axl-timeline-dots{display:flex;gap:14px;align-items:center;padding-bottom:7px;flex-wrap:wrap;}
-.axl-timeline-dots button{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:rgba(255,255,255,.5);font-family:var(--mono);font-size:11px;padding:4px 2px;}
-.axl-timeline-dots button span{font-size:10px;color:rgba(255,255,255,.35);}
-.axl-timeline-dots button:hover{color:#fff;}
-.axl-timeline-dots button.active{color:var(--orange);}
-.axl-timeline-dots button.active span{color:var(--mint);}
-.axl-timeline-viewport{position:relative;z-index:2;flex:1;min-height:0;margin-top:30px;overflow:hidden;}
-.axl-timeline-track{display:flex;gap:20px;height:100%;width:max-content;will-change:transform;padding:2px 0 16px;}
-.axl-card{position:relative;display:flex;flex-direction:column;width:min(660px,68vw);height:100%;min-height:0;padding:24px 26px 20px;background:var(--paper);color:var(--ink);border:2px solid var(--line);box-shadow:8px 8px 0 var(--orange);overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:var(--orange) var(--surface3);}
-.axl-card--dark{background:var(--ink-soft);color:#fff;box-shadow:8px 8px 0 var(--mint);}
-.axl-card--light{background:var(--surface);}
-.axl-card-top{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--surface3);padding-bottom:11px;}
-.axl-card--dark .axl-card-top{border-color:rgba(255,255,255,.18);}
-.axl-card-index{position:absolute;top:14px;left:22px;z-index:0;font-family:var(--head);font-size:74px;line-height:1;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:2px rgba(255,94,26,.4);pointer-events:none;}
-.axl-card--dark .axl-card-index{-webkit-text-stroke-color:rgba(95,253,183,.4);}
-.axl-card-label{position:relative;z-index:1;margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--muted);}
-.axl-card--dark .axl-card-label{color:rgba(255,255,255,.6);}
-.axl-card h3{position:relative;z-index:1;font-size:clamp(28px,3vw,42px);line-height:1.06;letter-spacing:-.02em;margin-top:60px;max-width:500px;}
-.axl-card--dark h3{color:#fff;}
-.axl-card p{font-size:12px;line-height:1.8;color:var(--text2);max-width:380px;margin-top:12px;}
-.axl-card--dark p{color:rgba(255,255,255,.7);}
-.axl-card-link{display:inline-flex;align-items:center;gap:6px;color:var(--orange-deep);font-family:var(--mono);font-size:11px;font-weight:700;margin-top:auto;padding-top:18px;border-top:2px solid var(--surface3);width:max-content;}
-.axl-card--dark .axl-card-link{color:var(--mint);border-color:rgba(255,255,255,.18);}
-.axl-card-link .axl-ic{width:13px;height:13px;}
-.axl-graphic{position:relative;height:180px;margin-top:14px;overflow:hidden;border:2px solid var(--line);}
-.axl-graphic--ai{background:var(--surface2);}
-.axl-orbit{position:absolute;width:180px;height:180px;border:2px dashed rgba(170,54,0,.4);border-radius:50%;right:12%;top:4%;transform:rotate(20deg);}
-.axl-orbit::after{content:"";position:absolute;width:120px;height:120px;border:2px solid rgba(170,54,0,.25);border-radius:50%;left:28px;top:28px;}
-.axl-graphic-bot{position:absolute;width:116px;height:116px;right:19%;top:18%;z-index:2;}
-.axl-graphic-note{position:absolute;right:6%;top:12%;background:var(--gold-soft);border:2px solid var(--line);padding:9px 12px;font-family:var(--head);font-size:14px;font-weight:700;color:var(--ink);transform:rotate(5deg);box-shadow:4px 4px 0 rgba(20,27,45,.2);}
-.axl-graphic--problems{background:var(--ink);}
-.axl-graphic-code{position:absolute;left:8%;top:16%;font-family:var(--mono);font-size:74px;line-height:1;color:var(--orange);letter-spacing:-.06em;}
-.axl-graphic-chip{position:absolute;right:9%;bottom:16%;background:var(--ink-soft);border:2px solid var(--mint);padding:8px 11px;color:var(--mint);font-family:var(--mono);font-size:10px;}
-.axl-graphic-dot{position:absolute;width:12px;height:12px;background:var(--mint);}
-.axl-graphic-dot.d1{right:32%;top:24%;}
-.axl-graphic-dot.d2{left:24%;bottom:14%;width:7px;height:7px;background:var(--orange);}
-.axl-graphic--homework{background:var(--surface2);}
-.axl-graphic-paper{position:absolute;left:13%;top:16%;padding:16px;background:var(--surface);border:2px solid var(--line);box-shadow:4px 4px 0 var(--orange);font-family:var(--mono);font-size:10px;color:var(--text2);transform:rotate(-4deg);}
-.axl-graphic-paper b{display:block;font-family:var(--head);font-size:27px;color:var(--ink);}
-.axl-graphic-check{position:absolute;right:13%;bottom:16%;width:54px;height:54px;display:grid;place-items:center;background:var(--mint);border:2px solid var(--line);color:var(--ink);box-shadow:4px 4px 0 rgba(20,27,45,.2);}
-.axl-graphic-check .axl-ic{width:24px;height:24px;}
-.axl-graphic--contest{background:var(--ink-soft);}
-.axl-graphic-trophy{position:absolute;left:11%;top:16%;width:100px;height:100px;color:var(--gold);}
-.axl-graphic-trophy .axl-ic{width:100%;height:100%;stroke-width:1.6;}
-.axl-graphic-timer{position:absolute;right:10%;bottom:16%;font-family:var(--mono);font-size:36px;letter-spacing:-.03em;color:var(--mint);}
-.axl-graphic--training{background:var(--surface3);}
-.axl-graphic-track{position:absolute;left:8%;right:8%;top:56%;border-top:2px dashed rgba(20,27,45,.4);}
-.axl-graphic-track::after{content:"";position:absolute;left:9%;top:-6px;width:10px;height:10px;background:var(--orange);border:2px solid var(--line);}
-.axl-graphic-flag{position:absolute;left:44%;top:20%;background:var(--surface);border:2px solid var(--line);padding:7px 10px;font-family:var(--mono);font-size:11px;color:var(--orange-deep);transform:rotate(-4deg);}
-.axl-graphic-arrow{position:absolute;right:16%;top:14%;width:70px;height:70px;color:var(--green);transform:rotate(-8deg);}
-.axl-graphic-arrow .axl-ic{width:70px;height:70px;stroke-width:1.6;}
-.axl-graphic--ranking{background:var(--ink);}
-.axl-rank-line{position:absolute;left:10%;height:6px;background:var(--orange);transform:skewX(-30deg);}
-.axl-rank-line.l1{width:42%;top:66%;background:var(--orange-deep);}
-.axl-rank-line.l2{width:58%;top:48%;background:var(--orange);}
-.axl-rank-line.l3{width:72%;top:30%;background:var(--mint);}
-.axl-rank-badge{position:absolute;right:11%;top:16%;font-family:var(--mono);font-size:32px;letter-spacing:-.03em;color:var(--mint);}
-.axl-timeline-foot{display:flex;align-items:center;gap:12px;flex-shrink:0;padding:11px 0 14px;font-family:var(--mono);font-size:10px;color:rgba(255,255,255,.55);}
-.axl-timeline-rule{height:6px;flex:1;background:rgba(255,255,255,.14);border:2px solid rgba(255,255,255,.2);overflow:hidden;}
-.axl-timeline-rule i{display:block;width:0;height:100%;background:var(--orange);}
-/* ============ CTA ============ */
-.axl-cta{position:relative;padding:80px 0 72px;background:var(--orange);border-top:2px solid var(--line);overflow:hidden;}
-.axl-cta::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(20,27,45,.1) 2px,transparent 2px),linear-gradient(90deg,rgba(20,27,45,.1) 2px,transparent 2px);background-size:56px 56px;pointer-events:none;}
-.axl-cta-inner{position:relative;z-index:1;display:grid;grid-template-columns:140px minmax(0,1fr) auto;gap:30px;align-items:center;}
-.axl-cta-bot{width:130px;height:130px;}
-.axl-cta .axl-kicker{color:var(--ink);}
-.axl-cta .axl-kicker .dot{background:var(--mint);}
-.axl-cta .axl-kicker i{background:var(--ink);opacity:.4;}
-.axl-cta h2{font-size:clamp(30px,4vw,54px);line-height:1.08;letter-spacing:-.02em;margin-top:12px;color:var(--ink);}
-.axl-cta h2 span{color:#fff;}
-.axl-cta p{font-size:14px;color:var(--ink-soft);margin-top:10px;}
-.axl-cta-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-.axl-cta .axl-text-link{display:inline-flex;align-items:center;gap:6px;color:var(--ink);font-family:var(--mono);font-size:12px;font-weight:700;border-bottom:2px solid var(--ink);}
-.axl-cta .axl-text-link .axl-ic{width:13px;height:13px;}
-/* ============ responsive ============ */
-@media(max-width:1000px){
-  .axl-story-head{display:block;}
-  .axl-story-head>p{max-width:540px;margin-top:16px;}
-  .axl-slide{grid-template-columns:1fr 1.1fr;gap:24px;}
-  .axl-timeline-head{display:block;}
-  .axl-timeline-dots{margin-top:16px;}
-  .axl-card{width:min(640px,74vw);}
-  .axl-cta-inner{grid-template-columns:100px minmax(0,1fr);gap:20px;}
-  .axl-cta-bot{width:100px;height:100px;}
-  .axl-cta-actions{grid-column:2;}
-}
-@media(max-width:900px){
-  .axl-hero-inner{grid-template-columns:1fr;gap:44px;}
-  .axl-visual{max-width:700px;width:100%;}
-}
-@media(max-width:767px){
-  .axl .axl-shell,.axl-story-shell{padding:0 18px;}
-  .axl-hero{padding-top:calc(var(--nav) + 30px);}
-  .axl-hero-inner{padding-bottom:40px;gap:32px;}
-  .axl-hero h1{font-size:clamp(40px,11vw,60px);}
-  .axl-hero-copy>p{font-size:14px;}
-  .axl-proof{gap:12px;font-size:10px;}
-  .axl-desk{min-height:360px;}
-  .axl-note-main{left:18px;top:76px;width:210px;padding:14px;}
-  .axl-note-main strong{font-size:16px;}
-  .axl-note-side{right:18px;bottom:140px;width:128px;}
-  .axl-desk-bot{width:120px;height:120px;left:56%;bottom:22px;}
-  .axl-chip-a{right:12px;top:70px;}
-  .axl-chip-b{left:12px;bottom:16px;}
-  .axl-hero-bottom .axl-shell{gap:8px;font-size:9px;}
-  .axl-hero-bottom i{display:none;}
-  .axl-hero-bottom a{margin-left:auto;}
-  .axl-story{padding:52px 0 36px;}
-  .axl-story-head h2{font-size:30px;}
-  .axl-stack-viewport{height:640px;min-height:0;max-height:none;}
-  .axl-slide{grid-template-columns:1fr;gap:16px;align-items:start;min-height:640px;padding:20px 2px 16px;}
-  .axl-slide h3{font-size:32px;margin-top:10px;}
-  .axl-board{min-height:270px;height:270px;transform:rotate(-.4deg);}
-  .axl-heat{width:230px;height:165px;left:24%;top:16%;}
-  .axl-sticky--top{width:150px;right:4%;top:6%;}
-  .axl-sticky--bottom{width:145px;left:4%;bottom:7%;}
-  .axl-board--talk .axl-bigword{font-size:42px;top:22%;}
-  .axl-talk-card{width:165px;padding:9px;}
-  .axl-talk-a{right:4%;bottom:22%;}
-  .axl-talk-b{left:4%;bottom:6%;}
-  .axl-board-bot{width:72px;height:72px;}
-  .axl-board--final .axl-final-title b{font-size:24px;}
-  .axl-timeline{height:260vh;}
-  .axl-timeline-sticky{padding-top:32px;}
-  .axl-timeline-head h2{font-size:30px;}
-  .axl-timeline-dots{gap:9px;margin-top:12px;}
-  .axl-timeline-dots button{font-size:9px;gap:3px;}
-  .axl-timeline-viewport{margin-top:16px;}
-  .axl-card{width:86vw;min-height:0;padding:17px;}
-  .axl-card-index{top:10px;left:15px;font-size:56px;}
-  .axl-card h3{font-size:27px;margin-top:50px;}
-  .axl-graphic{height:150px;}
-  .axl-graphic-code{font-size:60px;}
-  .axl-graphic-bot{width:96px;height:96px;}
-  .axl-graphic-trophy{width:78px;height:78px;}
-  .axl-graphic-timer{font-size:28px;}
-  .axl-cta{padding:54px 0 46px;}
-  .axl-cta-inner{display:block;}
-  .axl-cta-bot{width:84px;height:84px;margin-bottom:14px;}
-  .axl-cta h2{font-size:32px;}
-  .axl-cta-actions{margin-top:20px;}
-}
-/* short viewports (phone landscape, small laptops): tighten so the card CTA stays reachable */
-@media(max-height:760px){
-  .axl-timeline-sticky{padding-top:20px;}
-  .axl-timeline-head .axl-kicker{font-size:10px;}
-  .axl-timeline-head h2{font-size:clamp(22px,2.6vw,30px);margin-top:8px;}
-  .axl-timeline-dots{gap:10px;margin-top:8px;padding-bottom:2px;}
-  .axl-timeline-dots button{font-size:10px;}
-  .axl-timeline-viewport{margin-top:12px;}
-  .axl-card{min-height:0;padding:14px 18px 12px;}
-  .axl-card-index{top:8px;left:14px;font-size:50px;}
-  .axl-card h3{font-size:clamp(20px,2.2vw,26px);margin-top:34px;}
-  .axl-card p{font-size:11px;line-height:1.6;margin-top:8px;}
-  .axl-card-link{padding-top:10px;font-size:10px;}
-  .axl-graphic{height:118px;margin-top:10px;}
-  .axl-graphic-code{font-size:52px;}
-  .axl-graphic-bot{width:86px;height:86px;}
-  .axl-graphic-trophy{width:70px;height:70px;}
-  .axl-graphic-timer{font-size:26px;}
-  .axl-orbit{width:132px;height:132px;}
-  .axl-orbit::after{width:86px;height:86px;left:21px;top:21px;}
-  .axl-graphic-note{top:8%;}
-  .axl-timeline-foot{padding:7px 0 9px;font-size:9px;}
-}
-@media(prefers-reduced-motion:reduce){
-  .axl .rv{opacity:1;transform:none;transition:none;}
-  .axl-bot,.axl-kicker .dot{animation:none;}
-  .axl .axl-btn{transition:none;}
-}
+.axl{--paper:var(--ax-bg,#faf9f4);--surface:var(--ax-surface,#fff);--surface2:var(--ax-surface-2,#f6f4ee);--surface3:var(--ax-surface-3,#eeebe1);--surface4:var(--ax-surface-4,#d9d4c6);--ink:var(--ax-ink,#141b2d);--ink-soft:var(--ax-ink-soft,#293043);--text2:var(--ax-text-2,#5b4138);--muted:var(--ax-muted,#8f7066);--line:var(--ax-line,#141b2d);--orange:var(--ax-primary-bright,#ff5e1a);--orange-deep:var(--ax-primary,#aa3600);--orange-soft:var(--ax-primary-soft,#ffdbcf);--wash:var(--ax-primary-wash,#551700);--mint:var(--ax-mint,#5ffdb7);--green:var(--ax-green,#006c47);--gold:var(--ax-yellow,#f4bf00);--gold-soft:#ffefc2;--red:var(--ax-red,#ba1a1a);--red-soft:var(--ax-red-soft,#ffdad6);--head:var(--ax-font-head,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif);--body:var(--ax-font-body,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif);--mono:var(--ax-font-mono,"JetBrains Mono","Source Code Pro",Consolas,monospace);--nav:var(--ax-nav-h,64px);position:relative;background:var(--paper);color:var(--ink);font-family:var(--body);overflow:clip}
+.axl *,.axl *::before,.axl *::after{box-sizing:border-box}.axl h1,.axl h2,.axl h3{font-family:var(--head);margin:0;color:var(--ink)}.axl p{margin:0}.axl a{color:inherit;text-decoration:none}.axl button{font:inherit}.axl code{font-family:var(--mono)}.axl .axl-shell{width:100%;max-width:1400px;margin:0 auto;padding:0 44px}.axl .axl-ic{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none;display:block}.axl .axl-bot{width:100%;height:100%;display:block}.axl section{scroll-margin-top:calc(var(--nav) + 16px)}
+.axl ::selection{background:var(--orange-soft);color:var(--ink)}.axl a:focus-visible,.axl button:focus-visible{outline:3px solid var(--gold);outline-offset:4px}.axl .rv{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.7,.2,1)}.axl .rv.is-in{opacity:1;transform:none}.axl .rv:nth-child(2){transition-delay:.07s}.axl .rv:nth-child(3){transition-delay:.14s}.axl .rv:nth-child(4){transition-delay:.21s}
+.axl-kicker{display:inline-flex;align-items:center;gap:9px;padding:6px 12px;background:var(--surface);border:2px solid var(--line);border-radius:999px;box-shadow:2px 2px 0 var(--line);font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--ink);line-height:1.35}.axl-kicker .dot{width:8px;height:8px;flex:none;background:var(--orange);border:1.5px solid var(--line);border-radius:2px;animation:axl-blink 2s steps(2,end) infinite}.axl-kicker i{display:block;width:16px;height:1.5px;background:var(--line);opacity:.35}@keyframes axl-blink{0%,70%{opacity:1}71%,100%{opacity:.35}}
+.axl .axl-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:12px 21px;border:2px solid var(--line);border-radius:10px;font-family:var(--head);font-weight:700;font-size:14.5px;background:var(--surface);color:var(--ink);box-shadow:4px 4px 0 var(--line);transition:transform .14s ease,box-shadow .14s ease,background-color .14s ease}.axl .axl-btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--line)}.axl .axl-btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}.axl .axl-btn--primary{background:var(--orange);color:#fff}.axl .axl-btn--primary:hover{background:#ef4f0d}.axl .axl-btn--ink{background:var(--ink);color:#fff;box-shadow:4px 4px 0 #fff}.axl-btn .orb{display:grid;place-items:center;width:25px;height:25px;border:2px solid currentColor;border-radius:50%;transition:transform .18s ease}.axl-btn:hover .orb{transform:translateX(3px)}.axl-btn .orb .axl-ic{width:12px;height:12px}
+/* 首屏：先说清平台，再展示真实产品闭环 */
+.axl-hero{position:relative;padding:58px 0 0;background-color:var(--paper);background-image:linear-gradient(rgba(20,27,45,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(20,27,45,.055) 1px,transparent 1px);background-size:28px 28px;border-bottom:2px solid var(--line);overflow:hidden}.axl-hero::after{content:"";position:absolute;right:-150px;top:-160px;width:430px;height:430px;background:var(--orange-soft);border:2px solid var(--line);transform:rotate(12deg);opacity:.42;pointer-events:none}.axl-hero__grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,.95fr) minmax(520px,1.05fr);gap:44px;align-items:center;padding-bottom:62px}.axl-hero h1{font-size:clamp(42px,4vw,59px);line-height:1.16;letter-spacing:-.035em;font-weight:800;margin:22px 0 20px}.axl-hero h1 em{font-style:normal;color:var(--orange);display:inline-block;position:relative;white-space:nowrap}.axl-hero h1 em::after{content:"";position:absolute;left:1px;right:1px;bottom:-7px;height:7px;background:var(--gold);border:1.5px solid var(--line);border-radius:2px;transform:rotate(-.5deg)}.axl-hero__lead{max-width:55ch;color:var(--text2);font-size:15.5px;line-height:1.8}.axl-hero__lead strong{color:var(--ink);font-weight:700}.axl-hero__ctas{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:27px}.axl-hero__badges{display:flex;gap:16px;flex-wrap:wrap;margin-top:27px;padding-top:20px;border-top:1.5px dashed var(--ax-line-soft,#e3beb3);font-size:12px;font-weight:600;color:var(--ink-soft)}.axl-hero__badges>span{display:inline-flex;align-items:center;gap:7px}.badge-dot{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border:1.5px solid var(--line);border-radius:5px;font-family:var(--mono);font-size:10px;font-weight:700}.badge-dot--green{background:var(--mint)}.badge-dot--orange{background:var(--orange-soft);color:var(--orange-deep)}.badge-dot--yellow{background:var(--gold-soft)}
+.axl-workbench{position:relative;background:var(--surface);border:2.5px solid var(--line);border-radius:16px;box-shadow:7px 7px 0 var(--line);overflow:hidden;transition:transform .25s ease,box-shadow .25s ease}.axl-workbench:hover{transform:translateY(-3px);box-shadow:9px 10px 0 var(--line)}.axl-wb-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 15px;background:var(--surface2);border-bottom:2px solid var(--line);font-family:var(--mono);font-size:11px;font-weight:700}.axl-wb-dots{display:flex;gap:6px}.axl-wb-dots i{width:9px;height:9px;border:1.5px solid var(--line);border-radius:3px}.axl-wb-dots i:nth-child(1){background:var(--orange)}.axl-wb-dots i:nth-child(2){background:var(--gold)}.axl-wb-dots i:nth-child(3){background:var(--mint)}.axl-wb-title{flex:1;text-align:center;color:var(--ink)}.axl-wb-status{flex:none;padding:3px 8px;border-radius:999px;background:var(--red-soft);color:var(--red);border:1.5px solid var(--line);font-size:10px}.axl-wb-code{background:var(--ink);color:#e6ecf5;padding:15px 16px;font-family:var(--mono);font-size:12px;line-height:1.8;border-bottom:2px solid var(--line)}.axl-code-line{display:flex;align-items:center;gap:13px;padding:1px 8px;border-radius:5px}.axl-code-line .ln{color:#8491ab;width:17px;text-align:right;user-select:none}.axl-code-line code{font-size:inherit;color:#e6ecf5;background:transparent;border:0;border-radius:0;padding:0;box-shadow:none}.axl-code-line b{font-weight:400;color:var(--mint)}.axl-code-line em{font-style:normal;color:var(--gold)}.axl-code-line--err{background:rgba(255,94,26,.18);outline:1.5px solid var(--orange);margin:2px -4px}.axl-code-line .tag{margin-left:auto;flex:none;background:var(--orange);color:#fff;font-size:10px;padding:1px 7px;border-radius:4px;font-weight:700}
+.axl-wb-ai{padding:16px;background:var(--paper);display:flex;flex-direction:column;gap:12px}.axl-wb-ai__head{display:flex;align-items:center;justify-content:space-between;gap:12px}.axl-wb-ai__who{display:flex;align-items:center;gap:9px;font-weight:800;font-size:13px}.axl-wb-ai__bot{width:33px;height:33px;flex:none;padding:5px;border-radius:8px;background:var(--gold-soft);border:2px solid var(--line);box-shadow:2px 2px 0 var(--line)}.axl-wb-ai__chip{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--mint);border:1.5px solid var(--line)}.axl-wb-ai__card{min-height:142px;background:var(--surface);border:2px solid var(--line);border-radius:11px;padding:12px 14px;box-shadow:3px 3px 0 var(--line);display:flex;flex-direction:column;gap:9px}.axl-wb-ai__diag{font-size:12.5px;line-height:1.65;color:var(--ink)}.axl-wb-ai__diag b{color:var(--orange-deep)}.axl-wb-ai__diag code,.axl-wb-ai__q code{font-size:11px;background:var(--surface3);padding:1px 4px;border-radius:4px;white-space:nowrap}.axl-wb-ai__q{background:var(--gold-soft);border:1.5px solid var(--line);border-radius:7px;padding:8px 10px;font-size:12px;line-height:1.6}.axl-wb-ai__q strong{color:var(--wash)}.axl-wb-steps{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.axl-wb-step{appearance:none;padding:5px 10px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--muted);font-family:var(--mono);font-size:10.5px;font-weight:700;cursor:pointer;transition:background-color .15s,transform .15s,color .15s}.axl-wb-step span{margin-right:5px}.axl-wb-step:hover{transform:translateY(-2px);color:var(--ink)}.axl-wb-step.is-active{background:var(--orange-soft);color:var(--wash);box-shadow:2px 2px 0 var(--line)}.axl-wb-step.is-past{background:var(--mint);color:var(--ink)}.axl-wb-note{font-size:10.5px;color:var(--muted);line-height:1.55}.axl-hero-bottom{position:relative;z-index:1;border-top:2px solid var(--line);background:var(--surface2);padding:13px 0}.axl-hero-bottom .axl-shell{display:flex;align-items:center;gap:15px;font-family:var(--mono);font-size:10px;color:var(--text2)}.axl-hero-bottom i{flex:1;height:1.5px;background:var(--line);opacity:.2}.axl-hero-bottom a{display:inline-flex;align-items:center;gap:6px;color:var(--orange-deep);font-weight:700}
+/* 第二屏：AI 三项能力 + 信任条 */
+.axl-ai{padding:72px 0 76px;background:var(--paper);border-bottom:2px solid var(--line)}.axl-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:32px}.axl-section-kicker{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--orange-deep);letter-spacing:.08em;margin-bottom:9px}.axl-section-head h2{font-size:34px;line-height:1.25;font-weight:800;letter-spacing:-.02em}.axl-section-head>p{max-width:46ch;font-size:14px;line-height:1.75;color:var(--text2)}.axl-ai-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.axl-ai-card{display:flex;flex-direction:column;gap:13px;min-height:350px;padding:22px 20px 19px;background:var(--surface);border:2px solid var(--line);border-radius:14px;box-shadow:4px 4px 0 var(--line);transition:transform .18s ease,box-shadow .18s ease}.axl-ai-card:hover{transform:translate(-2px,-4px);box-shadow:6px 8px 0 var(--line)}.axl-ai-card__top{display:flex;align-items:center;justify-content:space-between;gap:10px}.axl-ai-card__icon{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border:2px solid var(--line);border-radius:9px;box-shadow:2px 2px 0 var(--line);font-family:var(--mono);font-size:14px;font-weight:700}.axl-ai-card__icon--orange{background:var(--orange-soft);color:var(--wash)}.axl-ai-card__icon--yellow{background:var(--gold-soft)}.axl-ai-card__icon--mint{background:var(--mint)}.axl-ai-card__num{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--muted);text-align:right}.axl-ai-card h3{font-size:20px;line-height:1.35}.axl-ai-card>p{font-size:13.5px;line-height:1.75;color:var(--text2)}.axl-ai-preview{margin-top:auto;background:var(--surface2);border:1.5px dashed var(--ax-line-soft,#e3beb3);border-radius:9px;padding:11px 12px;font-family:var(--mono);font-size:11.5px;line-height:1.75;color:var(--ink-soft)}.axl-ai-preview b{color:var(--orange-deep)}.axl-ai-card__link{display:inline-flex;align-items:center;gap:6px;margin-top:1px;font-size:12px;font-weight:700;color:var(--orange-deep)}.axl-ai-card__link .axl-ic{width:13px;height:13px;transition:transform .15s}.axl-ai-card__link:hover .axl-ic{transform:translateX(4px)}.axl-mini-bar{display:flex;align-items:center;gap:8px;margin:4px 0}.axl-mini-bar>span{flex:none;width:58px;font-family:var(--body);font-weight:700;font-size:11px}.axl-mini-bar>i{flex:1;height:8px;background:var(--surface4);border:1px solid var(--line);border-radius:999px;overflow:hidden}.axl-mini-bar>i>b{display:block;height:100%;background:var(--orange)}.axl-mini-bar:first-child>i>b{background:var(--green)}.axl-mini-bar>em{flex:none;font-style:normal;font-size:10px;white-space:nowrap}.axl-trust-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:28px;background:var(--surface);border:2px solid var(--line);border-radius:13px;box-shadow:3px 3px 0 var(--line);overflow:hidden}.axl-trust-strip>div{padding:16px 18px;border-right:1px solid var(--surface4)}.axl-trust-strip>div:last-child{border-right:0}.axl-trust-strip b{display:block;font-size:13.5px;margin-bottom:5px}.axl-trust-strip span{display:block;font-size:12px;line-height:1.65;color:var(--text2)}
+/* 第三屏：保留 OJ 基础能力，取消滚动劫持 */
+.axl-oj{padding:68px 0 72px;background-color:var(--ink);background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;color:#fff;border-bottom:2px solid var(--line)}.axl-oj .axl-section-kicker{color:var(--mint)}.axl-oj .axl-section-head h2{color:#fff}.axl-oj .axl-section-head>p{color:#c7d0e2}.axl-oj-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.axl-oj-card{display:flex;flex-direction:column;gap:10px;min-height:245px;padding:21px 19px;background:var(--surface);color:var(--ink);border:2px solid var(--line);border-radius:13px;box-shadow:4px 4px 0 var(--orange);transition:transform .18s ease}.axl-oj-card--mint{box-shadow:4px 4px 0 var(--mint)}.axl-oj-card--yellow{box-shadow:4px 4px 0 var(--gold)}.axl-oj-card:hover{transform:translateY(-4px)}.axl-oj-card__tag{align-self:flex-start;padding:3px 8px;border-radius:5px;border:1.5px solid var(--line);background:var(--surface2);font-family:var(--mono);font-size:10px;font-weight:700}.axl-oj-card h3{font-size:20px}.axl-oj-card p{font-size:13px;line-height:1.7;color:var(--text2)}.axl-oj-card a{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:9px;font-size:12px;font-weight:700;color:var(--orange-deep)}.axl-oj-card a span{transition:transform .15s}.axl-oj-card a:hover span{transform:translateX(4px)}
+.axl-cta{padding:46px 0;background-color:var(--orange);background-image:linear-gradient(rgba(20,27,45,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(20,27,45,.08) 1px,transparent 1px);background-size:24px 24px;border-bottom:2px solid var(--line)}.axl-cta__inner{display:flex;align-items:center;justify-content:space-between;gap:30px}.axl-cta__left{display:flex;align-items:center;gap:22px}.axl-cta__bot{width:64px;height:64px;flex:none;padding:10px;border-radius:15px;background:var(--surface);border:2px solid var(--line);box-shadow:4px 4px 0 var(--line)}.axl-cta h2{font-size:29px;line-height:1.3;font-weight:800}.axl-cta p{margin-top:5px;font-size:13px;color:var(--wash);font-weight:600}
+@media (max-width:1200px){.axl .axl-shell{padding:0 28px}.axl-hero__grid{grid-template-columns:minmax(0,.9fr) minmax(480px,1.1fr);gap:28px}.axl-hero h1{font-size:43px}.axl-wb-ai__chip{display:none}.axl-ai-grid{gap:15px}.axl-ai-card{padding:19px 17px}.axl-ai-card__num{font-size:8px}.axl-oj-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.axl-oj-card{min-height:210px}}
+@media (max-width:960px){.axl-hero{padding-top:40px}.axl-hero__grid{grid-template-columns:1fr;gap:38px}.axl-hero__copy{max-width:700px}.axl-hero h1{font-size:52px}.axl-hero__lead{max-width:65ch}.axl-workbench{width:100%;max-width:720px;margin:0 auto}.axl-ai-grid{grid-template-columns:1fr}.axl-ai-card{min-height:0}.axl-ai-preview{margin-top:4px}.axl-trust-strip{grid-template-columns:repeat(2,minmax(0,1fr))}.axl-trust-strip>div:nth-child(2){border-right:0}.axl-trust-strip>div:nth-child(-n+2){border-bottom:1px solid var(--surface4)}.axl-section-head{align-items:flex-start;flex-direction:column;gap:14px}.axl-section-head>p{max-width:65ch}.axl-cta__inner{align-items:flex-start;flex-direction:column}.axl-hero-bottom a{display:none}}
+@media (max-width:600px){.axl .axl-shell{padding:0 18px}.axl-hero{padding-top:30px}.axl-hero__grid{padding-bottom:40px}.axl-kicker{font-size:9px;gap:7px;padding:5px 9px}.axl-kicker i{width:10px}.axl-hero h1{font-size:clamp(34px,10.5vw,46px);line-height:1.2;margin-top:19px}.axl-hero h1 em{white-space:normal}.axl-hero__lead{font-size:14px;line-height:1.8}.axl-hero__ctas{align-items:stretch;flex-direction:column}.axl-hero__ctas .axl-btn{width:100%}.axl-hero__badges{align-items:flex-start;flex-direction:column;gap:11px}.axl-workbench{border-radius:12px;box-shadow:5px 5px 0 var(--line)}.axl-workbench:hover{transform:none;box-shadow:5px 5px 0 var(--line)}.axl-wb-bar{padding:10px;gap:7px}.axl-wb-title{font-size:9px;text-align:left}.axl-wb-status{font-size:8px;padding:2px 5px}.axl-wb-code{padding:12px 8px;font-size:10px;overflow-x:auto}.axl-code-line{min-width:410px;gap:8px;padding-left:5px;padding-right:5px}.axl-code-line .tag{font-size:8px}.axl-wb-ai{padding:12px}.axl-wb-ai__who{font-size:11px}.axl-wb-ai__bot{width:30px;height:30px}.axl-wb-ai__card{min-height:0;padding:11px}.axl-wb-ai__diag,.axl-wb-ai__q{font-size:11.5px}.axl-wb-steps{gap:6px}.axl-wb-step{font-size:9px;padding:5px 7px}.axl-hero-bottom .axl-shell{font-size:9px}.axl-hero-bottom .axl-shell>span:last-of-type{text-align:right}.axl-ai,.axl-oj{padding:50px 0 54px}.axl-section-head h2{font-size:28px}.axl-section-head>p{font-size:13px}.axl-section-kicker{font-size:10px}.axl-ai-card{padding:19px 17px}.axl-ai-card__num{font-size:8px}.axl-trust-strip{grid-template-columns:1fr}.axl-trust-strip>div{border-right:0!important;border-bottom:1px solid var(--surface4)}.axl-trust-strip>div:last-child{border-bottom:0}.axl-oj-grid{grid-template-columns:1fr}.axl-oj-card{min-height:0}.axl-cta{padding:36px 0}.axl-cta__left{align-items:flex-start;flex-direction:column}.axl-cta h2{font-size:25px}.axl-cta .axl-btn{width:100%}}
+@media (hover:none){.axl-ai-card:hover,.axl-oj-card:hover,.axl-workbench:hover{transform:none}}
+@media (prefers-reduced-motion:reduce){.axl *,.axl *::before,.axl *::after{animation:none!important;scroll-behavior:auto!important;transition-duration:.01ms!important}.axl .rv{opacity:1;transform:none}}
 </style>
+
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
   <symbol id="axl-i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol>
@@ -382,155 +59,118 @@
   </symbol>
 </svg>
 
-<div class="axl axl-scroll" id="axlRoot">
-  <!-- ================= HERO ================= -->
-  <section class="axl-hero" id="top">
-    <div class="axl-shell axl-hero-inner">
-      <div class="axl-hero-copy rv">
-        <div class="axl-kicker"><span class="dot"></span><span>AI 编程学伴 · 6—18 岁</span><i></i><span>Pixel Arcade</span></div>
-        <h1>今天，先弄懂<br><span>哪一道题？</span></h1>
-        <p>卡住的时候，把题和提交放到这里。AICOJ 先问一句，再陪你把下一步写出来。</p>
-        <div class="axl-hero-ctas">
-          <a class="axl-btn axl-btn--primary" href="{{ url('user_login', query={redirect: url('ai_coach_chat_page')}) }}"><span>和 AICOJ 开始</span><span class="orb"><svg class="axl-ic"><use href="#axl-i-arrow"/></svg></span></a>
-          <a class="axl-btn" href="#axl-story"><svg class="axl-ic"><use href="#axl-i-down"/></svg><span>它是怎么想的</span></a>
+<div class="axl axl-v2" id="axlRoot">
+  <section class="axl-hero" id="top" aria-labelledby="axlHeroTitle">
+    <div class="axl-shell axl-hero__grid">
+      <div class="axl-hero__copy rv">
+        <div class="axl-kicker"><span class="dot"></span><span>ONLINE JUDGE + AI COACH</span><i></i><span>6–18 岁编程学习平台</span></div>
+        <h1 id="axlHeroTitle">写代码、在线判题，<br>卡壳时 <em>AI 逐行带你改</em></h1>
+        <p class="axl-hero__lead"><strong>AICOJ 是自带 AI 助教的在线编程评测系统（OJ）。</strong>支持 C++ / Python 实时沙盒判题；代码没通过时，AI 会结合你的提交与失败测试点，精准定位错因、一步步引导你自己改通。</p>
+        <div class="axl-hero__ctas">
+          <a class="axl-btn axl-btn--primary" href="{{ url('user_login', query={redirect: url('problem_main')}) }}"><span>免费开始刷题</span><span class="orb"><svg class="axl-ic"><use href="#axl-i-arrow"/></svg></span></a>
+          <a class="axl-btn" href="#axl-ai" data-axl-anchor><svg class="axl-ic"><use href="#axl-i-down"/></svg><span>看看 AI 怎么帮你改错</span></a>
         </div>
-        <div class="axl-proof">
-          <span><svg class="axl-ic"><use href="#axl-i-check"/></svg>判题事实真实可查</span>
-          <span><svg class="axl-ic"><use href="#axl-i-eye"/></svg>AI 只解释，不代写</span>
-          <span><svg class="axl-ic"><use href="#axl-i-sprout"/></svg>成长有路径</span>
+        <div class="axl-hero__badges" aria-label="平台特点">
+          <span><i class="badge-dot badge-dot--green">✓</i>实时沙盒判题</span>
+          <span><i class="badge-dot badge-dot--orange">AI</i>三层引导 · 不直接代写</span>
+          <span><i class="badge-dot badge-dot--yellow">↗</i>自动记录错题与掌握度</span>
         </div>
       </div>
-      <div class="axl-visual rv">
-        <div class="axl-visual-label"><span>你的学习桌 / 01</span><span>在这里，慢一点也可以</span></div>
-        <div class="axl-desk">
-          <div class="axl-desk-top"><span class="axl-desk-brand"><svg class="axl-ic"><use href="#axl-i-code"/></svg>AICOJ 学习桌</span><span>今天 · 慢慢来</span></div>
-          <div class="axl-desk-grid"></div>
-          <div class="axl-note axl-note-main"><span class="axl-pin"></span><span class="axl-note-label">今天的小纸条</span><strong>先别急着改代码。<br>你觉得第 8 行会走几次？</strong><span class="axl-note-sign">AICOJ · 给你的问题</span></div>
-          <div class="axl-note axl-note-side"><span class="axl-pin"></span><span>下一步<br><b>循环边界</b></span><svg class="axl-ic"><use href="#axl-i-arrow"/></svg></div>
-          <div class="axl-desk-bot"><svg class="axl-bot"><use href="#axl-bot"/></svg></div>
-          <div class="axl-desk-chip axl-chip-a"><svg class="axl-ic"><use href="#axl-i-code"/></svg>P1002 · 未通过</div>
-          <div class="axl-desk-chip axl-chip-b"><svg class="axl-ic"><use href="#axl-i-arrow"/></svg>只差一个边界</div>
+
+      <div class="axl-workbench rv" data-axl-demo aria-label="AICOJ 提交诊断示例">
+        <div class="axl-wb-bar">
+          <div class="axl-wb-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="axl-wb-title">P1002 · 求 1 到 n 的和（C++17）</div>
+          <div class="axl-wb-status">WA · 测试点 #3</div>
         </div>
-        <div class="axl-visual-foot"><span>真实题目 · 学习证据 · 适龄解释</span><i></i><span>AICOJ · 2026</span></div>
+        <div class="axl-wb-code" aria-label="出错代码示例">
+          <div class="axl-code-line"><span class="ln">1</span><code><b>int</b> n, sum = <em>0</em>;</code></div>
+          <div class="axl-code-line"><span class="ln">2</span><code>cin &gt;&gt; n;</code></div>
+          <div class="axl-code-line axl-code-line--err"><span class="ln">3</span><code><b>for</b> (<b>int</b> i = <em>1</em>; i &lt; n; i++)</code><span class="tag">← AI 定位第 3 行</span></div>
+          <div class="axl-code-line"><span class="ln">4</span><code>&nbsp;&nbsp;&nbsp;&nbsp;sum += i;</code></div>
+          <div class="axl-code-line"><span class="ln">5</span><code>cout &lt;&lt; sum &lt;&lt; endl;</code></div>
+        </div>
+        <div class="axl-wb-ai">
+          <div class="axl-wb-ai__head">
+            <div class="axl-wb-ai__who"><span class="axl-wb-ai__bot"><svg class="axl-bot"><use href="#axl-bot"/></svg></span><span>AICOJ 智能助教 · 提交诊断</span></div>
+            <span class="axl-wb-ai__chip">基于真实测试点 #3</span>
+          </div>
+          <div class="axl-wb-ai__card" aria-live="polite" aria-atomic="true">
+            <div class="axl-wb-ai__diag" data-axl-demo-copy><b>定位错因：</b>输入 <code>n = 5</code> 时你的输出是 <code>10</code>（少了最后一项 <code>5</code>）。第 3 行循环条件 <code>i &lt; n</code> 在 <code>i == 5</code> 时提前结束了。</div>
+            <div class="axl-wb-ai__q" data-axl-demo-question><strong>先想一步：</strong>如果想把 <code>n</code> 本身也加进去，第 3 行的判断条件应该怎么改？</div>
+          </div>
+          <div class="axl-wb-steps" role="group" aria-label="切换 AI 引导层次">
+            <button type="button" class="axl-wb-step is-active" data-axl-step="0" aria-pressed="true"><span>01</span>指出方向</button>
+            <button type="button" class="axl-wb-step" data-axl-step="1" aria-pressed="false"><span>02</span>拆解步骤</button>
+            <button type="button" class="axl-wb-step" data-axl-step="2" aria-pressed="false"><span>03</span>代码骨架</button>
+          </div>
+          <p class="axl-wb-note" data-axl-demo-note>先看方向，不直接给答案。点击上方按钮，可预览三层提示。</p>
+        </div>
       </div>
     </div>
-    <div class="axl-hero-bottom"><div class="axl-shell"><span>不是刷题机器</span><i></i><span>是一个会陪你想清楚的学伴</span><a href="#axl-story">往下走 <svg class="axl-ic"><use href="#axl-i-down"/></svg></a></div></div>
+    <div class="axl-hero-bottom"><div class="axl-shell"><span>ONLINE JUDGE</span><i></i><span>真实测试数据决定对错，AI 负责解释与引导</span><a href="#axl-ai" data-axl-anchor>认识三项 AI 能力 <svg class="axl-ic"><use href="#axl-i-down"/></svg></a></div></div>
   </section>
 
-  <!-- ================= 三件事（AI 优先） ================= -->
-  <section class="axh-trio" id="axl-ai">
+  <section class="axl-ai" id="axl-ai" aria-labelledby="axlAiTitle">
     <div class="axl-shell">
-      <div class="axh-trio__head">
-        <h2>三件事，<br>先看哪件？</h2>
-        <p>对话、诊断、成长档案，其实是同一份证据的三个切面：说清你卡在哪、错在哪、下一步该做什么。</p>
+      <div class="axl-section-head rv">
+        <div><div class="axl-section-kicker">01 / CORE AI FEATURES</div><h2 id="axlAiTitle">不只是判对错，<br>三大 AI 能力陪你把题真正学会</h2></div>
+        <p>普通 OJ 只丢给你一个冰冷的「Wrong Answer」。在 AICOJ，每一次提交、追问和复盘，都有 AI 基于真实判题证据一步步带你推进。</p>
       </div>
-      <div class="axh-trio__grid">
-        <article class="axh-card axh-card--lift">
-          <span class="axh-card__icon"><svg class="axl-ic"><use href="#axl-i-message"/></svg></span>
-          <h3 class="axh-card__title">问一句，就有一道题</h3>
-          <p class="axh-card__text">卡在哪一行、为什么错、下一步写什么——它先问你一句，再陪你走一步。</p>
-          <div class="axh-card__sample">你：<b>第 8 行为什么只跑了 2 次？</b>
-它：先看 n=3 时 i 的取值，<b>再数边界</b>。</div>
-          <a class="axh-card__link" href="{{ url('user_login', query={redirect: url('ai_coach_chat_page')}) }}">和 AICOJ 聊 →</a>
+      <div class="axl-ai-grid">
+        <article class="axl-ai-card rv">
+          <div class="axl-ai-card__top"><span class="axl-ai-card__icon axl-ai-card__icon--orange">01</span><span class="axl-ai-card__num">POST-SUBMIT DIAGNOSIS</span></div>
+          <h3>提交后行级诊断</h3>
+          <p>代码没过不再干瞪眼。AI 自动读取你的代码与失败测试点，直接指出错在第几行、为什么错，而不是笼统地说一句「再想想」。</p>
+          <div class="axl-ai-preview">P1002 · 第 3 行 · <b>Wrong Answer</b><br>边界漏算：<b>i &lt; n</b> 导致最后一项未参与累加</div>
+          <a class="axl-ai-card__link" href="{{ url('user_login', query={redirect: url('ai_coach_chat_page')}) }}">带着提交问 AICOJ <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a>
         </article>
-        <article class="axh-card">
-          <span class="axh-card__icon"><svg class="axl-ic"><use href="#axl-i-eye"/></svg></span>
-          <h3 class="axh-card__title">指得出第几行</h3>
-          <p class="axh-card__text">每次提交后给一条带行号的观察，错在哪个测试点也说得清——不是一句「再想想」。</p>
-          <div class="axh-card__sample">P1002 · 第 4 行
-<b>边界少一个</b>：i &lt; n 应为 i &lt;= n</div>
-          <a class="axh-card__link" href="#axl-story">看一次真实诊断 →</a>
+        <article class="axl-ai-card rv">
+          <div class="axl-ai-card__top"><span class="axl-ai-card__icon axl-ai-card__icon--yellow">02</span><span class="axl-ai-card__num">SOCRATIC AI TUTOR</span></div>
+          <h3>三层引导对话助教</h3>
+          <p>卡住时随时发问。AI 按「思路方向 → 解题步骤 → 代码骨架」逐层提示，不直接替你写完答案，让你真正把算法想明白。</p>
+          <div class="axl-ai-preview">你：<b>为什么样例能过，提交 WA？</b><br>AI：试试 <b>n = 1</b>，看看第 3 行循环走了几次？</div>
+          <a class="axl-ai-card__link" href="{{ url('user_login', query={redirect: url('ai_coach_chat_page')}) }}">进入 AI 助教 <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a>
         </article>
-        <article class="axh-card axh-card--sunken">
-          <span class="axh-card__icon"><svg class="axl-ic"><use href="#axl-i-sprout"/></svg></span>
-          <h3 class="axh-card__title">哪类题在反复错</h3>
-          <p class="axh-card__text">按知识点记录掌握度，只给有证据的结论，不贴「你不行」的标签。</p>
-          <div class="axh-card__sample">循环边界　<b>3 ✓ / 5 ✗</b>
-前缀和　　　<b>2 ✓ / 1 ✗</b></div>
-          <a class="axh-card__link" href="{{ url('user_login', query={redirect: url('ai_coach_growth')}) }}">看成长档案 →</a>
+        <article class="axl-ai-card rv">
+          <div class="axl-ai-card__top"><span class="axl-ai-card__icon axl-ai-card__icon--mint">03</span><span class="axl-ai-card__num">GROWTH ARCHIVE</span></div>
+          <h3>AI 成长档案与薄弱点复盘</h3>
+          <p>自动归类你反复犯的错误模式，按知识点量化真实掌握度，登录首页即给今日优先攻克建议，告别盲目刷题。</p>
+          <div class="axl-ai-preview">
+            <div class="axl-mini-bar"><span>模拟</span><i><b style="width:80%"></b></i><em>4✓ / 1✗</em></div>
+            <div class="axl-mini-bar"><span>循环边界</span><i><b style="width:38%"></b></i><em>3✓ / 5✗</em></div>
+          </div>
+          <a class="axl-ai-card__link" href="{{ url('user_login', query={redirect: url('ai_coach_growth')}) }}">查看成长档案 <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a>
         </article>
+      </div>
+      <div class="axl-trust-strip rv" aria-label="AI 使用原则">
+        <div><b>引导不代写</b><span>三层渐进提示，杜绝直接抄代码，培养独立调试能力。</span></div>
+        <div><b>证据可核对</b><span>每条 AI 诊断都关联具体行号与测试点，拒绝凭空猜测。</span></div>
+        <div><b>结论可申诉</b><span>觉得 AI 说错了？记录页一键点「有误」，老师可介入复核。</span></div>
+        <div><b>Hydro 权威判题</b><span>所有对错由真实评测沙盒决定，AI 只负责解释与引导。</span></div>
       </div>
     </div>
   </section>
 
-  <!-- ================= 信任区 ================= -->
-  <section class="axh-proof">
+  <section class="axl-oj" id="axl-oj" aria-labelledby="axlOjTitle">
     <div class="axl-shell">
-      <h2 class="axh-proof__head">它不替你写，<span>但指得出第几行。</span></h2>
-      <div class="axh-proof__grid">
-        <div class="axh-proof__item"><b>三层提示</b><span>方向 → 步骤 → 骨架，一步一步给，最后一层才碰代码。</span></div>
-        <div class="axh-proof__item"><b>证据可查</b><span>每条观察都带行号和测试点，能回到提交里核对。</span></div>
-        <div class="axh-proof__item"><b>有误可申诉</b><span>觉得 AI 说错了，在记录页点「有误？」，老师可以复核。</span></div>
-        <div class="axh-proof__item"><b>判题以 Hydro 为准</b><span>对错由真实测试数据决定，AI 的解释只是线索。</span></div>
+      <div class="axl-section-head rv">
+        <div><div class="axl-section-kicker">02 / COMPLETE ONLINE JUDGE</div><h2 id="axlOjTitle">也是一套完整好用的<br>在线判题系统</h2></div>
+        <p>底层基于成熟的 Hydro 评测引擎，题库、专项训练、比赛与班级功课一站配齐，个人自学与机构教学都能直接上手。</p>
       </div>
-      <div class="axh-loop">
-        <h3 class="axh-loop__head">一题走完一圈</h3>
-        <div class="axh-loop__row">
-          <span class="axh-loop__step">题库挑题</span><span class="axh-loop__arrow">→</span>
-          <span class="axh-loop__step">写代码</span><span class="axh-loop__arrow">→</span>
-          <span class="axh-loop__step axh-loop__step--ai">AI 诊断</span><span class="axh-loop__arrow">→</span>
-          <span class="axh-loop__step axh-loop__step--ai">复盘错法</span><span class="axh-loop__arrow">→</span>
-          <span class="axh-loop__step">下一步计划</span>
-        </div>
+      <div class="axl-oj-grid">
+        <article class="axl-oj-card rv"><span class="axl-oj-card__tag">PROBLEMSET</span><h3>分层题库</h3><p>覆盖语法入门到算法竞赛，按知识点与难度精准筛选，提交后实时沙盒判题。</p><a href="{{ url('user_login', query={redirect: url('problem_main')}) }}">浏览题库 <span>→</span></a></article>
+        <article class="axl-oj-card axl-oj-card--mint rv"><span class="axl-oj-card__tag">TRAINING</span><h3>专项训练</h3><p>系统化题单与闯关进度，配合 AI 成长档案的薄弱标签定向补强，逐个击破。</p><a href="{{ url('user_login', query={redirect: url('training_main')}) }}">查看训练计划 <span>→</span></a></article>
+        <article class="axl-oj-card axl-oj-card--yellow rv"><span class="axl-oj-card__tag">CONTEST</span><h3>在线比赛</h3><p>支持 OI / ACM 等多赛制与实时排行榜，限时实战检验真实编程与抗压能力。</p><a href="{{ url('user_login', query={redirect: url('contest_main')}) }}">参加比赛 <span>→</span></a></article>
+        <article class="axl-oj-card rv"><span class="axl-oj-card__tag">HOMEWORK</span><h3>班级功课</h3><p>老师一键布置作业、追踪提交完成度与共性错因，课堂与课后练习无缝衔接。</p><a href="{{ url('user_login', query={redirect: url('homework_main')}) }}">进入功课 <span>→</span></a></article>
       </div>
     </div>
   </section>
 
-  <!-- ================= AI STORY ================= -->
-  <section class="axl-story" id="axl-story">
-    <div class="axl-story-shell">
-      <div class="axl-story-head rv">
-        <div><div class="axl-kicker"><span class="dot"></span><span>学伴 / 先想清楚</span><i></i><span>02</span></div><h2>先别急着要答案。<br><span>先看看它怎么想。</span></h2></div>
-        <p>一道题、一次提交，或者一句“我不懂”，都可以放进来。先看证据，再说下一步。</p>
-      </div>
-      <div class="axl-stack" id="axlStack">
-        <div class="axl-stack-top"><span>AICOJ 思考室</span><div class="axl-stack-counter"><strong id="axlStackNow">01</strong><span>/ 03</span></div></div>
-        <div class="axl-stack-viewport axl-scroll" id="axlStackViewport">
-          <article class="axl-slide" data-slide="1">
-            <div class="axl-slide-copy"><span class="axl-paper-label">01 / 想法</span><h3>一个想法，<br>不止一个来源。</h3><p>纸条只是其中一条。它还会想起你上次绕的远路、今天的精力，和身边的朋友。</p><div class="axl-tag-row"><span class="axl-tag axl-tag--orange">今天的计划</span><span class="axl-tag axl-tag--mint">上次的错题</span><span class="axl-tag axl-tag--gold">你的节奏</span></div></div>
-            <div class="axl-board"><div class="axl-board-grid"></div><div class="axl-heat" aria-hidden="true"></div><div class="axl-sticky axl-sticky--top"><span class="axl-pin"></span><strong>你写的</strong><span>“为什么循环多跑了一次？”</span></div><div class="axl-sticky axl-sticky--bottom"><span class="axl-sticky-tab">记忆</span><strong>上次也卡在边界</strong><span>这次先画三个点。</span></div><div class="axl-mini-label axl-mini-a">早上的计划</div><div class="axl-mini-label axl-mini-b">朋友的提醒</div></div>
-          </article>
-          <article class="axl-slide" data-slide="2">
-            <div class="axl-slide-copy"><span class="axl-paper-label">02 / 追问</span><h3>它先问你，<br>再给答案。</h3><p>“你觉得 n=3 时，循环会走几次？”先问一个具体的问题，比讲一串道理有用。</p><div class="axl-dialogue"><span class="axl-bubble axl-bubble--me">第 8 行，为什么还是没过？</span><span class="axl-bubble axl-bubble--ai">先不急着改。n=3 时，i 最后会停在哪？</span><span class="axl-bubble axl-bubble--me">……哦，是 3，不是 2。</span></div></div>
-            <div class="axl-board axl-board--talk"><div class="axl-board-grid"></div><div class="axl-stamp">AICOJ · 在听</div><div class="axl-bigword">“先想<br>一步。”</div><div class="axl-talk-card axl-talk-a"><svg class="axl-ic"><use href="#axl-i-message"/></svg><div><strong>不直接给答案</strong><small>把问题还给你，留出思考的空间。</small></div></div><div class="axl-talk-card axl-talk-b"><svg class="axl-ic"><use href="#axl-i-eye"/></svg><div><strong>看得到证据</strong><small>错在哪个测试点，指得出来。</small></div></div><div class="axl-board-bot"><svg class="axl-bot"><use href="#axl-bot"/></svg></div></div>
-          </article>
-          <article class="axl-slide" data-slide="3">
-            <div class="axl-slide-copy"><span class="axl-paper-label">03 / 下一步</span><h3>最后只留下<br>一个能做的动作。</h3><p>不把“变强”挂在墙上。今天只做一件小事：改这一行，再做两道同类题。</p><div class="axl-plan"><span class="axl-plan-check"><svg class="axl-ic"><use href="#axl-i-check"/></svg></span><div><strong>今天的下一步</strong><span>循环边界 · 8 分钟</span></div><span class="axl-plan-arrow"><svg class="axl-ic"><use href="#axl-i-arrow"/></svg></span></div></div>
-            <div class="axl-board axl-board--final"><div class="axl-board-grid"></div><div class="axl-final-title">今天的<br><b>下一步</b></div><div class="axl-final-line"></div><div class="axl-final-row"><span>01</span><strong>把边界改对</strong><em>8 min</em></div><div class="axl-final-row"><span>02</span><strong>做两道同类题</strong><em>12 min</em></div><div class="axl-final-row"><span>03</span><strong>说清楚为什么</strong><em>5 min</em></div><div class="axl-final-sign">AICOJ · 陪你想清楚</div><div class="axl-fire" aria-hidden="true"></div><div class="axl-pixel-star" aria-hidden="true">✦</div></div>
-          </article>
-        </div>
-        <div class="axl-stack-bottom"><div class="axl-stack-progress"><i id="axlStackBar"></i></div><span>向下滚动，换一张纸</span><div class="axl-stack-dots" id="axlStackDots"><button class="active" data-slide="1" aria-label="想法"></button><button data-slide="2" aria-label="追问"></button><button data-slide="3" aria-label="下一步"></button></div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= FEATURE TIMELINE ================= -->
-  <section class="axl-timeline" id="axl-features">
-    <div class="axl-timeline-sticky">
-      <div class="axl-shell axl-timeline-head">
-        <div><div class="axl-kicker"><span class="dot"></span><span>AICOJ 学习路径</span><i></i><span>03</span></div><h2>一章一章，<br><span>走到下一道题。</span></h2></div>
-        <div class="axl-timeline-dots" id="axlTimelineDots"><button data-chapter="0" class="active"><span>01</span>AI</button><button data-chapter="1"><span>02</span>题库</button><button data-chapter="2"><span>03</span>功课</button><button data-chapter="3"><span>04</span>比赛</button><button data-chapter="4"><span>05</span>训练</button><button data-chapter="5"><span>06</span>排名</button></div>
-      </div>
-      <div class="axl-timeline-viewport" id="axlTimelineViewport">
-        <div class="axl-timeline-track" id="axlTimelineTrack">
-          <article class="axl-card"><div class="axl-card-top"><span class="axl-card-index">01</span><span class="axl-card-label">AI 介绍</span></div><div class="axl-graphic axl-graphic--ai"><span class="axl-orbit"></span><span class="axl-graphic-bot"><svg class="axl-bot"><use href="#axl-bot"/></svg></span><span class="axl-graphic-note">先问<br>再答</span></div><h3>先想清楚，<br>再写下去。</h3><p>会解释，也会追问。你卡住时，它把下一步递过来。</p><a href="{{ url('user_login', query={redirect: url('ai_coach_chat_page')}) }}" class="axl-card-link">认识 AICOJ <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a></article>
-          <article class="axl-card axl-card--light"><div class="axl-card-top"><span class="axl-card-index">02</span><span class="axl-card-label">题库</span></div><div class="axl-graphic axl-graphic--problems"><span class="axl-graphic-code">&lt;/&gt;</span><span class="axl-graphic-chip">按专题挑题</span><span class="axl-graphic-dot d1"></span><span class="axl-graphic-dot d2"></span></div><h3>找到刚好<br>够得着的下一题。</h3><p>按专题和难度挑题。少一点题海，多一条能走的路。</p><a href="{{ url('user_login', query={redirect: url('problem_main')}) }}" class="axl-card-link">打开题库 <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a></article>
-          <article class="axl-card axl-card--light"><div class="axl-card-top"><span class="axl-card-index">03</span><span class="axl-card-label">功课</span></div><div class="axl-graphic axl-graphic--homework"><span class="axl-graphic-paper">今天<br><b>18:00</b></span><span class="axl-graphic-check"><svg class="axl-ic"><use href="#axl-i-check"/></svg></span></div><h3>老师布置的，<br>不再漏掉。</h3><p>看清截止时间、老师要求和下一步。陪你做完，不替你交。</p><a href="{{ url('user_login', query={redirect: url('homework_main')}) }}" class="axl-card-link">打开功课 <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a></article>
-          <article class="axl-card axl-card--dark"><div class="axl-card-top"><span class="axl-card-index">04</span><span class="axl-card-label">比赛</span></div><div class="axl-graphic axl-graphic--contest"><span class="axl-graphic-trophy"><svg class="axl-ic"><use href="#axl-i-trophy"/></svg></span><span class="axl-graphic-timer">01:26</span></div><h3>认真赢一次，<br>也认真输一次。</h3><p>限时、独立、没有提示。赛后把输赢变成下一次的线索。</p><a href="{{ url('user_login', query={redirect: url('contest_main')}) }}" class="axl-card-link">查看赛程 <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a></article>
-          <article class="axl-card axl-card--light"><div class="axl-card-top"><span class="axl-card-index">05</span><span class="axl-card-label">训练</span></div><div class="axl-graphic axl-graphic--training"><span class="axl-graphic-track"></span><span class="axl-graphic-flag">30 min</span><span class="axl-graphic-arrow"><svg class="axl-ic"><use href="#axl-i-up"/></svg></span></div><h3>把不会的，<br>练到会。</h3><p>热身、主线、收尾。一次只练一个判断。</p><a href="{{ url('user_login', query={redirect: url('training_main')}) }}" class="axl-card-link">开始训练 <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a></article>
-          <article class="axl-card"><div class="axl-card-top"><span class="axl-card-index">06</span><span class="axl-card-label">排名</span></div><div class="axl-graphic axl-graphic--ranking"><span class="axl-rank-line l1"></span><span class="axl-rank-line l2"></span><span class="axl-rank-line l3"></span><span class="axl-rank-badge">本周</span></div><h3>不和别人比快，<br>和自己的昨天比。</h3><p>不贴能力标签。看见自己的曲线有没有向上，就够了。</p><a href="{{ url('user_login', query={redirect: url('ranking')}) }}" class="axl-card-link">看成长榜 <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a></article>
-        </div>
-      </div>
-      <div class="axl-shell axl-timeline-foot"><span>竖向滚动 · 横向走过</span><div class="axl-timeline-rule"><i id="axlTimelineProgress"></i></div><span id="axlTimelineCaption">01 / AI 介绍</span></div>
-    </div>
-  </section>
-
-  <!-- ================= CTA ================= -->
-  <section class="axl-cta" id="axl-cta">
-    <div class="axl-shell axl-cta-inner">
-      <div class="axl-cta-bot"><svg class="axl-bot"><use href="#axl-bot"/></svg></div>
-      <div><div class="axl-kicker"><span class="dot"></span><span>随时开始</span></div><h2>下一个问题，<br><span>和 AICOJ 一起想。</span></h2><p>你负责想，AICOJ 陪你走下一步。</p></div>
-      <div class="axl-cta-actions"><a class="axl-btn axl-btn--ink" href="{{ url('user_login', query={redirect: url('ai_coach_chat_page')}) }}"><span>进入学习空间</span><span class="orb"><svg class="axl-ic"><use href="#axl-i-arrow"/></svg></span></a><a class="axl-text-link" href="#axl-story">再看一遍 AICOJ 怎么想 <svg class="axl-ic"><use href="#axl-i-arrow"/></svg></a></div>
+  <section class="axl-cta" aria-labelledby="axlCtaTitle">
+    <div class="axl-shell axl-cta__inner rv">
+      <div class="axl-cta__left"><div class="axl-cta__bot"><svg class="axl-bot"><use href="#axl-bot"/></svg></div><div><h2 id="axlCtaTitle">准备好把下一道错题真正弄懂了吗？</h2><p>注册登录即可使用完整题库、实时判题与 AI 编程助教。</p></div></div>
+      <a class="axl-btn axl-btn--ink" href="{{ url('user_login', query={redirect: url('problem_main')}) }}"><span>立即登录 / 注册</span><span class="orb"><svg class="axl-ic"><use href="#axl-i-arrow"/></svg></span></a>
     </div>
   </section>
 </div>
@@ -543,69 +183,70 @@
   var $$ = function (s, r) { return Array.prototype.slice.call((r || root).querySelectorAll(s)); };
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // pixel heat grid (64 cells)
-  var heat = $('.axl-heat', root);
-  if (heat && !heat.childElementCount) { for (var i = 0; i < 64; i++) heat.appendChild(document.createElement('i')); }
-
-  // staged reveal
+  // 渐进揭示：无 JS / 不支持 IO 时内容仍完整可见。
   if ('IntersectionObserver' in window && !reduced) {
-    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { threshold: 0.12 });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px' });
     $$('.rv', root).forEach(function (el) { io.observe(el); });
-  } else { $$('.rv', root).forEach(function (el) { el.classList.add('is-in'); }); }
+  } else {
+    $$('.rv', root).forEach(function (el) { el.classList.add('is-in'); });
+  }
 
-  // AI stack scroll-snap
-  (function () {
-    var vp = $('#axlStackViewport'); if (!vp) return;
-    var slides = $$('.axl-slide', vp), dots = $$('#axlStackDots button'), now = $('#axlStackNow'), bar = $('#axlStackBar');
-    var ticking = false;
-    function update() {
-      var idx = Math.max(0, Math.min(slides.length - 1, Math.round(vp.scrollTop / vp.clientHeight)));
-      if (now) now.textContent = String(idx + 1).padStart(2, '0');
-      if (bar) bar.style.width = (((idx + 1) / slides.length) * 100) + '%';
-      dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
-      ticking = false;
-    }
-    vp.addEventListener('scroll', function () { if (!ticking) { requestAnimationFrame(update); ticking = true; } }, { passive: true });
-    dots.forEach(function (d, i) { d.addEventListener('click', function () { vp.scrollTo({ top: slides[i].offsetTop, behavior: reduced ? 'auto' : 'smooth' }); }); });
-    window.addEventListener('resize', update);
-    update();
-  })();
+  // 锚点不依赖 scroll-behavior；减少动态效果的用户直接到位。
+  $$('[data-axl-anchor]', root).forEach(function (link) {
+    link.addEventListener('click', function (event) {
+      var target = $(link.getAttribute('href'));
+      if (!target) return;
+      event.preventDefault();
+      target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+      if (history.replaceState) history.replaceState(null, '', link.getAttribute('href'));
+    });
+  });
 
-  // vertical-scroll-driven horizontal timeline
-  (function () {
-    var wrap = $('#axl-features'), track = $('#axlTimelineTrack'), vp = $('#axlTimelineViewport');
-    var dots = $$('#axlTimelineDots button'), prog = $('#axlTimelineProgress'), cap = $('#axlTimelineCaption');
-    if (!wrap || !track || !vp) return;
-    var ticking = false;
-    function cards() { return $$('.axl-card', track); }
-    function layout() {
-      var cs = cards();
-      var max = Math.max(0, track.scrollWidth - vp.clientWidth);
-      var distance = Math.max(1, wrap.offsetHeight - window.innerHeight);
-      var y = Math.max(0, Math.min(distance, -wrap.getBoundingClientRect().top));
-      var p = distance ? y / distance : 0;
-      var x = p * max;
-      if (cs.length > 1) {
-        // center each chapter card at its progress point so the active card is never clipped
-        var targets = cs.map(function (c) { return Math.max(0, Math.min(max, c.offsetLeft + c.offsetWidth / 2 - vp.clientWidth / 2)); });
-        var f = p * (cs.length - 1), i = Math.min(cs.length - 2, Math.floor(f)), t = f - i;
-        x = targets[i] + (targets[i + 1] - targets[i]) * t;
+  // Hero 三层提示演示：点击/键盘均可操作；不自动轮播、不劫持滚动。
+  var demo = $('[data-axl-demo]', root);
+  if (demo) {
+    var copy = $('[data-axl-demo-copy]', demo);
+    var question = $('[data-axl-demo-question]', demo);
+    var note = $('[data-axl-demo-note]', demo);
+    var steps = $$('[data-axl-step]', demo);
+    var states = [
+      {
+        copy: '<b>定位错因：</b>输入 <code>n = 5</code> 时你的输出是 <code>10</code>（少了最后一项 <code>5</code>）。第 3 行循环条件 <code>i &lt; n</code> 在 <code>i == 5</code> 时提前结束了。',
+        question: '<strong>先想一步：</strong>如果想把 <code>n</code> 本身也加进去，第 3 行的判断条件应该怎么改？',
+        note: '第一层 · 先看方向：指出证据与检查位置，不直接给答案。'
+      },
+      {
+        copy: '<b>拆开验证：</b>① 令 <code>n = 5</code>；② 依次代入 <code>i = 1…4</code>；③ 得到 <code>1 + 2 + 3 + 4 = 10</code>，与错误输出一致。',
+        question: '<strong>继续一步：</strong>目标结果是 <code>1 + 2 + 3 + 4 + 5</code>。循环需要在 <code>i = 5</code> 时继续，而在 <code>i = 6</code> 时停止。',
+        note: '第二层 · 拆解步骤：用小样例验证思路，再决定如何修改。'
+      },
+      {
+        copy: '<b>代码骨架：</b><code>for (int i = 1; i ___ n; i++) { sum += i; }</code>。这里只补全循环边界，不替你做完整道题。',
+        question: '<strong>轮到你了：</strong>回到编辑器补上关系运算符，再提交一次；判题结果仍以真实测试数据为准。',
+        note: '第三层 · 代码骨架：只给必要结构，把最后一步留给你。'
       }
-      track.style.transform = 'translate3d(' + (-x) + 'px,0,0)';
-      if (prog) prog.style.width = (p * 100) + '%';
-      if (cs.length) {
-        var idx = Math.min(cs.length - 1, Math.round(p * (cs.length - 1)));
-        dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
-        var label = cs[idx].querySelector('.axl-card-label');
-        if (cap) cap.textContent = String(idx + 1).padStart(2, '0') + ' / ' + (label ? label.textContent : '');
-      }
-      ticking = false;
-    }
-    function onScroll() { if (!ticking) { requestAnimationFrame(layout); ticking = true; } }
-    dots.forEach(function (d, i) { d.addEventListener('click', function () { var cs = cards(); if (!cs.length) return; var distance = Math.max(1, wrap.offsetHeight - window.innerHeight); var target = wrap.offsetTop + (i / Math.max(1, cs.length - 1)) * distance; window.scrollTo({ top: target, behavior: reduced ? 'auto' : 'smooth' }); }); });
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', layout);
-    layout();
-  })();
+    ];
+    steps.forEach(function (button) {
+      button.addEventListener('click', function () {
+        var index = Number(button.getAttribute('data-axl-step')) || 0;
+        var state = states[index];
+        copy.innerHTML = state.copy;
+        question.innerHTML = state.question;
+        note.textContent = state.note;
+        steps.forEach(function (item, i) {
+          item.classList.toggle('is-active', i === index);
+          item.classList.toggle('is-past', i < index);
+          item.setAttribute('aria-pressed', i === index ? 'true' : 'false');
+        });
+      });
+    });
+  }
 })();
 </script>
