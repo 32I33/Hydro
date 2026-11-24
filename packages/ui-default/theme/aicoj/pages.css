@@ -1176,30 +1176,6 @@ html body .ax-hint__tag {
   font-weight: 700;
   white-space: nowrap;
 }
-html body .ax-hint__levels {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 10px 0;
-}
-html body .ax-hint__level {
-  padding: 4px 9px;
-  border: 1.5px solid var(--ax-line);
-  border-radius: 999px;
-  background: var(--ax-surface-2);
-  color: var(--ax-muted);
-  font-size: 10.5px;
-  font-weight: 700;
-  cursor: pointer;
-}
-html body .ax-hint__level:hover {
-  color: var(--ax-ink);
-}
-html body .ax-hint__level.is-active {
-  border-color: var(--ax-ink);
-  background: var(--ax-ink);
-  color: var(--ax-surface);
-}
 html body .ax-hint__body {
   max-height: 300px;
   overflow: auto;
@@ -1240,6 +1216,38 @@ html body .ax-hint__err {
   margin: 8px 0 0;
   color: var(--ax-red);
   font-size: 11.5px;
+}
+html body .ax-hint__item--celebrate {
+  border-color: var(--ax-green);
+  background: var(--ax-green-soft);
+}
+html body .ax-hint__mastery {
+  margin: 0 0 4px;
+  color: var(--ax-green);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+html body .ax-hint__item .ax-hint__next {
+  margin-top: 6px;
+  color: var(--ax-muted);
+  font-size: 11.5px;
+}
+html body .ax-hint__note {
+  margin: 8px 0 0;
+  padding: 6px 9px;
+  border-radius: var(--ax-radius-sm);
+  background: var(--ax-surface-2);
+  color: var(--ax-text-2);
+  font-size: 11px;
+  line-height: 1.6;
+}
+html body .ax-hint__note--gate {
+  background: var(--ax-yellow-soft);
+  color: var(--ax-ink);
+}
+html body .ax-hint__note--ok {
+  background: var(--ax-green-soft);
+  color: var(--ax-green);
 }
 html body .ax-hint__foot {
   display: flex;
@@ -2004,4 +2012,70 @@ html body .messagepad__input button:enabled:active {
 html body .messagepad__send-icon {
   display: block;
   shape-rendering: crispEdges;
+}
+
+/* ---- 自测面板：输入/结果区做成一张带框的卡 ---- */
+html body .ax-probpanel[data-prob-panel="pretest"] {
+  padding: 14px 16px 18px;
+}
+html body .ax-probpanel.is-active[data-prob-panel="pretest"] {
+  display: flex;
+  flex-direction: column;
+}
+/* 让输入/结果这张卡吃满面板高度：否则短内容下面是整片白，看着像没做完 */
+html body .ax-probpanel[data-prob-panel="pretest"] .ax-pt {
+  flex: 1 1 auto;
+  min-height: 168px;
+}
+html body .ax-pt {
+  align-items: stretch;
+  gap: 12px;
+  padding: 12px;
+  border: 2px solid var(--ax-line);
+  border-radius: 0;
+  background: var(--ax-surface-2);
+}
+html body .ax-pt__field {
+  display: flex;
+  min-width: 0;
+}
+html body .ax-pt__input {
+  width: 100%;
+  height: 100%;
+  min-height: 132px;
+  padding: 10px 12px;
+  border: 2px solid var(--ax-line);
+  border-radius: 0;
+  background: var(--ax-surface);
+  color: var(--ax-ink);
+  font-family: var(--ax-font-mono);
+  font-size: 12px;
+  line-height: 1.65;
+  resize: none;
+}
+html body .ax-pt__input:focus {
+  outline: 0;
+  box-shadow: var(--ax-shadow-1);
+}
+html body .ax-pt__side {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+html body .ax-pt__result {
+  flex: 1 1 auto;
+  min-height: 132px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 2px dashed var(--ax-surface-4);
+  border-radius: 0;
+  background: var(--ax-surface);
+  overflow: auto;
+}
+html body .ax-pt__result .ax-console__empty {
+  margin: 0;
+  color: var(--ax-muted);
+  font-size: 11.5px;
+  line-height: 1.7;
 }
