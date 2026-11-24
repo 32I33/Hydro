@@ -1965,3 +1965,43 @@ html body img.ax-img-broken {
   background: var(--ax-surface-2);
   object-fit: contain;
 }
+
+/* ---- 站内消息：输入框与发送按钮改成像素风（原来用的是 Materialize 蓝色方块 + FA 图标） ---- */
+html body .messagepad__input {
+  border-top: 2px solid var(--ax-line);
+  background: var(--ax-surface);
+}
+html body .messagepad__textarea-container textarea {
+  border: 2px solid var(--ax-line-soft);
+  background: var(--ax-surface);
+  box-sizing: border-box;
+  padding: 8px 10px;
+}
+html body .messagepad__textarea-container textarea:focus {
+  border-color: var(--ax-line);
+  box-shadow: var(--ax-shadow-1);
+}
+html body .messagepad__input button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ax-surface-2);
+  color: var(--ax-muted);
+  border-left: 2px solid var(--ax-line);
+  line-height: 0;
+}
+html body .messagepad__input button:enabled {
+  background: var(--ax-primary-bright);
+  color: #fff;
+  cursor: pointer;
+}
+html body .messagepad__input button:enabled:hover {
+  background: var(--ax-primary);
+}
+html body .messagepad__input button:enabled:active {
+  transform: translate(1px, 1px);
+}
+html body .messagepad__send-icon {
+  display: block;
+  shape-rendering: crispEdges;
+}

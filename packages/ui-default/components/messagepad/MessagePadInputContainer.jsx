@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import Icon from 'vj/components/react/IconComponent';
 import { request } from 'vj/utils';
 
 const mapStateToProps = (state) => ({
@@ -89,10 +88,21 @@ export default connect(mapStateToProps, mapDispatchToProps)(class MessagePadInpu
           />
         </div>
         <button
+          type="button"
+          aria-label="发送"
           disabled={!this.props.inputValue.trim().length || this.props.isPosting}
           onClick={() => this.submit()}
         >
-          <Icon name="send" />
+          <svg className="messagepad__send-icon" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" shapeRendering="crispEdges" focusable="false">
+            <g fill="currentColor">
+              <rect x="3" y="0" width="3" height="3" />
+              <rect x="3" y="3" width="6" height="3" />
+              <rect x="3" y="6" width="9" height="3" />
+              <rect x="3" y="9" width="12" height="3" />
+              <rect x="3" y="12" width="9" height="3" />
+              <rect x="3" y="15" width="6" height="3" />
+            </g>
+          </svg>
         </button>
       </div>
     );
