@@ -3,9 +3,17 @@ import { md5 } from '../utils';
 
 type AvatarProvider = (src: string, size: number) => string;
 
+/** 站内自托管的默认头像（不依赖 gravatar 等外部服务） */
+export const DEFAULT_AVATAR = '/components/profile/avatar-default.png';
+
 export const providers: Record<string, AvatarProvider> = {
-    gravatar: (email, size) => `${global.Hydro.model.system.get('avatar.gravatar_url')}`
-        + `${md5((email || '').toString().trim().toLowerCase())}?d=mm&s=${size || 32}`,
+    gravatar: (email, size) => {
+        const prefix = `${global.Hydro.model.system.get('avatar.gravatar_url') || ''}`.trim();
+        // 没配成绝对地址就退回站内默认头像：gravatar 在境内基本不可达，
+        // 用它只会让整站头像变成裂图。
+        if (!/^https?:\/\//i.test(prefix)) return DEFAULT_AVATAR;
+        return `${prefix}${md5((email || '').toString().trim().toLowerCase())}?d=mm&s=${size || 32}`;
+    },
     qq: (id) => `//q1.qlogo.cn/g?b=qq&nk=${(/(\d+)/.exec(id) || ['', ''])[1]}&s=160`,
     github: (id, size) => `//github.com/${id}.png?size=${Math.min(size, 460)}`,
     url: (url) => url,

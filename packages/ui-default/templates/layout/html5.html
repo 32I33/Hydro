@@ -1,11 +1,11 @@
-{% import "components/form.html" as form with context %}
+﻿{% import "components/form.html" as form with context %}
 {% import "components/sidemenu.html" as sidemenu with context %}
 {% import "components/paginator.html" as paginator with context %}
 {% import "components/nothing.html" as nothing with context %}
 {% import "components/noscript_note.html" as noscript_note with context %}
 {% import "components/user.html" as user with context %}
 <!DOCTYPE html>
-{% set theme = 'light' %}{#- AICOJ 鍍忕礌琛楁満涓婚鍙湁娴呰壊鐗堟湰锛屾殏涓嶅惉鐢ㄦ埛 theme 鍋忓ソ锛涙殫鑹插彉浣撶暀寰呭悗缁樁娈?-#}
+{% set theme = 'light' %}{#- AICOJ 閸嶅繒绀岀悰妤佹簚娑撳顣介崣顏呮箒濞村懓澹婇悧鍫熸拱閿涘本娈忔稉宥呮儔閻劍鍩?theme 閸嬪繐銈介敍娑欐閼规彃褰夋担鎾舵殌瀵板懎鎮楃紒顓㈡▉濞?-#}
 <html data-page="{{ page_name }}" data-layout="{{ layout_name }}" class="layout--{{ layout_name }} page--{{ page_name }} theme--{{ theme }} nojs" data-mantine-color-scheme="{{ 'dark' if theme.includes('dark') else 'light' }}" lang="{{ UserContext.viewLang }}" data-app="AICOJ">
 <head>
   <meta charset="UTF-8">
@@ -20,7 +20,7 @@
   <link rel="icon" type="image/png" href="{{ UiContext.cdn_prefix }}favicon-16x16.png" sizes="16x16">
   {% if handler.context.request.url %}<link rel="canonical" href="{{ model.system.get('server.url') }}{{ handler.context.request.url.substring(1) }}">{% endif %}
   <meta name="theme-color" content="#ff5e1a">
-  {#- 字体使用站内置字体与系统字体；不依赖 Google Fonts，国内无 VPN 也可完整加载。 -#}
+  {#- 瀛椾綋浣跨敤绔欏唴缃瓧浣撲笌绯荤粺瀛椾綋锛涗笉渚濊禆 Google Fonts锛屽浗鍐呮棤 VPN 涔熷彲瀹屾暣鍔犺浇銆?-#}
   {% block ogp_site %}
   <meta property="og:site_name" content="{{ (handler.domain|default({ui:[]})).ui.name|default(model.system.get('server.name')) }}" />
   <meta property="og:url" content="{{ model.system.get('server.url') }}{{ handler.request.path.slice(1) }}" />
@@ -42,9 +42,9 @@
   </style>
   {% if process.env.DEV %}
     <script src="/default.theme.js?version={{ global.Hydro.version['ui-default'] }}&v=6"></script>
-    <link rel="stylesheet" media="all" href="/theme-{{ global.Hydro.version['ui-default'] }}.css?v=21">
+    <link rel="stylesheet" media="all" href="/theme-{{ global.Hydro.version['ui-default'] }}.css?v=22">
   {% else %}
-    <link rel="stylesheet" media="all" href="{{ UiContext.cdn_prefix }}theme-{{ global.Hydro.version['ui-default'] }}.css?v=21">
+    <link rel="stylesheet" media="all" href="{{ UiContext.cdn_prefix }}theme-{{ global.Hydro.version['ui-default'] }}.css?v=22">
   {% endif %}
   {% if not isIE(handler.request.headers['user-agent']) and not handler.session.legacy %}
     <script>
@@ -71,6 +71,36 @@
       window.UserContextNew = '{{ UserContext|json|jsesc|safe }}';
     </script>
   {% endif %}
+  <script>
+    (function () {
+      var MISSING = '/components/img-missing.svg';
+      function swap(img) {
+        if (!img || img.tagName !== 'IMG' || img.dataset.axBroken) return;
+        img.dataset.axBroken = '1';
+        img.classList.add('ax-img-broken');
+        img.removeAttribute('srcset');
+        img.setAttribute('src', MISSING);
+        if (!img.getAttribute('title')) {
+          var alt = img.getAttribute('alt');
+          img.setAttribute('title', alt ? alt + '锛堝浘鐗囨湭鑳藉姞杞斤級' : '鍥剧墖鏈兘鍔犺浇');
+        }
+      }
+      document.addEventListener('error', function (e) {
+        var t = e.target;
+        if (t && t.tagName === 'IMG' && t.getAttribute('src') !== MISSING) swap(t);
+      }, true);
+      function sweep() {
+        var imgs = document.images;
+        for (var i = 0; i < imgs.length; i++) {
+          var img = imgs[i];
+          if (img.complete && img.naturalWidth === 0 && img.getAttribute('src') !== MISSING) swap(img);
+        }
+      }
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sweep);
+      else sweep();
+      window.addEventListener('load', sweep);
+    })();
+  </script>
 </body>
 </html>
 

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="120" viewBox="0 0 240 120">
+  <rect x="1" y="1" width="238" height="118" rx="2" fill="#f6f4ee" stroke="#141b2d" stroke-width="2" stroke-dasharray="6 5"/>
+  <g fill="#8f7066" font-family="'PingFang SC','Microsoft YaHei',sans-serif" font-size="13" text-anchor="middle">
+    <text x="120" y="58">图片缺失</text>
+    <text x="120" y="80" font-size="11">原题图片未随题目一起导入</text>
+  </g>
+</svg>

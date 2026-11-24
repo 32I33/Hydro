@@ -6,7 +6,7 @@
       <h1 class="section__title" id="avatar" data-heading>{{ _('Avatar') }}</h1>
     </div>
     <div class="section__body typo">
-      <p>{{ _('You can also upload your avatar to Gravatar and it will be automatically updated here.')|safe }}</p>
+      <p>{{ _('上传的图片会存到本站对象存储（OSS），最多 8MB，支持 jpg / png。不传则使用默认头像。')|safe }}</p>
     </div>
     <div class="section__body">
       <img width="128px" height="128px" src="{{ avatarUrl(current.avatar, 128) }}" alt="{{ current.uname }}">

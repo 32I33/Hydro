@@ -1955,3 +1955,13 @@ html body .ax-ai__note { margin: 0; font-size: 12px; line-height: 1.7; color: va
 @media (max-width: 760px) {
   html body .ax-ai__item { align-items: flex-start; }
 }
+
+/* ---- broken image placeholder (swapped in by layout/html5.html on error) ---- */
+html body img.ax-img-broken {
+  max-width: 100%;
+  height: auto;
+  min-height: 48px;
+  border: 2px dashed var(--ax-surface-4);
+  background: var(--ax-surface-2);
+  object-fit: contain;
+}
