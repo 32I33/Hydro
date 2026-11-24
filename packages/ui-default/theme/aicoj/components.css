@@ -517,6 +517,17 @@ html body .pager-top {
   border-bottom: 2px solid var(--ax-line);
 }
 
+/* Hydro 自带 `border-top: 2px solid #e4e4e4` 是写在 .pager.pager-bottom（两个类）上的，
+   比 `html body .pager`（一个类）优先，所以分页条上边框会退回浅灰。
+   这里用同等类数 + 更高元素数把它压回来。 */
+html body .pager.pager-bottom {
+  border-top: 2px solid var(--ax-line);
+}
+html body .pager.pager-top {
+  border-top: 0;
+  border-bottom: 2px solid var(--ax-line);
+}
+
 /* =================================================================
  * 原生控件收口（Hydro 自带 .button / input / select / textarea）
  * 这些是 stylus 在构建期写死 #5f9fd6 蓝色，靠 CSS 变量覆盖不到，
