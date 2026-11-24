@@ -47,14 +47,8 @@
               <span class="ax-hint__tag">渐进提示</span>
             </div>
 
-            <div class="ax-hint__levels" role="group" aria-label="提示层级">
-              <button type="button" class="ax-hint__level is-active" data-hint-level="1">第一层 · 方向</button>
-              <button type="button" class="ax-hint__level" data-hint-level="2">第二层 · 关键步骤</button>
-              <button type="button" class="ax-hint__level" data-hint-level="3">第三层 · 代码骨架</button>
-            </div>
-
             <div class="ax-hint__body" data-hint-body>
-              <p class="ax-hint__empty">卡住时点下面的按钮。小八会先问你「这题在考什么」，再一步步往下提示。</p>
+              <p class="ax-hint__empty">卡住时点下面的按钮。小八只给方向：这题在考什么、先想哪一步，不给代码。</p>
             </div>
 
             <div class="ax-hint__foot">
@@ -162,22 +156,7 @@
   var title = root.getAttribute('data-title') || '';
   var body = root.querySelector('[data-hint-body]');
   var ask = root.querySelector('[data-hint-ask]');
-  var levelButtons = Array.prototype.slice.call(root.querySelectorAll('[data-hint-level]'));
-  var level = 1;
   var busy = false;
-
-  function setLevel(n) {
-    level = n;
-    levelButtons.forEach(function (btn) {
-      btn.classList.toggle('is-active', Number(btn.getAttribute('data-hint-level')) === n);
-    });
-  }
-
-  levelButtons.forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      setLevel(Number(btn.getAttribute('data-hint-level')));
-    });
-  });
 
   function statement() {
     var content = document.querySelector('.problem-content');
@@ -190,16 +169,12 @@
     return text.length > 1500 ? text.slice(0, 1500) + '\n…（题面过长，已截断）' : text;
   }
 
-  function promptFor(n) {
-    var guide = {
-      1: '只给方向性提示：点出这题在考什么、应该先想哪一步。不要给代码，也不要给完整步骤，3 到 5 句。',
-      2: '给关键思路和边界条件，可以用伪代码，但不要给可以直接提交的完整代码。',
-      3: '给接近完整的解法步骤和一小段关键代码，但保留让学生自己补全的部分，并提醒他自己写一遍。',
-    }[n] || '给方向性提示。';
-    return '你正在 AICOJ 的题目页给学生做分层提示。学生正在写这道题：\n'
+  // 只保留一层：方向。不给步骤清单，也不给代码/骨架。
+  function prompt() {
+    return '你正在 AICOJ 的题目页给学生一点提示。学生正在写这道题：\n'
       + '题目：' + title + '\n题面：' + statement() + '\n\n'
-      + '这是第 ' + n + ' 层提示。' + guide + '\n'
-      + '不要直接给最终答案；用中文；不要提你是模型；不要输出 Markdown 代码围栏以外的寒暄。';
+      + '只给方向性提示：点出这题在考什么、应该先想哪一步。不要给步骤清单，不要给伪代码或代码，3 到 5 句。\n'
+      + '不要直接给最终答案；用中文；不要提你是模型。';
   }
 
   function textOf(message) {
@@ -211,15 +186,11 @@
     }).join('\n').trim();
   }
 
-  function addHint(text, n) {
+  function addHint(text) {
     var item = document.createElement('div');
     item.className = 'ax-hint__item';
-    var badge = document.createElement('span');
-    badge.className = 'ax-hint__badge';
-    badge.textContent = '第 ' + n + ' 层';
     var p = document.createElement('p');
     p.textContent = text;
-    item.appendChild(badge);
     item.appendChild(p);
     body.appendChild(item);
     body.scrollTop = body.scrollHeight;
@@ -236,16 +207,16 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          text: promptFor(level),
+          text: prompt(),
           sessionId: 'hint-' + pid,
-          clientMessageId: 'hint-' + pid + '-' + level + '-' + Date.now(),
+          clientMessageId: 'hint-' + pid + '-' + Date.now(),
         }),
       });
       var data = await res.json();
       if (!res.ok || !data.message) throw new Error(data.error || ('HTTP ' + res.status));
       var text = textOf(data.message);
       if (!text) throw new Error('empty reply');
-      addHint(text, level);
+      addHint(text);
       var empty = body.querySelector('.ax-hint__empty');
       if (empty) empty.remove();
     } catch (e) {
