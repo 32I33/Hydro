@@ -42,6 +42,22 @@
     try { new ResizeObserver(post).observe(document.body); } catch (e) { /* noop */ }
   }
   setInterval(post, 800);
+
+  // 点站内链接时不要在 iframe 里套娃：跳到别的页面（用户主页 / 记录详情 / 题目 …）
+  // 直接把顶层窗口带过去；只有"同一个 path 只换查询参数"（翻页、筛选）才留在页签内。
+  document.addEventListener('click', function (ev) {
+    var a = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
+    if (!a) return;
+    if (a.target === '_blank' || a.hasAttribute('download')) return;
+    var href = a.getAttribute('href');
+    if (!href || href.charAt(0) === '#' || href.indexOf('javascript:') === 0) return;
+    var url;
+    try { url = new URL(a.href, location.href); } catch (e) { return; }
+    if (url.origin !== location.origin) return;
+    if (url.pathname === location.pathname) return;
+    ev.preventDefault();
+    try { window.top.location.href = url.href; } catch (e) { window.open(url.href, '_top'); }
+  }, true);
 })();
 </script>
 {% endblock %}
