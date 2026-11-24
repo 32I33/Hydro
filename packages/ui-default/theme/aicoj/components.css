@@ -264,12 +264,28 @@ html body .ax-table tbody tr:last-child td {
 
 /* 状态列：圆形指示 */
 html body .ax-table .col--status {
-  width: 34px;
+  width: 40px;
+  padding-left: 0;
+  padding-right: 0;
   text-align: center;
+  vertical-align: middle;
+}
+/* render_status_td 会同时输出图标和一段 "100 Accepted" 文本；
+   这一列只有 40px，文本会溢出压到下一列、把圆点顶偏，所以只保留圆点。 */
+html body .ax-table .col--status .col--status__text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+html body .ax-table .col--status .record-status--text {
+  display: none !important;
 }
 html body .ax-table .col--status .record-status--icon {
-  display: inline-grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  margin: 0 auto;
   width: 20px;
   height: 20px;
   border-radius: 50%;
